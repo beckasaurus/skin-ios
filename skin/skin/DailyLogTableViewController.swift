@@ -80,7 +80,6 @@ class DailyLogTableViewController: UITableViewController {
 			}
 		}
 		
-		// Show initial tasks
 		func updatePerformedRoutineList() {
 			if self.performedRoutines.realm == nil, let list = self.realm!.objects(DailyLog.self).first {
 				self.performedRoutines = list.performedRoutines
@@ -171,7 +170,7 @@ class DailyLogTableViewController: UITableViewController {
 		if segue.identifier == routineSegue {
 			let cell = sender as! UITableViewCell
 			let rowIndexPath = tableView.indexPath(for: cell)!
-			let performedRoutine = performedRoutines[rowIndexPath.first!]
+			let performedRoutine = performedRoutines[rowIndexPath.row]
 			let routineViewController = segue.destination as! RoutineTableViewController
 			routineViewController.routine = performedRoutine.routine!
 		}

@@ -20,39 +20,44 @@ class RoutineTableViewController: UITableViewController {
 	
 	// MARK: - Realm Properties
 	var notificationToken: NotificationToken?
-	var realm: Realm!
+	var realm: Realm! {
+		return routine!.realm!
+	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		setupUI()
+		setupRealm()
 	}
 	
 	func setupUI() {
 		title = routine?.name
 		tableView.register(UITableViewCell.self, forCellReuseIdentifier: routineProductCellIdentifier)
-		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(add))
-		navigationItem.leftBarButtonItem = editButtonItem
+		navigationItem.rightBarButtonItem = editButtonItem
 	}
 	
 	func setupRealm() {
 		// Notify us when Realm changes
 		self.notificationToken = self.products.addNotificationBlock { [weak self] (changes: RealmCollectionChange) in
-			guard let tableView = self?.tableView else { return }
-			
-			switch changes {
-			case .initial:
-				tableView.reloadData()
-			case .update(_, let deletions, let insertions, let modifications):
-				tableView.beginUpdates()
-				tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
-				                     with: .automatic)
-				tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0)}),
-				                     with: .automatic)
-				tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
-				                     with: .automatic)
-				tableView.endUpdates()
-			case .error(let error):
-				// An error occurred while opening the Realm file on the background worker thread
-				fatalError("\(error)")
+			DispatchQueue.main.async {
+				guard let tableView = self?.tableView else { return }
+				
+				switch changes {
+				case .initial:
+					tableView.reloadData()
+				case .update(_, let deletions, let insertions, let modifications):
+					tableView.beginUpdates()
+					tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0)}),
+					                     with: .none)
+					tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
+					                     with: .none)
+					tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
+					                     with: .none)
+					tableView.endUpdates()
+				case .error(let error):
+					// An error occurred while opening the Realm file on the background worker thread
+					fatalError("\(error)")
+				}
 			}
 		}
 	}
@@ -73,7 +78,7 @@ class RoutineTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return (routine != nil) ? products.count : 0
+		return products.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -84,10 +89,23 @@ class RoutineTableViewController: UITableViewController {
     }
 	
 	override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-		try! products.realm?.write {
-			products.move(from: sourceIndexPath.row, to: destinationIndexPath.row)
+		realm.beginWrite()
+		products.move(from: sourceIndexPath.row, to: destinationIndexPath.row)
+		try! realm.commitWrite(withoutNotifying: [notificationToken!])
+	}
+	
+	// MARK: - Edit function
+	
+	override func setEditing(_ editing: Bool, animated: Bool) {
+		super.setEditing(editing, animated: animated)
+		
+		if editing {
+			navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(add))
+		} else {
+			navigationItem.leftBarButtonItem = nil
 		}
 	}
+
 	
 	// MARK: - Delete function
 	
@@ -113,37 +131,10 @@ class RoutineTableViewController: UITableViewController {
 			guard let text = alertTextField.text , !text.isEmpty else { return }
 			
 			let items = self.products
-			try! items.realm?.write {
+			try! self.realm.write {
 				items.insert(Product(value: ["name": text]), at: items.count)
 			}
 		})
 		present(alertController, animated: true, completion: nil)
 	}
-	
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
