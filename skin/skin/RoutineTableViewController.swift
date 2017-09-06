@@ -11,17 +11,29 @@ import RealmSwift
 
 let routineProductCellIdentifier = "routineProduct"
 
-class RoutineTableViewController: UITableViewController {
+class RoutineTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate {
 
+	@IBOutlet weak var datePicker: UIDatePicker!
+	@IBOutlet weak var notesTextView: UITextView!
+	@IBOutlet weak var tableView: UITableView!
+	
+	var performedRoutine: PerformedRoutine?
+	var routine: Routine? {
+		return performedRoutine?.routine
+	}
 	var products: List<Product> {
 		return routine!.products
 	}
-	var routine: Routine?
 	
 	// MARK: - Realm Properties
-	var notificationToken: NotificationToken?
+	var productListNotificationToken: NotificationToken?
+	var timeAndNotesNotificationToken: NotificationToken?
 	var realm: Realm! {
 		return routine!.realm!
+	}
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -32,13 +44,17 @@ class RoutineTableViewController: UITableViewController {
 	
 	func setupUI() {
 		title = routine?.name
-		tableView.register(UITableViewCell.self, forCellReuseIdentifier: routineProductCellIdentifier)
 		navigationItem.rightBarButtonItem = editButtonItem
+		
+		tableView.register(UITableViewCell.self, forCellReuseIdentifier: routineProductCellIdentifier)
+		
+		datePicker.date = performedRoutine!.time
+		notesTextView.text = performedRoutine!.notes
 	}
 	
 	func setupRealm() {
 		// Notify us when Realm changes
-		self.notificationToken = self.products.addNotificationBlock { [weak self] (changes: RealmCollectionChange) in
+		productListNotificationToken = products.addNotificationBlock { [weak self] (changes: RealmCollectionChange) in
 			DispatchQueue.main.async {
 				guard let tableView = self?.tableView else { return }
 				
@@ -60,10 +76,28 @@ class RoutineTableViewController: UITableViewController {
 				}
 			}
 		}
+		
+		timeAndNotesNotificationToken = performedRoutine?.addNotificationBlock({ [weak self] (change) in
+			switch change {
+			case .change(let propertyChanges):
+				for propertyChange in propertyChanges {
+					if propertyChange.name == "time" {
+						self?.datePicker.date = propertyChange.newValue as! Date
+					} else if propertyChange.name == "notes" {
+						self?.notesTextView.text = propertyChange.newValue as! String
+					}
+				}
+			default:
+				print("other")
+			}
+		})
 	}
 	
-	deinit {
-		notificationToken?.stop()
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		
+		productListNotificationToken?.stop()
+		timeAndNotesNotificationToken?.stop()
 	}
 
     override func didReceiveMemoryWarning() {
@@ -73,31 +107,38 @@ class RoutineTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return products.count
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: routineProductCellIdentifier, for: indexPath)
 		let item = products[indexPath.row]
 		cell.textLabel?.text = item.name
         return cell
     }
 	
-	override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+	func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
 		realm.beginWrite()
 		products.move(from: sourceIndexPath.row, to: destinationIndexPath.row)
-		try! realm.commitWrite(withoutNotifying: [notificationToken!])
+		try! realm.commitWrite(withoutNotifying: [productListNotificationToken!])
+	}
+	
+	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+		if editingStyle == .delete {
+			delete(at: indexPath)
+		}
 	}
 	
 	// MARK: - Edit function
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
+		tableView.setEditing(editing, animated: animated)
 		
 		if editing {
 			navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(add))
@@ -105,16 +146,13 @@ class RoutineTableViewController: UITableViewController {
 			navigationItem.leftBarButtonItem = nil
 		}
 	}
-
 	
 	// MARK: - Delete function
 	
-	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-		if editingStyle == .delete {
-			try! realm.write {
-				let item = products[indexPath.row]
-				realm.delete(item)
-			}
+	func delete(at indexPath: IndexPath) {
+		try! realm.write {
+			let item = products[indexPath.row]
+			realm.delete(item)
 		}
 	}
 	
@@ -136,5 +174,21 @@ class RoutineTableViewController: UITableViewController {
 			}
 		})
 		present(alertController, animated: true, completion: nil)
+	}
+	
+	//MARK: - Notes 
+	
+	func textViewDidEndEditing(_ textView: UITextView) {
+		try! realm.write {
+			performedRoutine!.notes = textView.text
+		}
+	}
+	
+	//MARK: - Time
+	
+	@IBAction func timeChanged(_ sender: Any) {
+		realm.beginWrite()
+		performedRoutine!.time = datePicker.date
+		try! realm.commitWrite(withoutNotifying: timeAndNotesNotificationToken != nil ? [timeAndNotesNotificationToken!] : [])
 	}
 }

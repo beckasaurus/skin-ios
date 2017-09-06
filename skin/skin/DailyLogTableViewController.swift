@@ -24,6 +24,7 @@ final class DailyLog: Object {
 
 final class PerformedRoutine: Object {
 	dynamic var notes = ""
+	dynamic var time = Date()
 	dynamic var routine: Routine?
 }
 
@@ -66,7 +67,7 @@ class DailyLogTableViewController: UITableViewController {
 		let formatter = DateFormatter()
 		formatter.dateStyle = .short
 		title = formatter.string(from: date)
-		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(add))
+		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPerformedRoutine))
 		navigationItem.leftBarButtonItem = editButtonItem
 	}
 	
@@ -101,11 +102,6 @@ class DailyLogTableViewController: UITableViewController {
 		realmConnectedNotification = nil
 	}
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -123,27 +119,6 @@ class DailyLogTableViewController: UITableViewController {
 		cell.textLabel?.text = performedRoutine.routine!.name
 		return cell
     }
-	
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
 
 	override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
 		try! performedRoutines.realm?.write {
@@ -162,41 +137,55 @@ class DailyLogTableViewController: UITableViewController {
 		}
 	}
 
-    // MARK: - Navigation
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-		if segue.identifier == routineSegue {
-			let cell = sender as! UITableViewCell
-			let rowIndexPath = tableView.indexPath(for: cell)!
-			let performedRoutine = performedRoutines[rowIndexPath.row]
-			let routineViewController = segue.destination as! RoutineTableViewController
-			routineViewController.routine = performedRoutine.routine!
-		}
-    }
+	// MARK: - Add function
 	
-	func add() {
+	func addPerformedRoutine() {
 		let alertController = UIAlertController(title: "Add Routine To Daily Log", message: "Enter Routine Name", preferredStyle: .alert)
 		var alertTextField: UITextField!
 		alertController.addTextField { textField in
 			alertTextField = textField
 			textField.placeholder = "Routine Name"
 		}
-		alertController.addAction(UIAlertAction(title: "Add", style: .default) { _ in
+		alertController.addAction(UIAlertAction(title: "Add", style: .default) { [weak self] _ in
+			guard let strongSelf = self else { return }
+			
 			guard let text = alertTextField.text , !text.isEmpty else { return }
 			
-			let performedRoutines = self.performedRoutines
+			let performedRoutines = strongSelf.performedRoutines
 			try! performedRoutines.realm?.write {
 				let newRoutine = Routine(value: ["name": text, "id" : NSUUID().uuidString])
-				let newPerformedRoutine = PerformedRoutine(value: ["notes": "", "routine": newRoutine])
+				
+				let now = Date()
+				let timeComponents = Calendar.current.dateComponents([.hour, .minute], from: now)
+				let nowTimeWithDate = Calendar.current.date(byAdding: timeComponents, to: strongSelf.date)!
+				
+				let newPerformedRoutine = PerformedRoutine(value: ["notes": "",
+				                                                   "routine": newRoutine,
+				                                                   "time" : nowTimeWithDate])
 				performedRoutines.insert(newPerformedRoutine,
 				             at: performedRoutines.count)
+				
+				DispatchQueue.main.async {
+					let newTableCell = strongSelf.tableView.cellForRow(at: IndexPath(row: performedRoutines.count - 1, section: 0))
+					strongSelf.performSegue(withIdentifier: routineSegue, sender: newTableCell)
+				}
 			}
-			
-			//segue to new view
 		})
 		present(alertController, animated: true, completion: nil)
+	}
+	
+	// MARK: - Navigation
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		// Get the new view controller using segue.destinationViewController.
+		// Pass the selected object to the new view controller.
+		if segue.identifier == routineSegue {
+			let cell = sender as! UITableViewCell
+			let rowIndexPath = tableView.indexPath(for: cell)!
+			let performedRoutine = performedRoutines[rowIndexPath.row]
+			let routineViewController = segue.destination as! RoutineTableViewController
+			routineViewController.performedRoutine = performedRoutine
+		}
 	}
 
 }
