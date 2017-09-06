@@ -7,16 +7,80 @@
 //
 
 import UIKit
+import RealmSwift
+
+let realmConnected = NSNotification.Name(rawValue: "realmConnected")
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
 
 	var window: UIWindow?
-
+	public var realm: Realm?
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
+		
+		(window?.rootViewController as? UISplitViewController)?.delegate = self
+		
+		setupRealm()
+		
 		return true
+	}
+	
+	func setupRealm() {
+		guard let jsonURL = Bundle.main.url(forResource: "credentials", withExtension: "json")
+			else {fatalError("Bundle must include credentials.json file contain Realm credentials")}
+		
+		do {
+			let jsonData = try Data(contentsOf: jsonURL)
+			
+			let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: JSONSerialization.ReadingOptions.allowFragments)
+			
+			if let jsonDict = jsonObject as? [String:String] {
+				let username = jsonDict["username"]!
+				let password = jsonDict["password"]!
+				
+				loginToRealm(username: username, password: password)
+			}
+		} catch let error  {
+			fatalError(error.localizedDescription)
+		}
+	}
+	
+	func loginToRealm(username: String, password: String) {
+		guard let serverURL = URL(string: "http://127.0.0.1:9080")
+			else { return }
+		
+		let credentials = SyncCredentials.usernamePassword(username: username, password: password, register: false)
+		
+		SyncUser.logIn(with: credentials, server: serverURL) { user, error in
+			guard let user = user else {
+				fatalError(String(describing: error))
+			}
+			
+			DispatchQueue.main.async {
+				// Open Realm
+				let configuration = Realm.Configuration(
+					syncConfiguration: SyncConfiguration(user: user, realmURL: URL(string: "realm://127.0.0.1:9080/~/skin")!)
+				)
+				self.realm = try! Realm(configuration: configuration)
+				
+				NotificationCenter.default.post(name: realmConnected, object: nil)
+			}
+		}
+	}
+	
+	func splitViewController(_ splitViewController: UISplitViewController,
+	                         collapseSecondary secondaryViewController: UIViewController,
+	                         onto primaryViewController: UIViewController) -> Bool {
+		if let navigationController = secondaryViewController as? UINavigationController,
+			let secondaryController = navigationController.topViewController,
+		let castedSecondaryController = secondaryController as? RoutineTableViewController,
+		castedSecondaryController.routine == nil {
+			return true
+		} else {
+			return false
+		}
 	}
 
 	func applicationWillResignActive(_ application: UIApplication) {

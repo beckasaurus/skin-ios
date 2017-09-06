@@ -13,13 +13,13 @@
 		0D0CC38D1F54B48C00334487 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D0CC38B1F54B48C00334487 /* LaunchScreen.storyboard */; };
 		0D0CC3981F54B48C00334487 /* skinTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0CC3971F54B48C00334487 /* skinTests.swift */; };
 		0D0CC3A31F54B48C00334487 /* skinUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0CC3A21F54B48C00334487 /* skinUITests.swift */; };
-		0D0CC3B11F54C6A000334487 /* LogTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0CC3B01F54C6A000334487 /* LogTableViewController.swift */; };
+		0D0CC3B11F54C6A000334487 /* RoutineTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0CC3B01F54C6A000334487 /* RoutineTableViewController.swift */; };
 		0D0CC3B51F55988700334487 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D0CC3B31F55988700334487 /* Realm.framework */; };
 		0D0CC3B61F55988700334487 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0D0CC3B31F55988700334487 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0D0CC3B71F55988700334487 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D0CC3B41F55988700334487 /* RealmSwift.framework */; };
 		0D0CC3B81F55988700334487 /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0D0CC3B41F55988700334487 /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0D0CC3BB1F55D13000334487 /* credentials.json in Resources */ = {isa = PBXBuildFile; fileRef = 0D0CC3BA1F55D13000334487 /* credentials.json */; };
-		0D0CC3BD1F55DA5A00334487 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 0D0CC3BC1F55DA5A00334487 /* README.md */; };
+		0D79E9221F5EE16B00590443 /* DailyLogTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D79E9211F5EE16B00590443 /* DailyLogTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,12 +67,12 @@
 		0D0CC39E1F54B48C00334487 /* skinUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = skinUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D0CC3A21F54B48C00334487 /* skinUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = skinUITests.swift; sourceTree = "<group>"; };
 		0D0CC3A41F54B48C00334487 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0D0CC3B01F54C6A000334487 /* LogTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogTableViewController.swift; sourceTree = "<group>"; };
+		0D0CC3B01F54C6A000334487 /* RoutineTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoutineTableViewController.swift; sourceTree = "<group>"; };
 		0D0CC3B21F55932900334487 /* skin.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = skin.entitlements; sourceTree = "<group>"; };
 		0D0CC3B31F55988700334487 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
 		0D0CC3B41F55988700334487 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = "<group>"; };
 		0D0CC3BA1F55D13000334487 /* credentials.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = credentials.json; sourceTree = "<group>"; };
-		0D0CC3BC1F55DA5A00334487 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		0D79E9211F5EE16B00590443 /* DailyLogTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyLogTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,8 +129,8 @@
 			children = (
 				0D0CC3B21F55932900334487 /* skin.entitlements */,
 				0D0CC3821F54B48C00334487 /* AppDelegate.swift */,
-				0D0CC3B01F54C6A000334487 /* LogTableViewController.swift */,
-				0D0CC3BC1F55DA5A00334487 /* README.md */,
+				0D0CC3B01F54C6A000334487 /* RoutineTableViewController.swift */,
+				0D79E9211F5EE16B00590443 /* DailyLogTableViewController.swift */,
 				0D0CC3BA1F55D13000334487 /* credentials.json */,
 				0D0CC3861F54B48C00334487 /* Main.storyboard */,
 				0D0CC3891F54B48C00334487 /* Assets.xcassets */,
@@ -302,8 +302,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0D0CC3BD1F55DA5A00334487 /* README.md in Sources */,
-				0D0CC3B11F54C6A000334487 /* LogTableViewController.swift in Sources */,
+				0D79E9221F5EE16B00590443 /* DailyLogTableViewController.swift in Sources */,
+				0D0CC3B11F54C6A000334487 /* RoutineTableViewController.swift in Sources */,
 				0D0CC3831F54B48C00334487 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -567,6 +567,7 @@
 				0D0CC3A91F54B48C00334487 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0D0CC3AA1F54B48C00334487 /* Build configuration list for PBXNativeTarget "skinTests" */ = {
 			isa = XCConfigurationList;
@@ -575,6 +576,7 @@
 				0D0CC3AC1F54B48C00334487 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0D0CC3AD1F54B48C00334487 /* Build configuration list for PBXNativeTarget "skinUITests" */ = {
 			isa = XCConfigurationList;
@@ -583,6 +585,7 @@
 				0D0CC3AF1F54B48C00334487 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
