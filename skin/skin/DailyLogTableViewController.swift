@@ -71,6 +71,13 @@ class DailyLogTableViewController: UITableViewController {
 		navigationItem.leftBarButtonItem = editButtonItem
 	}
 	
+	func updatePerformedRoutineList() {
+		if self.performedRoutines.realm == nil, let list = self.realm!.objects(DailyLog.self).first {
+			self.performedRoutines = list.performedRoutines
+		}
+		self.tableView.reloadData()
+	}
+	
 	func setupRealm() {
 		if self.realm!.objects(DailyLog.self).count < 1 {
 			try! self.realm!.write {
@@ -81,20 +88,12 @@ class DailyLogTableViewController: UITableViewController {
 			}
 		}
 		
-		func updatePerformedRoutineList() {
-			if self.performedRoutines.realm == nil, let list = self.realm!.objects(DailyLog.self).first {
-				self.performedRoutines = list.performedRoutines
-			}
-			self.tableView.reloadData()
-		}
 		updatePerformedRoutineList()
 		
 		// Notify us when Realm changes
-		self.notificationToken = self.realm!.addNotificationBlock { _ in
-			updatePerformedRoutineList()
+		self.notificationToken = self.realm!.addNotificationBlock { [weak self] _ in
+			self?.updatePerformedRoutineList()
 		}
-		
-		setupUI()
 	}
 	
 	deinit {
