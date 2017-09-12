@@ -16,6 +16,7 @@ class RoutineTableViewController: UIViewController, UITableViewDelegate, UITable
 	@IBOutlet weak var datePicker: UIDatePicker!
 	@IBOutlet weak var notesTextView: UITextView!
 	@IBOutlet weak var tableView: UITableView!
+	@IBOutlet weak var editDoneButton: UIButton!
 	
 	var performedRoutine: PerformedRoutine?
 	var routine: Routine? {
@@ -44,7 +45,6 @@ class RoutineTableViewController: UIViewController, UITableViewDelegate, UITable
 	
 	func setupUI() {
 		title = routine?.name
-		navigationItem.rightBarButtonItem = editButtonItem
 		
 		tableView.register(UITableViewCell.self, forCellReuseIdentifier: routineProductCellIdentifier)
 		
@@ -122,6 +122,10 @@ class RoutineTableViewController: UIViewController, UITableViewDelegate, UITable
         return cell
     }
 	
+	func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+		return true
+	}
+	
 	func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
 		realm.beginWrite()
 		products.move(from: sourceIndexPath.row, to: destinationIndexPath.row)
@@ -136,14 +140,13 @@ class RoutineTableViewController: UIViewController, UITableViewDelegate, UITable
 	
 	// MARK: - Edit function
 	
-	override func setEditing(_ editing: Bool, animated: Bool) {
-		super.setEditing(editing, animated: animated)
-		tableView.setEditing(editing, animated: animated)
-		
-		if editing {
-			navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(add))
+	@IBAction func editDoneButtonToggled(_ sender: UIButton) {
+		if tableView.isEditing {
+			tableView.setEditing(false, animated: true)
+			editDoneButton.setTitle("Edit", for: .normal)
 		} else {
-			navigationItem.leftBarButtonItem = nil
+			tableView.setEditing(true, animated: true)
+			editDoneButton.setTitle("Done", for: .normal)
 		}
 	}
 	
@@ -158,7 +161,7 @@ class RoutineTableViewController: UIViewController, UITableViewDelegate, UITable
 	
 	// MARK: - Add function
 	
-	func add() {
+	@IBAction func add(_ sender: Any) {
 		let alertController = UIAlertController(title: "Add Product To Daily Log", message: "Enter Product Name", preferredStyle: .alert)
 		var alertTextField: UITextField!
 		alertController.addTextField { textField in
