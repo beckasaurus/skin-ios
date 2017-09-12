@@ -12,10 +12,22 @@ import RealmSwift
 let applicationCellIdentifier = "application"
 let applicationSegue = "applicationSegue"
 
-class DailyLogTableViewController: UITableViewController {
+enum LogError: Error {
+	case invalidDate
+}
 
-	var date = Date()
-	var log: Log?
+//TODO: sort applications by time when displaying, writing and inserting
+
+class DailyLogTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+
+	@IBOutlet weak var tableView: UITableView!
+	var log: Log? {
+		didSet {
+			let formatter = DateFormatter()
+			formatter.dateStyle = .medium
+			title = formatter.string(from: log!.date)
+		}
+	}
 	var applications: List<Application>? {
 		return log?.applications
 	}
@@ -37,11 +49,7 @@ class DailyLogTableViewController: UITableViewController {
     }
 	
 	func setupUI() {
-		let formatter = DateFormatter()
-		formatter.dateStyle = .short
-		title = formatter.string(from: date)
 		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPerformedRoutine))
-		navigationItem.leftBarButtonItem = editButtonItem
 	}
 	
 	func updatePerformedRoutineList() {
@@ -54,21 +62,22 @@ class DailyLogTableViewController: UITableViewController {
 			dailyLog.date = date
 			dailyLog.id = String(date.timeIntervalSince1970)
 			self.realm!.add(dailyLog)
+			self.log = dailyLog
 		}
 	}
 	
 	func setupRealm() {
-		if self.realm!.objects(Log.self).count < 1 {
+		let currentDatePredicate = try! predicate(date: Date()) //default to current date
+		if let log = self.realm!.objects(Log.self).filter(currentDatePredicate).first {
+			self.log = log
+		} else {
 			createNewLog(date: Date())
 		}
-		
-		let predicate = NSPredicate(format: "date <= %@", date as CVarArg)
-		log = self.realm!.objects(Log.self).filter(predicate).last
 		
 		updatePerformedRoutineList()
 		
 		// Notify us when Realm changes
-		self.notificationToken = self.realm!.addNotificationBlock { [weak self] _ in
+		self.notificationToken = self.log?.realm!.addNotificationBlock { [weak self] notification, realm in
 			self?.updatePerformedRoutineList()
 		}
 	}
@@ -80,31 +89,30 @@ class DailyLogTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return applications?.count ?? 0
     }
 
 	
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: applicationCellIdentifier, for: indexPath)
 		let application = applications![indexPath.row]
 		cell.textLabel?.text = application.routine!.name
+		
+		let timeFormatter = DateFormatter()
+		timeFormatter.timeStyle = .short
+		timeFormatter.dateStyle = .none
+		cell.detailTextLabel?.text = timeFormatter.string(from:  application.time)
 		return cell
     }
-
-	override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-		try! applications!.realm?.write {
-			applications!.move(from: sourceIndexPath.row, to: destinationIndexPath.row)
-		}
-	}
 	
 	// MARK: - Delete function
 	
-	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
 		if editingStyle == .delete {
 			try! self.realm?.write {
 				let item = applications![indexPath.row]
@@ -133,7 +141,7 @@ class DailyLogTableViewController: UITableViewController {
 				
 				let now = Date()
 				let timeComponents = Calendar.current.dateComponents([.hour, .minute], from: now)
-				let nowTimeWithDate = Calendar.current.date(byAdding: timeComponents, to: strongSelf.date)!
+				let nowTimeWithDate = Calendar.current.date(byAdding: timeComponents, to: strongSelf.log!.date)!
 				
 				let newApplication = Application(value: ["notes": "",
 				                                         "routine": newRoutine,
@@ -164,26 +172,40 @@ class DailyLogTableViewController: UITableViewController {
 		}
 	}
 	
-	@IBAction func swipeRight(_ sender: UISwipeGestureRecognizer) {
+	func predicate(date: Date) throws -> NSPredicate {
+		guard let nextDayBegin = Calendar.current.date(bySettingHour: 00, minute: 00, second: 00, of: date),
+			let nextDayEnd = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: date)
+			else { throw LogError.invalidDate }
 		
-		var dayComponent = DateComponents()
-		dayComponent.day = 1
-		
-		guard let nextDate = Calendar.current.date(byAdding: dayComponent, to: date)
-			else { return }
-		
-		let predicate = NSPredicate(format: "date <= %@", nextDate as CVarArg)
-		if let nextLog = realm!.objects(Log.self).filter(predicate).last {
-			log = nextLog
-		} else {
-			createNewLog(date: nextDate)
-		}
-		
-		updatePerformedRoutineList()
+		return NSPredicate(format: "date >= %@ AND date <= %@", nextDayBegin as CVarArg, nextDayEnd as CVarArg)
 	}
 	
-	@IBAction func swipeLeft(_ sender: UISwipeGestureRecognizer) {
+	func changeDay(by days: Int) {
+		var dayComponent = DateComponents()
+		dayComponent.day = days
+		guard let nextDay = Calendar.current.date(byAdding: dayComponent, to: log!.date)
+			else { return }
 		
+		do {
+			let datePredicate = try predicate(date: nextDay)
+			if let nextLog = realm!.objects(Log.self).filter(datePredicate).first {
+				log = nextLog
+			} else {
+				createNewLog(date: nextDay)
+			}
+			
+			updatePerformedRoutineList()
+		} catch {
+			return
+		}
+	}
+	
+	@IBAction func swipeRight(_ sender: UIButton) {
+		changeDay(by: 1)
+	}
+	
+	@IBAction func swipeLeft(_ sender: UIButton) {
+		changeDay(by: -1)
 	}
 
 }
