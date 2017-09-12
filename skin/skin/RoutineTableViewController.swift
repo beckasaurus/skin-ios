@@ -1,5 +1,5 @@
 //
-//  RoutineTableViewController
+//  ApplicationTableViewController
 //  skin
 //
 //  Created by Becky Henderson on 8/28/17.
@@ -9,18 +9,18 @@
 import UIKit
 import RealmSwift
 
-let routineProductCellIdentifier = "routineProduct"
+let applicationProductCellIdentifier = "applicationProduct"
 
-class RoutineTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate {
+class ApplicationTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate {
 
 	@IBOutlet weak var datePicker: UIDatePicker!
 	@IBOutlet weak var notesTextView: UITextView!
 	@IBOutlet weak var tableView: UITableView!
 	@IBOutlet weak var editDoneButton: UIButton!
 	
-	var performedRoutine: PerformedRoutine?
+	var application: Application?
 	var routine: Routine? {
-		return performedRoutine?.routine
+		return application?.routine
 	}
 	var products: List<Product> {
 		return routine!.products
@@ -46,10 +46,10 @@ class RoutineTableViewController: UIViewController, UITableViewDelegate, UITable
 	func setupUI() {
 		title = routine?.name
 		
-		tableView.register(UITableViewCell.self, forCellReuseIdentifier: routineProductCellIdentifier)
+		tableView.register(UITableViewCell.self, forCellReuseIdentifier: applicationProductCellIdentifier)
 		
-		datePicker.date = performedRoutine!.time
-		notesTextView.text = performedRoutine!.notes
+		datePicker.date = application!.time
+		notesTextView.text = application!.notes
 	}
 	
 	func setupRealm() {
@@ -77,7 +77,7 @@ class RoutineTableViewController: UIViewController, UITableViewDelegate, UITable
 			}
 		}
 		
-		timeAndNotesNotificationToken = performedRoutine?.addNotificationBlock({ [weak self] (change) in
+		timeAndNotesNotificationToken = application?.addNotificationBlock({ [weak self] (change) in
 			switch change {
 			case .change(let propertyChanges):
 				for propertyChange in propertyChanges {
@@ -116,7 +116,7 @@ class RoutineTableViewController: UIViewController, UITableViewDelegate, UITable
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: routineProductCellIdentifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: applicationProductCellIdentifier, for: indexPath)
 		let item = products[indexPath.row]
 		cell.textLabel?.text = item.name
         return cell
@@ -162,7 +162,7 @@ class RoutineTableViewController: UIViewController, UITableViewDelegate, UITable
 	// MARK: - Add function
 	
 	@IBAction func add(_ sender: Any) {
-		let alertController = UIAlertController(title: "Add Product To Daily Log", message: "Enter Product Name", preferredStyle: .alert)
+		let alertController = UIAlertController(title: "Add Product To Application Log", message: "Enter Product Name", preferredStyle: .alert)
 		var alertTextField: UITextField!
 		alertController.addTextField { textField in
 			alertTextField = textField
@@ -183,7 +183,7 @@ class RoutineTableViewController: UIViewController, UITableViewDelegate, UITable
 	
 	func textViewDidEndEditing(_ textView: UITextView) {
 		try! realm.write {
-			performedRoutine!.notes = textView.text
+			application!.notes = textView.text
 		}
 	}
 	
@@ -191,7 +191,7 @@ class RoutineTableViewController: UIViewController, UITableViewDelegate, UITable
 	
 	@IBAction func timeChanged(_ sender: Any) {
 		realm.beginWrite()
-		performedRoutine!.time = datePicker.date
+		application!.time = datePicker.date
 		try! realm.commitWrite(withoutNotifying: timeAndNotesNotificationToken != nil ? [timeAndNotesNotificationToken!] : [])
 	}
 }

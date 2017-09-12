@@ -9,38 +9,8 @@
 import UIKit
 import RealmSwift
 
-let routineCellIdentifier = "routine"
-let routineSegue = "routineSegue"
-
-final class DailyLog: Object {
-	dynamic var date = Date()
-	dynamic var id: String?
-	var performedRoutines = List<PerformedRoutine>()
-	
-	override static func primaryKey() -> String? {
-		return "id"
-	}
-}
-
-final class PerformedRoutine: Object {
-	dynamic var notes = ""
-	dynamic var time = Date()
-	dynamic var routine: Routine?
-}
-
-final class Routine: Object {
-	dynamic var name = ""
-	dynamic var id = ""
-	var products = List<Product>()
-	
-	override static func primaryKey() -> String? {
-		return "id"
-	}
-}
-
-final class Product: Object {
-	dynamic var name = ""
-}
+let applicationCellIdentifier = "application"
+let applicationSegue = "applicationSegue"
 
 class DailyLogTableViewController: UITableViewController {
 
@@ -51,7 +21,7 @@ class DailyLogTableViewController: UITableViewController {
 	var realm: Realm? {
 		return (UIApplication.shared.delegate! as! AppDelegate).realm
 	}
-	var performedRoutines = List<PerformedRoutine>()
+	var applications = List<Application>()
 	var realmConnectedNotification: NSObjectProtocol?
 	
     override func viewDidLoad() {
@@ -72,16 +42,16 @@ class DailyLogTableViewController: UITableViewController {
 	}
 	
 	func updatePerformedRoutineList() {
-		if self.performedRoutines.realm == nil, let list = self.realm!.objects(DailyLog.self).first {
-			self.performedRoutines = list.performedRoutines
+		if self.applications.realm == nil, let list = self.realm!.objects(Log.self).first {
+			self.applications = list.applications
 		}
 		self.tableView.reloadData()
 	}
 	
 	func setupRealm() {
-		if self.realm!.objects(DailyLog.self).count < 1 {
+		if self.realm!.objects(Log.self).count < 1 {
 			try! self.realm!.write {
-				let dailyLog = DailyLog()
+				let dailyLog = Log()
 				dailyLog.date = date
 				dailyLog.id = String(date.timeIntervalSince1970)
 				self.realm!.add(dailyLog)
@@ -108,20 +78,20 @@ class DailyLogTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return performedRoutines.count
+        return applications.count
     }
 
 	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: routineCellIdentifier, for: indexPath)
-		let performedRoutine = performedRoutines[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: applicationCellIdentifier, for: indexPath)
+		let performedRoutine = applications[indexPath.row]
 		cell.textLabel?.text = performedRoutine.routine!.name
 		return cell
     }
 
 	override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-		try! performedRoutines.realm?.write {
-			performedRoutines.move(from: sourceIndexPath.row, to: destinationIndexPath.row)
+		try! applications.realm?.write {
+			applications.move(from: sourceIndexPath.row, to: destinationIndexPath.row)
 		}
 	}
 	
@@ -130,7 +100,7 @@ class DailyLogTableViewController: UITableViewController {
 	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
 		if editingStyle == .delete {
 			try! self.realm?.write {
-				let item = performedRoutines[indexPath.row]
+				let item = applications[indexPath.row]
 				self.realm?.delete(item)
 			}
 		}
@@ -150,7 +120,7 @@ class DailyLogTableViewController: UITableViewController {
 			
 			guard let text = alertTextField.text , !text.isEmpty else { return }
 			
-			let performedRoutines = strongSelf.performedRoutines
+			let performedRoutines = strongSelf.applications
 			try! performedRoutines.realm?.write {
 				let newRoutine = Routine(value: ["name": text, "id" : NSUUID().uuidString])
 				
@@ -158,15 +128,15 @@ class DailyLogTableViewController: UITableViewController {
 				let timeComponents = Calendar.current.dateComponents([.hour, .minute], from: now)
 				let nowTimeWithDate = Calendar.current.date(byAdding: timeComponents, to: strongSelf.date)!
 				
-				let newPerformedRoutine = PerformedRoutine(value: ["notes": "",
-				                                                   "routine": newRoutine,
-				                                                   "time" : nowTimeWithDate])
+				let newPerformedRoutine = Application(value: ["notes": "",
+				                                              "routine": newRoutine,
+				                                              "time" : nowTimeWithDate])
 				performedRoutines.insert(newPerformedRoutine,
 				             at: performedRoutines.count)
 				
 				DispatchQueue.main.async {
 					let newTableCell = strongSelf.tableView.cellForRow(at: IndexPath(row: performedRoutines.count - 1, section: 0))
-					strongSelf.performSegue(withIdentifier: routineSegue, sender: newTableCell)
+					strongSelf.performSegue(withIdentifier: applicationSegue, sender: newTableCell)
 				}
 			}
 		})
@@ -178,12 +148,12 @@ class DailyLogTableViewController: UITableViewController {
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
-		if segue.identifier == routineSegue {
+		if segue.identifier == applicationSegue {
 			let cell = sender as! UITableViewCell
 			let rowIndexPath = tableView.indexPath(for: cell)!
-			let performedRoutine = performedRoutines[rowIndexPath.row]
-			let routineViewController = segue.destination as! RoutineTableViewController
-			routineViewController.performedRoutine = performedRoutine
+			let application = applications[rowIndexPath.row]
+			let routineViewController = segue.destination as! ApplicationTableViewController
+			routineViewController.application = application
 		}
 	}
 

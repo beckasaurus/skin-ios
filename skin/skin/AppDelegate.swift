@@ -75,7 +75,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 	                         onto primaryViewController: UIViewController) -> Bool {
 		if let navigationController = secondaryViewController as? UINavigationController,
 			let secondaryController = navigationController.topViewController,
-		let castedSecondaryController = secondaryController as? RoutineTableViewController,
+		let castedSecondaryController = secondaryController as? ApplicationTableViewController,
 		castedSecondaryController.routine == nil {
 			return true
 		} else {

@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Routine Table View Controller-->
+        <!--Application Table View Controller-->
         <scene sceneID="cyC-2H-KE3">
             <objects>
-                <viewController id="3aq-Wv-xrc" customClass="RoutineTableViewController" customModule="skin" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="3aq-Wv-xrc" customClass="ApplicationTableViewController" customModule="skin" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ACm-SH-i74"/>
                         <viewControllerLayoutGuide type="bottom" id="eTs-1c-bDk"/>
@@ -139,7 +139,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="routine" id="HTh-fy-UX0">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="application" id="HTh-fy-UX0">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HTh-fy-UX0" id="FfY-Zg-g72">
@@ -147,7 +147,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="3aq-Wv-xrc" kind="showDetail" identifier="routineSegue" id="TN6-LM-tUY"/>
+                                    <segue destination="3aq-Wv-xrc" kind="showDetail" identifier="applicationSegue" id="TN6-LM-tUY"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
