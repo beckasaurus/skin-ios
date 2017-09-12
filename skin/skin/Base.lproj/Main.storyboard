@@ -159,6 +159,16 @@
                     <navigationItem key="navigationItem" title="Root View Controller" id="nro-Ff-UUo"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rPu-2q-yNl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="wTJ-Oc-wt2">
+                    <connections>
+                        <action selector="swipeRight:" destination="kep-2s-Io9" id="Tlf-x3-NUD"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="left" id="FY7-4I-C6i">
+                    <connections>
+                        <action selector="swipeLeft:" destination="kep-2s-Io9" id="O3m-Jv-Plx"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="3796" y="-1081"/>
         </scene>
