@@ -124,12 +124,15 @@ class DailyLogTableViewController: UIViewController, UITableViewDelegate, UITabl
 	// MARK: - Add function
 	
 	func addPerformedRoutine() {
-		let alertController = UIAlertController(title: "Add Routine To Daily Log", message: "Enter Routine Name", preferredStyle: .alert)
+		let alertController = UIAlertController(title: "Add Application To Daily Log", message: "Enter Routine Application Name", preferredStyle: .alert)
 		var alertTextField: UITextField!
 		alertController.addTextField { textField in
 			alertTextField = textField
-			textField.placeholder = "Routine Name"
+			textField.placeholder = "Routine Application Name"
 		}
+		
+		alertController.addAction(UIAlertAction(title: "Cancel", style: .default))
+		
 		alertController.addAction(UIAlertAction(title: "Add", style: .default) { [weak self] _ in
 			guard let strongSelf = self else { return }
 			

@@ -11,6 +11,8 @@ import RealmSwift
 
 let applicationProductCellIdentifier = "applicationProduct"
 
+//TODO: change name?
+
 class ApplicationTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate {
 
 	@IBOutlet weak var datePicker: UIDatePicker!
@@ -168,6 +170,9 @@ class ApplicationTableViewController: UIViewController, UITableViewDelegate, UIT
 			alertTextField = textField
 			textField.placeholder = "Product Name"
 		}
+		
+		alertController.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+		
 		alertController.addAction(UIAlertAction(title: "Add", style: .default) { _ in
 			guard let text = alertTextField.text , !text.isEmpty else { return }
 			
@@ -176,6 +181,7 @@ class ApplicationTableViewController: UIViewController, UITableViewDelegate, UIT
 				items.insert(Product(value: ["name": text]), at: items.count)
 			}
 		})
+		
 		present(alertController, animated: true, completion: nil)
 	}
 	
