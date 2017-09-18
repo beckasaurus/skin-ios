@@ -10,10 +10,11 @@ import UIKit
 import RealmSwift
 
 let applicationProductCellIdentifier = "applicationProduct"
+let noApplicationSelectedSegue = "noApplicationSelectedSegue"
 
 //TODO: change name?
 
-class ApplicationTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate {
+class ApplicationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate {
 
 	@IBOutlet weak var datePicker: UIDatePicker!
 	@IBOutlet weak var notesTextView: UITextView!
@@ -37,6 +38,10 @@ class ApplicationTableViewController: UIViewController, UITableViewDelegate, UIT
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		if application == nil {
+			performSegue(withIdentifier: noApplicationSelectedSegue, sender: self)
+		}
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {

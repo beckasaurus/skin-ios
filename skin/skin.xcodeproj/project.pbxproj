@@ -13,9 +13,8 @@
 		0D0CC38D1F54B48C00334487 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D0CC38B1F54B48C00334487 /* LaunchScreen.storyboard */; };
 		0D0CC3981F54B48C00334487 /* skinTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0CC3971F54B48C00334487 /* skinTests.swift */; };
 		0D0CC3A31F54B48C00334487 /* skinUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0CC3A21F54B48C00334487 /* skinUITests.swift */; };
-		0D0CC3B11F54C6A000334487 /* RoutineTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0CC3B01F54C6A000334487 /* RoutineTableViewController.swift */; };
 		0D0CC3BB1F55D13000334487 /* credentials.json in Resources */ = {isa = PBXBuildFile; fileRef = 0D0CC3BA1F55D13000334487 /* credentials.json */; };
-		0D79E9221F5EE16B00590443 /* DailyLogTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D79E9211F5EE16B00590443 /* DailyLogTableViewController.swift */; };
+		0D79E9221F5EE16B00590443 /* DailyLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D79E9211F5EE16B00590443 /* DailyLogViewController.swift */; };
 		0D79E9291F6031D300590443 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D79E9271F6031D300590443 /* Realm.framework */; };
 		0D79E92A1F6031D300590443 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0D79E9271F6031D300590443 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0D79E92B1F6031D300590443 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D79E9281F6031D300590443 /* RealmSwift.framework */; };
@@ -24,6 +23,8 @@
 		0D8A7B521F6780A400C57F0A /* Routine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8A7B511F6780A400C57F0A /* Routine.swift */; };
 		0D8A7B541F67812200C57F0A /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8A7B531F67812200C57F0A /* Log.swift */; };
 		0D8A7B561F67815200C57F0A /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8A7B551F67815200C57F0A /* Product.swift */; };
+		0D9E05EC1F7007B300E83BF3 /* LogSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9E05EB1F7007B300E83BF3 /* LogSplitViewController.swift */; };
+		0DEF09741F700B9D0046DE0A /* ApplicationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEF09731F700B9D0046DE0A /* ApplicationViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,16 +72,17 @@
 		0D0CC39E1F54B48C00334487 /* skinUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = skinUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D0CC3A21F54B48C00334487 /* skinUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = skinUITests.swift; sourceTree = "<group>"; };
 		0D0CC3A41F54B48C00334487 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0D0CC3B01F54C6A000334487 /* RoutineTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoutineTableViewController.swift; sourceTree = "<group>"; };
 		0D0CC3B21F55932900334487 /* skin.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = skin.entitlements; sourceTree = "<group>"; };
 		0D0CC3BA1F55D13000334487 /* credentials.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = credentials.json; sourceTree = "<group>"; };
-		0D79E9211F5EE16B00590443 /* DailyLogTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyLogTableViewController.swift; sourceTree = "<group>"; };
+		0D79E9211F5EE16B00590443 /* DailyLogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyLogViewController.swift; sourceTree = "<group>"; };
 		0D79E9271F6031D300590443 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
 		0D79E9281F6031D300590443 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = "<group>"; };
 		0D8A7B4F1F67806D00C57F0A /* Application.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		0D8A7B511F6780A400C57F0A /* Routine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Routine.swift; sourceTree = "<group>"; };
 		0D8A7B531F67812200C57F0A /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		0D8A7B551F67815200C57F0A /* Product.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		0D9E05EB1F7007B300E83BF3 /* LogSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogSplitViewController.swift; sourceTree = "<group>"; };
+		0DEF09731F700B9D0046DE0A /* ApplicationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,10 +182,19 @@
 		0D8A7B4E1F67804E00C57F0A /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				0D79E9211F5EE16B00590443 /* DailyLogTableViewController.swift */,
-				0D0CC3B01F54C6A000334487 /* RoutineTableViewController.swift */,
+				0D9E05EA1F70077A00E83BF3 /* Log */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		0D9E05EA1F70077A00E83BF3 /* Log */ = {
+			isa = PBXGroup;
+			children = (
+				0D79E9211F5EE16B00590443 /* DailyLogViewController.swift */,
+				0DEF09731F700B9D0046DE0A /* ApplicationViewController.swift */,
+				0D9E05EB1F7007B300E83BF3 /* LogSplitViewController.swift */,
+			);
+			name = Log;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -331,10 +342,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				0D8A7B521F6780A400C57F0A /* Routine.swift in Sources */,
-				0D79E9221F5EE16B00590443 /* DailyLogTableViewController.swift in Sources */,
-				0D0CC3B11F54C6A000334487 /* RoutineTableViewController.swift in Sources */,
+				0D79E9221F5EE16B00590443 /* DailyLogViewController.swift in Sources */,
 				0D0CC3831F54B48C00334487 /* AppDelegate.swift in Sources */,
+				0D9E05EC1F7007B300E83BF3 /* LogSplitViewController.swift in Sources */,
 				0D8A7B541F67812200C57F0A /* Log.swift in Sources */,
+				0DEF09741F700B9D0046DE0A /* ApplicationViewController.swift in Sources */,
 				0D8A7B501F67806D00C57F0A /* Application.swift in Sources */,
 				0D8A7B561F67815200C57F0A /* Product.swift in Sources */,
 			);

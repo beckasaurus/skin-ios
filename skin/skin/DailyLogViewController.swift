@@ -1,5 +1,5 @@
 //
-//  DailyLogTableViewController.swift
+//  DailyLogViewController.swift
 //  skin
 //
 //  Created by Becky Henderson on 9/5/17.
@@ -18,7 +18,7 @@ enum LogError: Error {
 
 //TODO: sort applications by time when displaying, writing and inserting
 
-class DailyLogTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class DailyLogViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
 	@IBOutlet weak var tableView: UITableView!
 	var log: Log? {
@@ -170,8 +170,9 @@ class DailyLogTableViewController: UIViewController, UITableViewDelegate, UITabl
 			let cell = sender as! UITableViewCell
 			let rowIndexPath = tableView.indexPath(for: cell)!
 			let application = applications![rowIndexPath.row]
-			let routineViewController = segue.destination as! ApplicationTableViewController
-			routineViewController.application = application
+			let navController = segue.destination as! UINavigationController
+			let applicationViewController = navController.topViewController as! ApplicationViewController
+			applicationViewController.application = application
 		}
 	}
 	

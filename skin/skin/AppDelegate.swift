@@ -19,9 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
-		
-		(window?.rootViewController as? UISplitViewController)?.delegate = self
-		
+				
 		setupRealm()
 		
 		return true
@@ -67,19 +65,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 				
 				NotificationCenter.default.post(name: realmConnected, object: nil)
 			}
-		}
-	}
-	
-	func splitViewController(_ splitViewController: UISplitViewController,
-	                         collapseSecondary secondaryViewController: UIViewController,
-	                         onto primaryViewController: UIViewController) -> Bool {
-		if let navigationController = secondaryViewController as? UINavigationController,
-			let secondaryController = navigationController.topViewController,
-		let castedSecondaryController = secondaryController as? ApplicationTableViewController,
-		castedSecondaryController.routine == nil {
-			return true
-		} else {
-			return false
 		}
 	}
 
