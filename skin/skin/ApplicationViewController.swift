@@ -29,19 +29,10 @@ class ApplicationViewController: UIViewController, UITableViewDelegate, UITableV
 		return routine!.products
 	}
 	
-	// MARK: - Realm Properties
 	var productListNotificationToken: NotificationToken?
 	var timeAndNotesNotificationToken: NotificationToken?
 	var realm: Realm! {
 		return routine!.realm!
-	}
-	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		
-		if application == nil {
-			performSegue(withIdentifier: noApplicationSelectedSegue, sender: self)
-		}
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {

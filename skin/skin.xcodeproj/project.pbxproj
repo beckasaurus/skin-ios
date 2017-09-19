@@ -190,9 +190,9 @@
 		0D9E05EA1F70077A00E83BF3 /* Log */ = {
 			isa = PBXGroup;
 			children = (
-				0D79E9211F5EE16B00590443 /* DailyLogViewController.swift */,
-				0DEF09731F700B9D0046DE0A /* ApplicationViewController.swift */,
 				0D9E05EB1F7007B300E83BF3 /* LogSplitViewController.swift */,
+				0DEF09731F700B9D0046DE0A /* ApplicationViewController.swift */,
+				0D79E9211F5EE16B00590443 /* DailyLogViewController.swift */,
 			);
 			name = Log;
 			sourceTree = "<group>";

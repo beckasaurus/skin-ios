@@ -10,17 +10,38 @@ import UIKit
 
 let emptySelectionViewControllerIdentifier = "emptySelectionVC"
 
-class LogSplitViewController: UISplitViewController, UISplitViewControllerDelegate {
+class LogSplitViewController: UISplitViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		delegate = self
 		
-		//this doesn't actually work? being overridden by detail view?
-		navigationItem.leftBarButtonItem = displayModeButtonItem
-		navigationItem.leftItemsSupplementBackButton = true
+		NotificationCenter.default.addObserver(self,
+		                                       selector: #selector(displayEmptySelectionViewInDetailController),
+		                                       name: changedLogDateNotificationName,
+		                                       object: nil)
 	}
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+
+		if self.viewControllers.count > 1 { // showing detail
+			let navController = self.viewControllers.last as! UINavigationController
+			let detailController = navController.topViewController!
+			detailController.navigationItem.leftBarButtonItem = displayModeButtonItem
+			detailController.navigationItem.leftItemsSupplementBackButton = true
+		}
+	}
+	
+	func displayEmptySelectionViewInDetailController() {
+		if self.viewControllers.count > 1 { // showing detail
+			let emptySelectionViewController = storyboard!.instantiateViewController(withIdentifier: emptySelectionViewControllerIdentifier)
+			showDetailViewController(emptySelectionViewController, sender: self)
+		}
+	}
+}
+
+extension LogSplitViewController: UISplitViewControllerDelegate {
 	///determines which view should show when collapsing down to one
 	func splitViewController(_ splitViewController: UISplitViewController,
 	                         collapseSecondary secondaryViewController: UIViewController,
@@ -37,20 +58,5 @@ class LogSplitViewController: UISplitViewController, UISplitViewControllerDelega
 		}
 		
 		return false
-	}
-	
-	///determines what view to show for detail when moving from one view to two
-	func splitViewController(_ splitViewController: UISplitViewController,
-	                         separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
-		//we had no selection
-		if let navigationController = primaryViewController as? UINavigationController,
-			let controller = navigationController.topViewController,
-			let logController = controller as? DailyLogViewController,
-		    logController.tableView.indexPathForSelectedRow == nil
-		{
-			return storyboard?.instantiateViewController(withIdentifier: emptySelectionViewControllerIdentifier)
-		}
-		
-		return nil
 	}
 }

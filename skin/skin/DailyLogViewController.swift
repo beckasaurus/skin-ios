@@ -11,6 +11,7 @@ import RealmSwift
 
 let applicationCellIdentifier = "application"
 let applicationSegue = "applicationSegue"
+let changedLogDateNotificationName = Notification.Name("changedLogDate")
 
 enum LogError: Error {
 	case invalidDate
@@ -21,18 +22,20 @@ enum LogError: Error {
 class DailyLogViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
 	@IBOutlet weak var tableView: UITableView!
+	@IBOutlet weak var dateLabel: UILabel!
+	
 	var log: Log? {
 		didSet {
 			let formatter = DateFormatter()
 			formatter.dateStyle = .medium
-			title = formatter.string(from: log!.date)
+			dateLabel.text = formatter.string(from: log!.date)
 		}
 	}
+	
 	var applications: List<Application>? {
 		return log?.applications
 	}
 	
-	// MARK: - Realm Properties
 	var notificationToken: NotificationToken!
 	var realm: Realm? {
 		return (UIApplication.shared.delegate! as! AppDelegate).realm
@@ -67,7 +70,7 @@ class DailyLogViewController: UIViewController, UITableViewDelegate, UITableView
 	}
 	
 	func setupRealm() {
-		let currentDatePredicate = try! predicate(date: Date()) //default to current date
+		let currentDatePredicate = try! predicate(for: Date()) //default to current date
 		if let log = self.realm!.objects(Log.self).filter(currentDatePredicate).first {
 			self.log = log
 		} else {
@@ -173,10 +176,15 @@ class DailyLogViewController: UIViewController, UITableViewDelegate, UITableView
 			let navController = segue.destination as! UINavigationController
 			let applicationViewController = navController.topViewController as! ApplicationViewController
 			applicationViewController.application = application
+			
+			applicationViewController.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
+			applicationViewController.navigationItem.leftItemsSupplementBackButton = true
 		}
 	}
 	
-	func predicate(date: Date) throws -> NSPredicate {
+	// MARK: - Changing dates
+	
+	func predicate(for date: Date) throws -> NSPredicate {
 		guard let nextDayBegin = Calendar.current.date(bySettingHour: 00, minute: 00, second: 00, of: date),
 			let nextDayEnd = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: date)
 			else { throw LogError.invalidDate }
@@ -191,7 +199,7 @@ class DailyLogViewController: UIViewController, UITableViewDelegate, UITableView
 			else { return }
 		
 		do {
-			let datePredicate = try predicate(date: nextDay)
+			let datePredicate = try predicate(for: nextDay)
 			if let nextLog = realm!.objects(Log.self).filter(datePredicate).first {
 				log = nextLog
 			} else {
@@ -199,6 +207,8 @@ class DailyLogViewController: UIViewController, UITableViewDelegate, UITableView
 			}
 			
 			updatePerformedRoutineList()
+			
+			NotificationCenter.default.post(name: changedLogDateNotificationName, object: self)
 		} catch {
 			return
 		}
