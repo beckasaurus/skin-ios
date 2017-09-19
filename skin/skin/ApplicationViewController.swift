@@ -14,7 +14,7 @@ let noApplicationSelectedSegue = "noApplicationSelectedSegue"
 
 //TODO: change name?
 
-class ApplicationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate {
+class ApplicationViewController: UIViewController {
 
 	@IBOutlet weak var datePicker: UIDatePicker!
 	@IBOutlet weak var notesTextView: UITextView!
@@ -86,7 +86,7 @@ class ApplicationViewController: UIViewController, UITableViewDelegate, UITableV
 					}
 				}
 			default:
-				print("other")
+				return
 			}
 		})
 	}
@@ -97,28 +97,31 @@ class ApplicationViewController: UIViewController, UITableViewDelegate, UITableV
 		productListNotificationToken?.stop()
 		timeAndNotesNotificationToken?.stop()
 	}
+	
+	//MARK: - Time
+	
+	@IBAction func timeChanged(_ sender: Any) {
+		realm.beginWrite()
+		application!.time = datePicker.date
+		try! realm.commitWrite(withoutNotifying: timeAndNotesNotificationToken != nil ? [timeAndNotesNotificationToken!] : [])
+	}
+}
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    // MARK: - Table view data source
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+extension ApplicationViewController: UITableViewDataSource {
+	func numberOfSections(in tableView: UITableView) -> Int {
+		return 1
+	}
+	
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return products.count
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: applicationProductCellIdentifier, for: indexPath)
+	}
+	
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: applicationProductCellIdentifier, for: indexPath)
 		let item = products[indexPath.row]
 		cell.textLabel?.text = item.name
-        return cell
-    }
+		return cell
+	}
 	
 	func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
 		return true
@@ -180,20 +183,12 @@ class ApplicationViewController: UIViewController, UITableViewDelegate, UITableV
 		
 		present(alertController, animated: true, completion: nil)
 	}
-	
-	//MARK: - Notes 
-	
+}
+
+extension ApplicationViewController: UITextViewDelegate {
 	func textViewDidEndEditing(_ textView: UITextView) {
 		try! realm.write {
 			application!.notes = textView.text
 		}
-	}
-	
-	//MARK: - Time
-	
-	@IBAction func timeChanged(_ sender: Any) {
-		realm.beginWrite()
-		application!.time = datePicker.date
-		try! realm.commitWrite(withoutNotifying: timeAndNotesNotificationToken != nil ? [timeAndNotesNotificationToken!] : [])
 	}
 }

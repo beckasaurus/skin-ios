@@ -1,30 +1,25 @@
 //
-//  LogSplitViewController.swift
+//  StashSplitViewController.swift
 //  skin
 //
-//  Created by Becky Henderson on 9/18/17.
+//  Created by Becky Henderson on 9/19/17.
 //  Copyright © 2017 Becky Henderson. All rights reserved.
 //
 
 import UIKit
 
-let emptyApplicationSelectionViewControllerIdentifier = "emptyApplicationSelectionVC"
+let emptyStashProductSelectionViewControllerIdentifier = "emptyProductSelectionVC"
 
-class LogSplitViewController: UISplitViewController {
+class StashSplitViewController: UISplitViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		delegate = self
-		
-		NotificationCenter.default.addObserver(self,
-		                                       selector: #selector(displayEmptySelectionViewInDetailController),
-		                                       name: changedLogDateNotificationName,
-		                                       object: nil)
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-
+		
 		if self.viewControllers.count > 1 { // showing detail
 			let navController = self.viewControllers.last as! UINavigationController
 			let detailController = navController.topViewController!
@@ -35,13 +30,13 @@ class LogSplitViewController: UISplitViewController {
 	
 	func displayEmptySelectionViewInDetailController() {
 		if self.viewControllers.count > 1 { // showing detail
-			let emptySelectionViewController = storyboard!.instantiateViewController(withIdentifier: emptyApplicationSelectionViewControllerIdentifier)
+			let emptySelectionViewController = storyboard!.instantiateViewController(withIdentifier: emptyStashProductSelectionViewControllerIdentifier)
 			showDetailViewController(emptySelectionViewController, sender: self)
 		}
 	}
 }
 
-extension LogSplitViewController: UISplitViewControllerDelegate {
+extension StashSplitViewController: UISplitViewControllerDelegate {
 	///determines which view should show when collapsing down to one
 	func splitViewController(_ splitViewController: UISplitViewController,
 	                         collapseSecondary secondaryViewController: UIViewController,
@@ -53,7 +48,7 @@ extension LogSplitViewController: UISplitViewControllerDelegate {
 		if let applicationController = secondaryController as? ApplicationViewController,
 			applicationController.routine == nil {
 			return true
-		} else if secondaryController.restorationIdentifier == emptyApplicationSelectionViewControllerIdentifier {
+		} else if secondaryController.restorationIdentifier == emptyStashProductSelectionViewControllerIdentifier {
 			return true
 		}
 		

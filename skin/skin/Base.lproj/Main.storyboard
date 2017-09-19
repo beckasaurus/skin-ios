@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Dg1-Fz-VTW">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G24b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Dg1-Fz-VTW">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -133,7 +133,7 @@
         <!--View Controller-->
         <scene sceneID="Rw5-0l-YoZ">
             <objects>
-                <viewController storyboardIdentifier="emptySelectionVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="7et-Li-e0h" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="emptyApplicationSelectionVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="7et-Li-e0h" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="afS-Fm-aA7"/>
                         <viewControllerLayoutGuide type="bottom" id="6lg-gV-LPv"/>
@@ -337,10 +337,10 @@
             </objects>
             <point key="canvasLocation" x="1777" y="-475"/>
         </scene>
-        <!--View Controller-->
+        <!--Stash View Controller-->
         <scene sceneID="Viq-hP-ivp">
             <objects>
-                <viewController id="KCh-aC-Tuy" sceneMemberID="viewController">
+                <viewController id="KCh-aC-Tuy" customClass="StashViewController" customModule="skin" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="KC2-La-ksS"/>
                         <viewControllerLayoutGuide type="bottom" id="cT7-81-JUa"/>
@@ -354,7 +354,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="productCell" textLabel="BBo-bl-Y6T" detailTextLabel="CaS-oW-lVt" style="IBUITableViewCellStyleSubtitle" id="GKZ-Fk-jaR">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="stashProduct" textLabel="BBo-bl-Y6T" detailTextLabel="CaS-oW-lVt" style="IBUITableViewCellStyleSubtitle" id="GKZ-Fk-jaR">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GKZ-Fk-jaR" id="Vml-YG-KYO">
@@ -378,10 +378,14 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="nW3-pd-1uT" kind="showDetail" id="ugu-YE-oKG"/>
+                                            <segue destination="aoR-KG-soN" kind="showDetail" identifier="stashProductSegue" id="ugu-YE-oKG"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="KCh-aC-Tuy" id="Gb6-hh-xPZ"/>
+                                    <outlet property="delegate" destination="KCh-aC-Tuy" id="877-IO-QoO"/>
+                                </connections>
                             </tableView>
                             <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="D1X-ib-19j">
                                 <rect key="frame" x="0.0" y="64" width="375" height="44"/>
@@ -397,6 +401,7 @@
                     <navigationItem key="navigationItem" id="W98-BX-mTF"/>
                     <connections>
                         <outlet property="searchDisplayController" destination="0bO-fx-JRz" id="NVH-dE-pE9"/>
+                        <outlet property="tableView" destination="u5E-fL-N2l" id="d3B-WT-mju"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bjp-b7-iGD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -412,10 +417,10 @@
             </objects>
             <point key="canvasLocation" x="2653.5999999999999" y="-475.41229385307349"/>
         </scene>
-        <!--View Controller-->
+        <!--Product View Controller-->
         <scene sceneID="Nny-m9-a5g">
             <objects>
-                <viewController id="nW3-pd-1uT" sceneMemberID="viewController">
+                <viewController id="nW3-pd-1uT" customClass="ProductViewController" customModule="skin" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="YWd-Fe-Cab"/>
                         <viewControllerLayoutGuide type="bottom" id="RjS-rb-YQE"/>
@@ -437,36 +442,45 @@
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="nW3-pd-1uT" id="bIi-6g-VuA"/>
+                                </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Price" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5pV-3X-h4k">
-                                <rect key="frame" x="16" y="276" width="39" height="21"/>
+                                <rect key="frame" x="16" y="229" width="39" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Expiration Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1es-xP-xlv">
-                                <rect key="frame" x="16" y="209" width="117" height="21"/>
+                                <rect key="frame" x="16" y="162" width="117" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="S5K-vy-ysv">
-                                <rect key="frame" x="16" y="238" width="343" height="30"/>
+                                <rect key="frame" x="16" y="191" width="343" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="nW3-pd-1uT" id="Hd0-YG-2JK"/>
+                                </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YTV-4K-euV">
-                                <rect key="frame" x="16" y="305" width="343" height="30"/>
+                                <rect key="frame" x="16" y="258" width="343" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="nW3-pd-1uT" id="6cr-y7-QxH"/>
+                                </connections>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mz6-yE-dMv">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Brand" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mz6-yE-dMv">
                                 <rect key="frame" x="16" y="95" width="71" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -474,11 +488,25 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Kk-2N-ni3">
-                                <rect key="frame" x="0.0" y="372" width="375" height="295"/>
+                                <rect key="frame" x="0.0" y="325" width="375" height="342"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="nW3-pd-1uT" id="YLG-wj-gSr"/>
+                                    <outlet property="delegate" destination="nW3-pd-1uT" id="wiQ-xT-9Mg"/>
+                                </connections>
                             </pickerView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="731-vV-SAC">
+                                <rect key="frame" x="16" y="124" width="343" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="nW3-pd-1uT" id="MDt-WC-zfP"/>
+                                </connections>
+                            </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xNf-Vv-mGY">
-                                <rect key="frame" x="16" y="343" width="71" height="21"/>
+                                <rect key="frame" x="16" y="296" width="71" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -487,15 +515,23 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="iAO-lW-MCJ"/>
+                    <connections>
+                        <outlet property="brandTextField" destination="731-vV-SAC" id="SMr-lt-Hzf"/>
+                        <outlet property="categoryPicker" destination="4Kk-2N-ni3" id="9yg-Tm-dDj"/>
+                        <outlet property="expirationDateTextField" destination="S5K-vy-ysv" id="P2w-Uf-ATw"/>
+                        <outlet property="nameTextField" destination="mee-78-4YZ" id="LR8-hF-ct5"/>
+                        <outlet property="priceTextField" destination="YTV-4K-euV" id="ecK-Uy-cC0"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="We9-DZ-twm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3485.5999999999999" y="-475.41229385307349"/>
+            <point key="canvasLocation" x="4424.8000000000002" y="-475.41229385307349"/>
         </scene>
         <!--Stash-->
         <scene sceneID="rHK-7L-fWy">
             <objects>
-                <splitViewController id="Pa1-3D-Tbw" sceneMemberID="viewController">
+                <splitViewController id="Pa1-3D-Tbw" customClass="StashSplitViewController" customModule="skin" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Stash" id="07r-ZC-86g"/>
                     <connections>
                         <segue destination="0ds-H7-62g" kind="relationship" relationship="masterViewController" id="OP7-nZ-by1"/>
@@ -573,6 +609,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gkJ-K5-0Lt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1776.8" y="233.43328335832086"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="IE5-rd-UIs">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="aoR-KG-soN" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="CJa-N6-nz8">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="nW3-pd-1uT" kind="relationship" relationship="rootViewController" id="SeV-KI-aGi"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hEE-Qj-XrO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3485.5999999999999" y="-475.41229385307349"/>
         </scene>
     </scenes>
 </document>

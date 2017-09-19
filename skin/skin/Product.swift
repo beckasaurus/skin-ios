@@ -11,5 +11,9 @@ import RealmSwift
 
 final class Product: Object {
 	dynamic var name = ""
+	dynamic var brand = ""
+	var price: RealmOptional<Double> = RealmOptional()
+	dynamic var expirationDate: Date?
+	dynamic var category: String = ProductCategory.active.rawValue
 }
 

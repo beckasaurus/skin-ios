@@ -19,7 +19,7 @@ enum LogError: Error {
 
 //TODO: sort applications by time when displaying, writing and inserting
 
-class DailyLogViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class DailyLogViewController: UIViewController {
 
 	@IBOutlet weak var tableView: UITableView!
 	@IBOutlet weak var dateLabel: UILabel!
@@ -88,40 +88,6 @@ class DailyLogViewController: UIViewController, UITableViewDelegate, UITableView
 	deinit {
 		notificationToken.stop()
 		realmConnectedNotification = nil
-	}
-
-    // MARK: - Table view data source
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return applications?.count ?? 0
-    }
-
-	
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: applicationCellIdentifier, for: indexPath)
-		let application = applications![indexPath.row]
-		cell.textLabel?.text = application.routine!.name
-		
-		let timeFormatter = DateFormatter()
-		timeFormatter.timeStyle = .short
-		timeFormatter.dateStyle = .none
-		cell.detailTextLabel?.text = timeFormatter.string(from:  application.time)
-		return cell
-    }
-	
-	// MARK: - Delete function
-	
-	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-		if editingStyle == .delete {
-			try! self.realm?.write {
-				let item = applications![indexPath.row]
-				self.realm?.delete(item)
-			}
-		}
 	}
 
 	// MARK: - Add function
@@ -222,4 +188,37 @@ class DailyLogViewController: UIViewController, UITableViewDelegate, UITableView
 		changeDay(by: -1)
 	}
 
+}
+
+extension DailyLogViewController: UITableViewDataSource {
+	func numberOfSections(in tableView: UITableView) -> Int {
+		return 1
+	}
+	
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		return applications?.count ?? 0
+	}
+	
+	
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: applicationCellIdentifier, for: indexPath)
+		let application = applications![indexPath.row]
+		cell.textLabel?.text = application.routine!.name
+		
+		let timeFormatter = DateFormatter()
+		timeFormatter.timeStyle = .short
+		timeFormatter.dateStyle = .none
+		cell.detailTextLabel?.text = timeFormatter.string(from:  application.time)
+		return cell
+	}
+	
+	// MARK: - Delete function
+	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+		if editingStyle == .delete {
+			try! self.realm?.write {
+				let item = applications![indexPath.row]
+				self.realm?.delete(item)
+			}
+		}
+	}
 }
