@@ -45,8 +45,8 @@ extension StashSplitViewController: UISplitViewControllerDelegate {
 			let secondaryController = navigationController.topViewController
 			else {return true}
 		
-		if let applicationController = secondaryController as? ApplicationViewController,
-			applicationController.routine == nil {
+		if let productController = secondaryController as? ProductViewController,
+			productController.product == nil {
 			return true
 		} else if secondaryController.restorationIdentifier == emptyStashProductSelectionViewControllerIdentifier {
 			return true

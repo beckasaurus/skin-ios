@@ -10,12 +10,6 @@ import UIKit
 import RealmSwift
 
 class ProductViewController: UIViewController {
-
-	@IBOutlet weak var name: UITextView! {
-		didSet {
-			navigationItem.title = name.text
-		}
-	}
 	
 	@IBOutlet weak var nameTextField: UITextField!
 	@IBOutlet weak var brandTextField: UITextField!
@@ -80,7 +74,7 @@ class ProductViewController: UIViewController {
 			case .change(let propertyChanges):
 				for propertyChange in propertyChanges {
 					if propertyChange.name == "name" {
-						self?.name.text = propertyChange.newValue as! String
+						self?.nameTextField.text = propertyChange.newValue as! String
 					} else if propertyChange.name == "brand" {
 						self?.brandTextField.text = (propertyChange.newValue as! String)
 					} else if propertyChange.name == "expirationDate" {
