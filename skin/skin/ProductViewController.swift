@@ -74,7 +74,7 @@ class ProductViewController: UIViewController {
 			case .change(let propertyChanges):
 				for propertyChange in propertyChanges {
 					if propertyChange.name == "name" {
-						self?.nameTextField.text = propertyChange.newValue as! String
+						self?.nameTextField.text = (propertyChange.newValue as! String)
 					} else if propertyChange.name == "brand" {
 						self?.brandTextField.text = (propertyChange.newValue as! String)
 					} else if propertyChange.name == "expirationDate" {
