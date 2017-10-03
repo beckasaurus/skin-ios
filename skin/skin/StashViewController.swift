@@ -15,11 +15,13 @@ let stashProductSegue = "stashProductSegue"
 class StashViewController: UIViewController {
 
 	@IBOutlet weak var tableView: UITableView!
+	var searchController: UISearchController?
 	
 	var stash: Stash?
 	var products: List<Product>? {
 		return stash?.products
 	}
+	var filteredProducts = [Product]()
 	
 	var realmConnectedNotification: NSObjectProtocol?
 	var notificationToken: NotificationToken!
@@ -42,6 +44,14 @@ class StashViewController: UIViewController {
 	
 	func setupUI() {
 		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addProduct))
+		
+		searchController = UISearchController(searchResultsController: nil)
+		searchController?.searchResultsUpdater = self
+		searchController?.dimsBackgroundDuringPresentation = false
+		searchController?.searchBar.sizeToFit()
+		definesPresentationContext = true
+		
+		tableView.tableHeaderView = self.searchController?.searchBar
 	}
 	
 	func updateStashList() {
@@ -116,7 +126,7 @@ class StashViewController: UIViewController {
 		if segue.identifier == stashProductSegue {
 			let cell = sender as! UITableViewCell
 			let rowIndexPath = tableView.indexPath(for: cell)!
-			let product = products![rowIndexPath.row]
+			let product = isFiltering() ? filteredProducts[rowIndexPath.row] : products![rowIndexPath.row]
 			let navController = segue.destination as! UINavigationController
 			let productViewController = navController.topViewController as! ProductViewController
 			productViewController.product = product
@@ -133,13 +143,17 @@ extension StashViewController: UITableViewDataSource {
 	}
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		if isFiltering() {
+			return filteredProducts.count
+		}
+		
 		return products?.count ?? 0
 	}
 	
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: stashProductCellIdentifier, for: indexPath)
-		let product = products![indexPath.row]
+		let product = isFiltering() ? filteredProducts[indexPath.row] : products![indexPath.row]
 		cell.textLabel?.text = product.name
 		cell.detailTextLabel?.text = product.brand
 		return cell
@@ -154,5 +168,33 @@ extension StashViewController: UITableViewDataSource {
 				self.realm?.delete(item)
 			}
 		}
+	}
+}
+
+extension StashViewController: UISearchResultsUpdating {
+	
+	func isFiltering() -> Bool {
+		return searchController!.isActive && !searchBarIsEmpty()
+	}
+	
+	func searchBarIsEmpty() -> Bool {
+		return searchController!.searchBar.text?.isEmpty ?? true
+	}
+	
+	func filterContentForSearchText(_ searchText: String) {
+		guard let products = products else {
+			filteredProducts = []
+			return
+		}
+		
+		filteredProducts = products.filter({( product : Product) -> Bool in
+			return product.name.lowercased().contains(searchText.lowercased())
+		})
+		
+		tableView.reloadData()
+	}
+	
+	func updateSearchResults(for searchController: UISearchController) {
+		filterContentForSearchText(searchController.searchBar.text!)
 	}
 }

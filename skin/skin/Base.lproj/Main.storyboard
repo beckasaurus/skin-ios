@@ -340,7 +340,7 @@
         <!--Stash View Controller-->
         <scene sceneID="Viq-hP-ivp">
             <objects>
-                <viewController id="KCh-aC-Tuy" customClass="StashViewController" customModule="skin" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="KCh-aC-Tuy" customClass="StashViewController" customModule="skin" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="KC2-La-ksS"/>
                         <viewControllerLayoutGuide type="bottom" id="cT7-81-JUa"/>
@@ -349,25 +349,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="u5E-fL-N2l">
-                                <rect key="frame" x="0.0" y="108" width="375" height="510"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="AMA-BA-JHn">
+                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="stashProduct" textLabel="BBo-bl-Y6T" detailTextLabel="CaS-oW-lVt" style="IBUITableViewCellStyleSubtitle" id="GKZ-Fk-jaR">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="stashProduct" textLabel="NnE-yl-lLB" detailTextLabel="7MU-Tf-9X7" style="IBUITableViewCellStyleSubtitle" id="Xoh-O4-Pgj">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GKZ-Fk-jaR" id="Vml-YG-KYO">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Xoh-O4-Pgj" id="a14-FE-XOH">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BBo-bl-Y6T">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="NnE-yl-lLB">
                                                     <rect key="frame" x="15" y="5" width="33.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="CaS-oW-lVt">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7MU-Tf-9X7">
                                                     <rect key="frame" x="15" y="25.5" width="44" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -377,43 +377,34 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="aoR-KG-soN" kind="showDetail" identifier="stashProductSegue" id="ugu-YE-oKG"/>
+                                            <segue destination="aoR-KG-soN" kind="showDetail" identifier="stashProductSegue" id="PoK-yI-5d5"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
-                                    <outlet property="dataSource" destination="KCh-aC-Tuy" id="Gb6-hh-xPZ"/>
-                                    <outlet property="delegate" destination="KCh-aC-Tuy" id="877-IO-QoO"/>
+                                    <outlet property="dataSource" destination="KCh-aC-Tuy" id="9wo-WR-Xjn"/>
+                                    <outlet property="delegate" destination="KCh-aC-Tuy" id="UCw-Fp-0hl"/>
                                 </connections>
                             </tableView>
-                            <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="D1X-ib-19j">
-                                <rect key="frame" x="0.0" y="64" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="KCh-aC-Tuy" id="Bph-x0-H6L"/>
-                                </connections>
-                            </searchBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="u5E-fL-N2l" firstAttribute="top" secondItem="KC2-La-ksS" secondAttribute="bottom" constant="44" id="4hE-0F-hBC"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="u5E-fL-N2l" secondAttribute="trailing" constant="-16" id="7ed-gr-aZI"/>
-                            <constraint firstItem="u5E-fL-N2l" firstAttribute="leading" secondItem="ISx-Jg-uHm" secondAttribute="leadingMargin" constant="-16" id="RbX-NL-Jax"/>
-                            <constraint firstItem="cT7-81-JUa" firstAttribute="top" secondItem="u5E-fL-N2l" secondAttribute="bottom" id="wTn-dW-Tzo"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="AMA-BA-JHn" secondAttribute="trailing" constant="-16" id="iCS-oN-pgh"/>
+                            <constraint firstItem="AMA-BA-JHn" firstAttribute="leading" secondItem="ISx-Jg-uHm" secondAttribute="leadingMargin" constant="-16" id="q1m-T5-3ze"/>
+                            <constraint firstItem="cT7-81-JUa" firstAttribute="top" secondItem="AMA-BA-JHn" secondAttribute="bottom" id="yL5-Xl-8zQ"/>
+                            <constraint firstItem="AMA-BA-JHn" firstAttribute="top" secondItem="KC2-La-ksS" secondAttribute="bottom" id="zlj-yG-WjY"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="W98-BX-mTF"/>
                     <connections>
                         <outlet property="searchDisplayController" destination="0bO-fx-JRz" id="NVH-dE-pE9"/>
-                        <outlet property="tableView" destination="u5E-fL-N2l" id="d3B-WT-mju"/>
+                        <outlet property="tableView" destination="AMA-BA-JHn" id="qVV-7h-Dj7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bjp-b7-iGD" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <searchDisplayController id="0bO-fx-JRz">
                     <connections>
                         <outlet property="delegate" destination="KCh-aC-Tuy" id="Vdo-GI-9mw"/>
-                        <outlet property="searchBar" destination="D1X-ib-19j" id="zv4-m3-lNK"/>
                         <outlet property="searchContentsController" destination="KCh-aC-Tuy" id="Q0s-Ms-068"/>
                         <outlet property="searchResultsDataSource" destination="KCh-aC-Tuy" id="6q0-di-d73"/>
                         <outlet property="searchResultsDelegate" destination="KCh-aC-Tuy" id="EjQ-qE-z0J"/>
