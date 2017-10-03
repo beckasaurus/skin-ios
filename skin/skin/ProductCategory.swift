@@ -11,8 +11,7 @@ enum ProductCategory: String {
 	case active
 	case hydrator
 	case occlusive
-	case sunscreen
 	case treatment
 	
-	static let allCases: [ProductCategory] = [.cleanser, .active, .hydrator, .occlusive, .sunscreen, .treatment]
+	static let allCases: [ProductCategory] = [.cleanser, .active, .hydrator, .occlusive, .treatment]
 }

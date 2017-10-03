@@ -12,16 +12,40 @@ import RealmSwift
 let stashProductCellIdentifier = "stashProduct"
 let stashProductSegue = "stashProductSegue"
 
+enum StashTableSection: Int {
+	case cleansers
+	case actives
+	case hydrators
+	case occlusives
+	case treatments
+	
+	static let tableSectionTitles = ["Cleansers", "Actives", "Hydrators", "Occlusives", "Treatments"]
+}
+
 class StashViewController: UIViewController {
 
 	@IBOutlet weak var tableView: UITableView!
 	var searchController: UISearchController?
 	
+	let productCategories = ProductCategory.allCases
+	
 	var stash: Stash?
+	
 	var products: List<Product>? {
 		return stash?.products
 	}
-	var filteredProducts = [Product]()
+	
+	var filteredProducts: [Product]? {
+		didSet {
+			updateCategoryProductLists()
+		}
+	}
+	
+	var cleansers: [Product]?
+	var actives: [Product]?
+	var hydrators: [Product]?
+	var occlusives: [Product]?
+	var treatments: [Product]?
 	
 	var realmConnectedNotification: NSObjectProtocol?
 	var notificationToken: NotificationToken!
@@ -47,6 +71,7 @@ class StashViewController: UIViewController {
 		
 		searchController = UISearchController(searchResultsController: nil)
 		searchController?.searchResultsUpdater = self
+		searchController?.searchBar.delegate = self
 		searchController?.dimsBackgroundDuringPresentation = false
 		searchController?.searchBar.sizeToFit()
 		definesPresentationContext = true
@@ -66,6 +91,24 @@ class StashViewController: UIViewController {
 		}
 	}
 	
+	func filterProducts(by category: ProductCategory) -> [Product] {
+		let productsToSearch = filteredProducts ?? Array(products!)
+		return productsToSearch.filter({ (product) -> Bool in
+			let productCategory = ProductCategory(rawValue: product.category)!
+			return productCategory == category
+		})
+	}
+	
+	func updateCategoryProductLists() {
+		cleansers = filterProducts(by: .cleanser)
+		actives = filterProducts(by: .active)
+		hydrators = filterProducts(by: .hydrator)
+		occlusives = filterProducts(by: .occlusive)
+		treatments = filterProducts(by: .treatment)
+		
+		updateStashList()
+	}
+	
 	func setupRealm() {
 		if let stash = self.realm!.objects(Stash.self).first {
 			self.stash = stash
@@ -73,11 +116,11 @@ class StashViewController: UIViewController {
 			createStash()
 		}
 		
-		updateStashList()
+		updateCategoryProductLists()
 		
 		// Notify us when Realm changes
 		self.notificationToken = self.stash!.realm!.addNotificationBlock { [weak self] notification, realm in
-			self?.updateStashList()
+			self?.updateCategoryProductLists()
 		}
 	}
 	
@@ -110,8 +153,7 @@ class StashViewController: UIViewController {
 				                      at: strongSelf.products!.count)
 				
 				DispatchQueue.main.async {
-					let newTableCell = strongSelf.tableView.cellForRow(at: IndexPath(row: stash.products.count - 1, section: 0))
-					strongSelf.performSegue(withIdentifier: stashProductSegue, sender: newTableCell)
+					strongSelf.performSegue(withIdentifier: stashProductSegue, sender: newProduct)
 				}
 			}
 		})
@@ -124,12 +166,17 @@ class StashViewController: UIViewController {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
 		if segue.identifier == stashProductSegue {
-			let cell = sender as! UITableViewCell
-			let rowIndexPath = tableView.indexPath(for: cell)!
-			let product = isFiltering() ? filteredProducts[rowIndexPath.row] : products![rowIndexPath.row]
+			let productToView: Product
+			if let cell = sender as? UITableViewCell {
+				let indexPath = tableView.indexPath(for: cell)!
+				productToView = productForIndexPath(indexPath: indexPath)
+			} else {
+				productToView = sender as! Product
+			}
+			
 			let navController = segue.destination as! UINavigationController
 			let productViewController = navController.topViewController as! ProductViewController
-			productViewController.product = product
+			productViewController.product = productToView
 			
 			productViewController.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
 			productViewController.navigationItem.leftItemsSupplementBackButton = true
@@ -138,25 +185,59 @@ class StashViewController: UIViewController {
 }
 
 extension StashViewController: UITableViewDataSource {
+	
+	func productForIndexPath(indexPath: IndexPath) -> Product {
+		let tableSection = StashTableSection(rawValue: indexPath.section)!
+		
+		let product: Product
+		switch tableSection {
+		case .cleansers:
+			product = cleansers![indexPath.row]
+		case .actives:
+			product = actives![indexPath.row]
+		case .hydrators:
+			product = hydrators![indexPath.row]
+		case .occlusives:
+			product = occlusives![indexPath.row]
+		case .treatments:
+			product = treatments![indexPath.row]
+		}
+		
+		return product
+	}
+	
+	
 	func numberOfSections(in tableView: UITableView) -> Int {
-		return 1
+		return productCategories.count
 	}
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		if isFiltering() {
-			return filteredProducts.count
-		}
 		
-		return products?.count ?? 0
+		let tableSection = StashTableSection(rawValue: section)!
+		switch tableSection {
+			case .cleansers:
+				return cleansers?.count ?? 0
+			case .actives:
+				return actives?.count ?? 0
+			case .hydrators:
+				return hydrators?.count ?? 0
+			case .occlusives:
+				return occlusives?.count ?? 0
+			case .treatments:
+				return treatments?.count ?? 0
+		}
 	}
-	
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: stashProductCellIdentifier, for: indexPath)
-		let product = isFiltering() ? filteredProducts[indexPath.row] : products![indexPath.row]
+		let product = productForIndexPath(indexPath: indexPath)
 		cell.textLabel?.text = product.name
 		cell.detailTextLabel?.text = product.brand
 		return cell
+	}
+	
+	func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+		return StashTableSection.tableSectionTitles[section]
 	}
 	
 	// MARK: - Delete function
@@ -183,18 +264,25 @@ extension StashViewController: UISearchResultsUpdating {
 	
 	func filterContentForSearchText(_ searchText: String) {
 		guard let products = products else {
-			filteredProducts = []
 			return
 		}
 		
-		filteredProducts = products.filter({( product : Product) -> Bool in
-			return product.name.lowercased().contains(searchText.lowercased())
-		})
-		
-		tableView.reloadData()
+		if searchText == "" {
+			filteredProducts = nil
+		} else {
+			filteredProducts = products.filter({( product : Product) -> Bool in
+				return product.name.lowercased().contains(searchText.lowercased())
+			})
+		}
 	}
 	
 	func updateSearchResults(for searchController: UISearchController) {
 		filterContentForSearchText(searchController.searchBar.text!)
+	}
+}
+
+extension StashViewController: UISearchBarDelegate {
+	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+		filteredProducts = nil
 	}
 }
