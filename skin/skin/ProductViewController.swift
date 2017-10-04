@@ -61,6 +61,11 @@ class ProductViewController: UIViewController {
 		dateFormatter!.dateStyle = .short
 		dateFormatter!.timeStyle = .none
 		
+		let datePicker = UIDatePicker()
+		datePicker.datePickerMode = .date
+		datePicker.addTarget(self, action: #selector(expirationDateChanged(_:)), for: .valueChanged)
+		expirationDateTextField.inputView = datePicker
+		
 		brandTextField.text = product!.brand
 		nameTextField.text = product!.name
 		setPriceText(with: product!.price)
@@ -78,7 +83,12 @@ class ProductViewController: UIViewController {
 					} else if propertyChange.name == "brand" {
 						self?.brandTextField.text = (propertyChange.newValue as! String)
 					} else if propertyChange.name == "expirationDate" {
-						let newDate = propertyChange.newValue as! Date?
+						let newDate: Date?
+						if let changedDate = propertyChange.newValue as? Date {
+							newDate = changedDate
+						} else {
+							newDate = nil
+						}
 						self?.setExpirationDateText(with: newDate)
 					} else if propertyChange.name == "price" {
 						
@@ -99,6 +109,14 @@ class ProductViewController: UIViewController {
 		super.viewWillDisappear(animated)
 		
 		notificationToken?.stop()
+	}
+}
+
+extension ProductViewController {
+	func expirationDateChanged(_ sender: UIDatePicker) {
+		let datePicker = expirationDateTextField.inputView! as! UIDatePicker
+		let expirationDate = datePicker.date
+		setExpirationDateText(with: expirationDate)
 	}
 }
 
@@ -140,7 +158,8 @@ extension ProductViewController: UITextFieldDelegate {
 			}
 		} else if textField == expirationDateTextField {
 			let date: Date?
-			if let expDateString = expirationDateTextField.text {
+			if let expDateString = expirationDateTextField.text,
+				expDateString != "" {
 				date = dateFormatter!.date(from: expDateString)
 			} else {
 				date = nil
@@ -152,7 +171,8 @@ extension ProductViewController: UITextFieldDelegate {
 			
 		} else if textField == priceTextField {
 			var price: Double? = nil
-			if  let priceString = priceTextField.text {
+			if  let priceString = priceTextField.text,
+				priceString != "" {
 				price = Double(currencyFormatter!.number(from: priceString)!)
 			}
 			
