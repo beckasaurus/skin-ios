@@ -148,7 +148,13 @@ class StashViewController: UIViewController {
 			
 			let stash = strongSelf.stash!
 			try! stash.realm?.write {
-				let newProduct = Product(value: ["name": text])
+				var dateComponents = DateComponents()
+				dateComponents.month = 6
+				let defaultExpirationDate = Calendar.current.date(byAdding: dateComponents, to: Date())
+				
+				let newProduct = Product(value: ["name": text,
+				                                 "category" : ProductCategory.active.rawValue,
+				                                 "expirationDate" : defaultExpirationDate!] as Any)
 				stash.products.insert(newProduct,
 				                      at: strongSelf.products!.count)
 				
@@ -245,22 +251,31 @@ extension StashViewController: UITableViewDataSource {
 	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
 		if editingStyle == .delete {
 			try! self.realm?.write {
-				let item = products![indexPath.row]
+				let item: Product
+				
+				let tableSection = StashTableSection(rawValue:indexPath.section)!
+				switch tableSection {
+				case .actives:
+					item = actives![indexPath.row]
+				case .cleansers:
+					item = cleansers![indexPath.row]
+				case .hydrators:
+					item = hydrators![indexPath.row]
+				case .occlusives:
+					item = occlusives![indexPath.row]
+				case .treatments:
+					item = treatments![indexPath.row]
+				}
+				
 				self.realm?.delete(item)
+				
+				updateCategoryProductLists()
 			}
 		}
 	}
 }
 
 extension StashViewController: UISearchResultsUpdating {
-	
-	func isFiltering() -> Bool {
-		return searchController!.isActive && !searchBarIsEmpty()
-	}
-	
-	func searchBarIsEmpty() -> Bool {
-		return searchController!.searchBar.text?.isEmpty ?? true
-	}
 	
 	func filterContentForSearchText(_ searchText: String) {
 		guard let products = products else {

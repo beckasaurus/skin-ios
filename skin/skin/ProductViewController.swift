@@ -15,7 +15,7 @@ class ProductViewController: UIViewController {
 	@IBOutlet weak var brandTextField: UITextField!
 	@IBOutlet weak var priceTextField: UITextField!
 	@IBOutlet weak var expirationDateTextField: UITextField!
-	@IBOutlet weak var categoryPicker: UIPickerView!
+	@IBOutlet weak var categoryTextField: UITextField!
 	
 	var dateFormatter: DateFormatter?
 	var currencyFormatter: NumberFormatter?
@@ -46,12 +46,6 @@ class ProductViewController: UIViewController {
 		
 		expirationDateTextField.text = dateFormatter!.string(from: date)
 	}
-	
-	func selectCategoryInPicker(_ category: ProductCategory) {
-		guard let rowNumForCategory = ProductCategory.allCases.index(of: category)
-			else {return}
-		categoryPicker.selectRow(rowNumForCategory, inComponent: 0, animated: true)
-	}
 
 	func setupUI() {
 		currencyFormatter = NumberFormatter()
@@ -64,13 +58,24 @@ class ProductViewController: UIViewController {
 		let datePicker = UIDatePicker()
 		datePicker.datePickerMode = .date
 		datePicker.addTarget(self, action: #selector(expirationDateChanged(_:)), for: .valueChanged)
+		if let expirationDate = product?.expirationDate {
+			datePicker.setDate(expirationDate, animated: false)
+		}
 		expirationDateTextField.inputView = datePicker
+		
+		let categoryPicker = UIPickerView()
+		categoryPicker.delegate = self
+		categoryPicker.dataSource = self
+		if let rowNumForCategory = ProductCategory.allCases.index(of: ProductCategory(rawValue: (product?.category)!)!) {
+			categoryPicker.selectRow(rowNumForCategory, inComponent: 0, animated: true)
+		}
+		categoryTextField.inputView = categoryPicker
 		
 		brandTextField.text = product!.brand
 		nameTextField.text = product!.name
 		setPriceText(with: product!.price)
 		setExpirationDateText(with: product!.expirationDate)
-		selectCategoryInPicker(ProductCategory(rawValue: product!.category)!)
+		categoryTextField.text = product!.category
 	}
 	
 	func setupRealm() {
@@ -96,7 +101,7 @@ class ProductViewController: UIViewController {
 						guard let newCategory = ProductCategory(rawValue: propertyChange.newValue as! String)
 							else { return }
 						
-						self?.selectCategoryInPicker(newCategory)
+						self?.categoryTextField.text = newCategory.rawValue
 					}
 				}
 			default:
@@ -182,5 +187,13 @@ extension ProductViewController: UITextFieldDelegate {
 				product!.price = realmPrice
 			}
 		}
+	}
+	
+	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+		if textField == categoryTextField {
+			return false
+		}
+		
+		return true
 	}
 }

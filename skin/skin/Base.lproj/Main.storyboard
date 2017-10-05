@@ -426,7 +426,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="VgB-dl-yH5">
-                                <rect key="frame" x="16" y="72" width="343" height="226"/>
+                                <rect key="frame" x="16" y="72" width="343" height="284.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Y2C-LD-KH8">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="50.5"/>
@@ -508,70 +508,40 @@
                                             </textField>
                                         </subviews>
                                     </stackView>
-                                </subviews>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="8XS-eR-bk4">
-                                <rect key="frame" x="16" y="306" width="343" height="353"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xNf-Vv-mGY">
-                                        <rect key="frame" x="0.0" y="0.0" width="343" height="20.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <pickerView contentMode="scaleToFill" verticalHuggingPriority="100" translatesAutoresizingMaskIntoConstraints="NO" id="4Kk-2N-ni3">
-                                        <rect key="frame" x="0.0" y="20.5" width="343" height="332.5"/>
-                                        <connections>
-                                            <outlet property="dataSource" destination="nW3-pd-1uT" id="YLG-wj-gSr"/>
-                                            <outlet property="delegate" destination="nW3-pd-1uT" id="wiQ-xT-9Mg"/>
-                                        </connections>
-                                    </pickerView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="8XS-eR-bk4">
+                                        <rect key="frame" x="0.0" y="234" width="343" height="50.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xNf-Vv-mGY">
+                                                <rect key="frame" x="0.0" y="0.0" width="343" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wKa-OU-BMR">
+                                                <rect key="frame" x="0.0" y="20.5" width="343" height="30"/>
+                                                <nil key="textColor"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="nW3-pd-1uT" id="yRx-Nr-glP"/>
+                                                </connections>
+                                            </textField>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="VgB-dl-yH5" secondAttribute="trailing" id="21d-6b-lrM"/>
-                            <constraint firstItem="8XS-eR-bk4" firstAttribute="leading" secondItem="Un5-BK-Fds" secondAttribute="leadingMargin" id="2Mp-0S-JX0"/>
                             <constraint firstItem="VgB-dl-yH5" firstAttribute="top" secondItem="YWd-Fe-Cab" secondAttribute="bottom" constant="8" id="6E9-wa-NQF"/>
-                            <constraint firstItem="8XS-eR-bk4" firstAttribute="leading" secondItem="VgB-dl-yH5" secondAttribute="trailing" constant="8" id="ASl-SW-c6s"/>
-                            <constraint firstItem="8XS-eR-bk4" firstAttribute="top" secondItem="YWd-Fe-Cab" secondAttribute="bottom" constant="8" symbolic="YES" id="DOg-a9-ofX"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="8XS-eR-bk4" secondAttribute="trailing" id="JUJ-2n-NLL"/>
-                            <constraint firstItem="8XS-eR-bk4" firstAttribute="leading" secondItem="VgB-dl-yH5" secondAttribute="trailing" constant="8" id="ZSf-uc-dng"/>
-                            <constraint firstItem="8XS-eR-bk4" firstAttribute="width" secondItem="VgB-dl-yH5" secondAttribute="width" id="a2t-es-8gn"/>
-                            <constraint firstItem="8XS-eR-bk4" firstAttribute="top" secondItem="VgB-dl-yH5" secondAttribute="bottom" constant="8" id="aht-e9-0cw"/>
                             <constraint firstAttribute="leadingMargin" secondItem="VgB-dl-yH5" secondAttribute="leading" id="fOj-fj-QXc"/>
-                            <constraint firstItem="RjS-rb-YQE" firstAttribute="top" secondItem="8XS-eR-bk4" secondAttribute="bottom" constant="8" id="mgs-MD-31U"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="ASl-SW-c6s"/>
-                                <exclude reference="DOg-a9-ofX"/>
-                                <exclude reference="ZSf-uc-dng"/>
-                                <exclude reference="a2t-es-8gn"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=compact">
-                            <mask key="constraints">
-                                <exclude reference="21d-6b-lrM"/>
-                                <exclude reference="2Mp-0S-JX0"/>
-                                <exclude reference="ASl-SW-c6s"/>
-                                <include reference="DOg-a9-ofX"/>
-                                <include reference="ZSf-uc-dng"/>
-                                <include reference="a2t-es-8gn"/>
-                                <exclude reference="aht-e9-0cw"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=compact-widthClass=regular">
-                            <mask key="constraints">
-                                <exclude reference="21d-6b-lrM"/>
-                            </mask>
-                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="iAO-lW-MCJ"/>
                     <connections>
                         <outlet property="brandTextField" destination="731-vV-SAC" id="SMr-lt-Hzf"/>
-                        <outlet property="categoryPicker" destination="4Kk-2N-ni3" id="9yg-Tm-dDj"/>
+                        <outlet property="categoryTextField" destination="wKa-OU-BMR" id="k3R-4C-hjQ"/>
                         <outlet property="expirationDateTextField" destination="S5K-vy-ysv" id="P2w-Uf-ATw"/>
                         <outlet property="nameTextField" destination="mee-78-4YZ" id="LR8-hF-ct5"/>
                         <outlet property="priceTextField" destination="YTV-4K-euV" id="ecK-Uy-cC0"/>
