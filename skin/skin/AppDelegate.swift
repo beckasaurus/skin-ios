@@ -18,10 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 	public var realm: Realm?
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-		// Override point for customization after application launch.
-				
 		setupRealm()
-		
 		return true
 	}
 	
@@ -61,6 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 				let configuration = Realm.Configuration(
 					syncConfiguration: SyncConfiguration(user: user, realmURL: URL(string: "realm://127.0.0.1:9080/~/skin")!)
 				)
+//				configuration.deleteRealmIfMigrationNeeded = true
 				self.realm = try! Realm(configuration: configuration)
 				
 				NotificationCenter.default.post(name: realmConnected, object: nil)

@@ -154,7 +154,8 @@ class StashViewController: UIViewController {
 				
 				let newProduct = Product(value: ["name": text,
 				                                 "category" : ProductCategory.active.rawValue,
-				                                 "expirationDate" : defaultExpirationDate!] as Any)
+				                                 "expirationDate" : defaultExpirationDate!,
+				                                 "price" : Double(0.00)] as Any)
 				stash.products.insert(newProduct,
 				                      at: strongSelf.products!.count)
 				

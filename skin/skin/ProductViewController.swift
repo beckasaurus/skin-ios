@@ -30,10 +30,7 @@ class ProductViewController: UIViewController {
 		setupRealm()
 	}
 	
-	func setPriceText(with price: RealmOptional<Double>) {
-		guard let price = price.value
-			else {return}
-		
+	func setPriceText(with price: Double) {
 		let number = NSNumber(value: price)
 		let priceString = currencyFormatter!.string(from: number)
 		
@@ -46,14 +43,30 @@ class ProductViewController: UIViewController {
 		
 		expirationDateTextField.text = dateFormatter!.string(from: date)
 	}
-
-	func setupUI() {
+	
+	func setupCurrencyFormatter() {
 		currencyFormatter = NumberFormatter()
-		currencyFormatter!.numberStyle = .currency
+		currencyFormatter?.numberStyle = .currency
+		currencyFormatter?.locale = Locale.current
+		currencyFormatter?.maximumFractionDigits = 2
+		currencyFormatter?.minimumFractionDigits = 2
+	}
+	
+	func setupPriceField() {
+		setupCurrencyFormatter()
 		
+		priceTextField.keyboardType = .numberPad
+	}
+	
+	func setupDateFormatter() {
 		dateFormatter = DateFormatter()
 		dateFormatter!.dateStyle = .short
 		dateFormatter!.timeStyle = .none
+	}
+	
+	func setupExpirationDateField() {
+		
+		setupDateFormatter()
 		
 		let datePicker = UIDatePicker()
 		datePicker.datePickerMode = .date
@@ -62,7 +75,9 @@ class ProductViewController: UIViewController {
 			datePicker.setDate(expirationDate, animated: false)
 		}
 		expirationDateTextField.inputView = datePicker
-		
+	}
+	
+	func setupCategoryField() {
 		let categoryPicker = UIPickerView()
 		categoryPicker.delegate = self
 		categoryPicker.dataSource = self
@@ -70,12 +85,22 @@ class ProductViewController: UIViewController {
 			categoryPicker.selectRow(rowNumForCategory, inComponent: 0, animated: true)
 		}
 		categoryTextField.inputView = categoryPicker
-		
+	}
+
+	func setTextFieldDataFromProduct() {
 		brandTextField.text = product!.brand
 		nameTextField.text = product!.name
 		setPriceText(with: product!.price)
 		setExpirationDateText(with: product!.expirationDate)
 		categoryTextField.text = product!.category
+	}
+	
+	func setupUI() {
+		setupPriceField()
+		setupCategoryField()
+		setupExpirationDateField()
+		
+		setTextFieldDataFromProduct()
 	}
 	
 	func setupRealm() {
@@ -175,16 +200,15 @@ extension ProductViewController: UITextFieldDelegate {
 			}
 			
 		} else if textField == priceTextField {
-			var price: Double? = nil
-			if  let priceString = priceTextField.text,
-				priceString != "" {
-				price = Double(currencyFormatter!.number(from: priceString)!)
+			var price: Double = 0.00
+			if let currencyFormatter = currencyFormatter,
+				let priceText = priceTextField.text,
+				let numberFromFormatter = currencyFormatter.number(from: priceText) {
+				price = Double(numberFromFormatter)
 			}
 			
-			let realmPrice = RealmOptional(price)
-			
 			try! product!.realm?.write {
-				product!.price = realmPrice
+				product!.price = price
 			}
 		}
 	}
@@ -194,6 +218,71 @@ extension ProductViewController: UITextFieldDelegate {
 			return false
 		}
 		
-		return true
+		guard textField == priceTextField else {
+			return true
+		}		
+		
+		guard let currencyFormatter = currencyFormatter,
+		let selectedRange = priceTextField.selectedTextRange,
+		let originalText = priceTextField.text,
+		let swiftRange = originalText.range(from: range) else {
+			return false
+		}
+		
+		var replacementString = string
+		
+		if replacementString.characters.count > 1 {
+			replacementString = replacementString.replacingOccurrences(of: currencyFormatter.currencySymbol, with: "")
+			replacementString = replacementString.replacingOccurrences(of: currencyFormatter.groupingSeparator, with: "")
+			guard let stringFromFormatter = currencyFormatter.string(from: NSDecimalNumber(string: replacementString)) else {
+				return false
+			}
+			
+			replacementString = stringFromFormatter
+		}
+		
+		let start = priceTextField.beginningOfDocument
+		let cursorOffset = priceTextField.offset(from: start, to: selectedRange.start)
+		let originalTextLength = originalText.characters.count
+		
+		var newText = originalText
+		newText = newText.replacingCharacters(in: swiftRange, with: replacementString)
+		newText = newText.replacingOccurrences(of: currencyFormatter.currencySymbol, with: "")
+		newText = newText.replacingOccurrences(of: currencyFormatter.groupingSeparator, with: "")
+		newText = newText.replacingOccurrences(of: currencyFormatter.decimalSeparator, with: "")
+		
+		let maxDigits = 11
+		if newText.characters.count <= maxDigits {
+			let numberFromTextField = NSDecimalNumber(string: newText)
+			let divideBy = NSDecimalNumber(value: 10).raising(toPower: currencyFormatter.maximumFractionDigits)
+			let newNumber = numberFromTextField.dividing(by: divideBy)
+			guard let newText = currencyFormatter.string(from: newNumber) else {
+				return false
+			}
+			
+			priceTextField.text = newText
+			
+			if cursorOffset != originalTextLength {
+				let lengthDelta = newText.characters.count - originalTextLength
+				let newCursorOffset = max(0, min(newText.characters.count, cursorOffset + lengthDelta))
+				let newPosition = priceTextField.position(from: priceTextField.beginningOfDocument, offset: newCursorOffset)!
+				let newRange = priceTextField.textRange(from: newPosition, to: newPosition)
+				priceTextField.selectedTextRange = newRange
+			}
+		}
+		
+		return false
+	}
+}
+
+extension String {
+	func range(from nsRange: NSRange) -> Range<String.Index>? {
+		guard
+			let from16 = utf16.index(utf16.startIndex, offsetBy: nsRange.location, limitedBy: utf16.endIndex),
+			let to16 = utf16.index(from16, offsetBy: nsRange.length, limitedBy: utf16.endIndex),
+			let from = String.Index(from16, within: self),
+			let to = String.Index(to16, within: self)
+			else { return nil }
+		return from ..< to
 	}
 }
