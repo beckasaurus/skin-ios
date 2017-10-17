@@ -16,10 +16,12 @@ let noApplicationSelectedSegue = "noApplicationSelectedSegue"
 
 class ApplicationViewController: UIViewController {
 
-	@IBOutlet weak var datePicker: UIDatePicker!
+	@IBOutlet weak var timeTextField: UITextField!
 	@IBOutlet weak var notesTextView: UITextView!
 	@IBOutlet weak var tableView: UITableView!
 	@IBOutlet weak var editDoneButton: UIButton!
+	
+	var dateFormatter: DateFormatter?
 	
 	var application: Application?
 	var routine: Routine? {
@@ -46,7 +48,19 @@ class ApplicationViewController: UIViewController {
 		
 		tableView.register(UITableViewCell.self, forCellReuseIdentifier: applicationProductCellIdentifier)
 		
-		datePicker.date = application!.time
+		let datePicker = UIDatePicker()
+		datePicker.datePickerMode = .time
+		datePicker.minuteInterval = 5
+		datePicker.addTarget(self, action: #selector(timeChanged(_:)), for: .valueChanged)
+		datePicker.setDate(application!.time, animated: false)
+		timeTextField.inputView = datePicker
+		
+		dateFormatter = DateFormatter()
+		dateFormatter!.dateStyle = .none
+		dateFormatter!.timeStyle = .short
+		
+		timeTextField.text = dateFormatter!.string(from: application!.time)
+		
 		notesTextView.text = application!.notes
 	}
 	
@@ -80,7 +94,7 @@ class ApplicationViewController: UIViewController {
 			case .change(let propertyChanges):
 				for propertyChange in propertyChanges {
 					if propertyChange.name == "time" {
-						self?.datePicker.date = propertyChange.newValue as! Date
+//						self?.datePicker.date = propertyChange.newValue as! Date
 					} else if propertyChange.name == "notes" {
 						self?.notesTextView.text = propertyChange.newValue as! String
 					}
@@ -100,10 +114,10 @@ class ApplicationViewController: UIViewController {
 	
 	//MARK: - Time
 	
-	@IBAction func timeChanged(_ sender: Any) {
-		realm.beginWrite()
-		application!.time = datePicker.date
-		try! realm.commitWrite(withoutNotifying: timeAndNotesNotificationToken != nil ? [timeAndNotesNotificationToken!] : [])
+	func timeChanged(_ sender: Any) {
+		let datePicker = timeTextField.inputView! as! UIDatePicker
+		let date = datePicker.date
+		timeTextField.text = dateFormatter!.string(from: date)
 	}
 }
 
@@ -182,6 +196,25 @@ extension ApplicationViewController: UITableViewDataSource {
 		})
 		
 		present(alertController, animated: true, completion: nil)
+	}
+}
+
+extension ApplicationViewController: UITextFieldDelegate {
+	func textFieldDidEndEditing(_ textField: UITextField) {
+		if textField == timeTextField {
+			let date: Date
+			if let dateString = timeTextField.text,
+				dateString != "",
+				let applicationDate = dateFormatter!.date(from: dateString) {
+				date = applicationDate
+			} else {
+				date = Date()
+			}
+			
+			try! application!.realm?.write {
+				application!.time = date
+			}
+		}
 	}
 }
 
