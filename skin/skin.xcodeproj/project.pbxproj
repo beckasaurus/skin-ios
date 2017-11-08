@@ -27,6 +27,7 @@
 		0D9E05EC1F7007B300E83BF3 /* LogSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9E05EB1F7007B300E83BF3 /* LogSplitViewController.swift */; };
 		0DAAF1C21F715287001F0CD3 /* ProductCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAAF1C11F715287001F0CD3 /* ProductCategory.swift */; };
 		0DAAF1C41F71588C001F0CD3 /* Stash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAAF1C31F71588C001F0CD3 /* Stash.swift */; };
+		0DD890EF1FB3BEEC00F83192 /* String+RangeFromNSRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD890EE1FB3BEEC00F83192 /* String+RangeFromNSRange.swift */; };
 		0DEF09741F700B9D0046DE0A /* ApplicationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEF09731F700B9D0046DE0A /* ApplicationViewController.swift */; };
 		0DEF09781F714C9F0046DE0A /* StashSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEF09771F714C9F0046DE0A /* StashSplitViewController.swift */; };
 		0DEF097B1F714D0A0046DE0A /* StashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEF097A1F714D0A0046DE0A /* StashViewController.swift */; };
@@ -92,6 +93,7 @@
 		0D9E05EB1F7007B300E83BF3 /* LogSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogSplitViewController.swift; sourceTree = "<group>"; };
 		0DAAF1C11F715287001F0CD3 /* ProductCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductCategory.swift; sourceTree = "<group>"; };
 		0DAAF1C31F71588C001F0CD3 /* Stash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stash.swift; sourceTree = "<group>"; };
+		0DD890EE1FB3BEEC00F83192 /* String+RangeFromNSRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+RangeFromNSRange.swift"; sourceTree = "<group>"; };
 		0DEF09731F700B9D0046DE0A /* ApplicationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationViewController.swift; sourceTree = "<group>"; };
 		0DEF09771F714C9F0046DE0A /* StashSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StashSplitViewController.swift; sourceTree = "<group>"; };
 		0DEF097A1F714D0A0046DE0A /* StashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StashViewController.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				0D0CC3821F54B48C00334487 /* AppDelegate.swift */,
+				0DD890EE1FB3BEEC00F83192 /* String+RangeFromNSRange.swift */,
 				0D8A7B4E1F67804E00C57F0A /* Views */,
 				0D66F55A1FB2418900FE84DC /* Reusable Controllers */,
 				0D8A7B4D1F67803100C57F0A /* Models */,
@@ -474,6 +477,7 @@
 				0DEF09741F700B9D0046DE0A /* ApplicationViewController.swift in Sources */,
 				0D8A7B501F67806D00C57F0A /* Application.swift in Sources */,
 				0DAAF1C41F71588C001F0CD3 /* Stash.swift in Sources */,
+				0DD890EF1FB3BEEC00F83192 /* String+RangeFromNSRange.swift in Sources */,
 				0D66F5601FB2452700FE84DC /* SearchableProductListViewController.swift in Sources */,
 				0D8A7B561F67815200C57F0A /* Product.swift in Sources */,
 			);

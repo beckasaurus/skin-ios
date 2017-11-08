@@ -20,6 +20,7 @@ class ProductViewController: UIViewController {
 	@IBOutlet weak var brandTextField: UITextField!
 	@IBOutlet weak var priceTextField: UITextField!
 	@IBOutlet weak var expirationDateTextField: UITextField!
+	@IBOutlet weak var linkTextField: UITextField!
 	@IBOutlet weak var categoryTextField: UITextField!
 	
 	@IBOutlet weak var linkStackView: UIStackView!
@@ -163,6 +164,16 @@ class ProductViewController: UIViewController {
 		
 		notificationToken?.invalidate()
 	}
+	
+	@IBAction func wishListLinkClicked(sender: UIButton) {
+		//FIXME: share extension
+		guard let linkString = linkTextField.text,
+			let link = URL(string:linkString) else {
+			return
+		}
+		
+		UIApplication.shared.open(link)
+	}
 }
 
 extension ProductViewController {
@@ -295,17 +306,5 @@ extension ProductViewController: UITextFieldDelegate {
 		}
 		
 		return false
-	}
-}
-
-extension String {
-	func range(from nsRange: NSRange) -> Range<String.Index>? {
-		guard
-			let from16 = utf16.index(utf16.startIndex, offsetBy: nsRange.location, limitedBy: utf16.endIndex),
-			let to16 = utf16.index(from16, offsetBy: nsRange.length, limitedBy: utf16.endIndex),
-			let from = String.Index(from16, within: self),
-			let to = String.Index(to16, within: self)
-			else { return nil }
-		return from ..< to
 	}
 }
