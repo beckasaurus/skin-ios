@@ -79,14 +79,6 @@ class SearchableProductListViewController: UIViewController {
 		self.tableView.reloadData()
 	}
 	
-	func createStash() {
-		try! self.realm!.write {
-			let stash = Stash()
-			self.realm!.add(stash)
-			self.stash = stash
-		}
-	}
-	
 	func filterProducts(by category: ProductCategory) -> [Product] {
 		let productsToSearch = filteredProducts ?? Array(products!)
 		return productsToSearch.filter({ (product) -> Bool in
@@ -105,17 +97,17 @@ class SearchableProductListViewController: UIViewController {
 		updateList()
 	}
 	
+	func getProductListFromContainer(realm: Realm) -> List<Product> {
+		assert(false, "getProductContainerFrom must be overridden")
+	}
+	
 	func setupRealm() {
-		if let stash = self.realm!.objects(Stash.self).first {
-			self.stash = stash
-		} else {
-			createStash()
-		}
+		products = getProductListFromContainer(realm: realm!)
 		
 		updateCategoryProductLists()
 		
 		// Notify us when Realm changes
-		self.notificationToken = self.stash!.realm!.addNotificationBlock { [weak self] notification, realm in
+		self.notificationToken = self.realm!.addNotificationBlock { [weak self] notification, realm in
 			self?.updateCategoryProductLists()
 		}
 	}
@@ -142,8 +134,7 @@ class SearchableProductListViewController: UIViewController {
 			
 			guard let text = alertTextField.text , !text.isEmpty else { return }
 			
-			let stash = strongSelf.stash!
-			try! stash.realm?.write {
+			try! strongSelf.realm?.write {
 				var dateComponents = DateComponents()
 				dateComponents.month = 6
 				let defaultExpirationDate = Calendar.current.date(byAdding: dateComponents, to: Date())
@@ -152,11 +143,11 @@ class SearchableProductListViewController: UIViewController {
 				                                 "category" : ProductCategory.active.rawValue,
 				                                 "expirationDate" : defaultExpirationDate!,
 				                                 "price" : Double(0.00)] as Any)
-				stash.products.insert(newProduct,
+				strongSelf.products?.insert(newProduct,
 				                      at: strongSelf.products!.count)
 				
 				DispatchQueue.main.async {
-					strongSelf.performSegue(withIdentifier: stashProductSegue, sender: newProduct)
+					strongSelf.performSegue(withIdentifier: productSegue, sender: newProduct)
 				}
 			}
 		})
@@ -168,7 +159,7 @@ class SearchableProductListViewController: UIViewController {
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
-		if segue.identifier == stashProductSegue {
+		if segue.identifier == productSegue {
 			let productToView: Product
 			if let cell = sender as? UITableViewCell {
 				let indexPath = tableView.indexPath(for: cell)!
@@ -190,7 +181,7 @@ class SearchableProductListViewController: UIViewController {
 extension SearchableProductListViewController: UITableViewDataSource {
 	
 	func productForIndexPath(indexPath: IndexPath) -> Product {
-		let tableSection = StashTableSection(rawValue: indexPath.section)!
+		let tableSection = ProductListTableSection(rawValue: indexPath.section)!
 		
 		let product: Product
 		switch tableSection {
@@ -216,7 +207,7 @@ extension SearchableProductListViewController: UITableViewDataSource {
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		
-		let tableSection = StashTableSection(rawValue: section)!
+		let tableSection = ProductListTableSection(rawValue: section)!
 		switch tableSection {
 		case .cleansers:
 			return cleansers?.count ?? 0
@@ -232,7 +223,7 @@ extension SearchableProductListViewController: UITableViewDataSource {
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: stashProductCellIdentifier, for: indexPath)
+		let cell = tableView.dequeueReusableCell(withIdentifier: productCellIdentifier, for: indexPath)
 		let product = productForIndexPath(indexPath: indexPath)
 		cell.textLabel?.text = product.name
 		cell.detailTextLabel?.text = product.brand
@@ -240,7 +231,7 @@ extension SearchableProductListViewController: UITableViewDataSource {
 	}
 	
 	func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-		return StashTableSection.tableSectionTitles[section]
+		return ProductListTableSection.tableSectionTitles[section]
 	}
 	
 	// MARK: - Delete function
@@ -250,7 +241,7 @@ extension SearchableProductListViewController: UITableViewDataSource {
 			try! self.realm?.write {
 				let item: Product
 				
-				let tableSection = StashTableSection(rawValue:indexPath.section)!
+				let tableSection = ProductListTableSection(rawValue:indexPath.section)!
 				switch tableSection {
 				case .actives:
 					item = actives![indexPath.row]

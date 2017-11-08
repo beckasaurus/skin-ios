@@ -190,6 +190,7 @@
 			children = (
 				0D66F55B1FB241CD00FE84DC /* ProductListSplitViewController.swift */,
 				0D66F55F1FB2452700FE84DC /* SearchableProductListViewController.swift */,
+				0DEF097C1F714D1C0046DE0A /* ProductViewController.swift */,
 			);
 			name = "Reusable Views";
 			sourceTree = "<group>";
@@ -232,7 +233,6 @@
 			children = (
 				0DEF09771F714C9F0046DE0A /* StashSplitViewController.swift */,
 				0DEF097A1F714D0A0046DE0A /* StashViewController.swift */,
-				0DEF097C1F714D1C0046DE0A /* ProductViewController.swift */,
 			);
 			name = Stash;
 			sourceTree = "<group>";

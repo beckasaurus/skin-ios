@@ -12,7 +12,7 @@ import UIKit
 class ProductListSplitViewController: UISplitViewController {
 	
 	func emptySelectionViewControllerIdentifier() -> String {
-		assert(0, "Need to override empty selection view controller identifier name")
+		assert(false, "Need to override empty selection view controller identifier name")
 		return ""
 	}
 	
