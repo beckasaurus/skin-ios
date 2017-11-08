@@ -80,13 +80,13 @@ class DailyLogViewController: UIViewController {
 		updatePerformedRoutineList()
 		
 		// Notify us when Realm changes
-		self.notificationToken = self.log?.realm!.addNotificationBlock { [weak self] notification, realm in
+		self.notificationToken = self.log?.realm!.observe { [weak self] notification, realm in
 			self?.updatePerformedRoutineList()
 		}
 	}
 	
 	deinit {
-		notificationToken.stop()
+		notificationToken.invalidate()
 		realmConnectedNotification = nil
 	}
 

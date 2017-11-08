@@ -1,0 +1,5 @@
+use_frameworks!
+
+target 'skin' do
+  pod 'RealmSwift'
+end

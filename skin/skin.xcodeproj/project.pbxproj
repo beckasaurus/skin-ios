@@ -20,10 +20,6 @@
 		0D66F5651FB3444F00FE84DC /* WishListSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D66F5641FB3444F00FE84DC /* WishListSplitViewController.swift */; };
 		0D66F5671FB3446400FE84DC /* WishListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D66F5661FB3446400FE84DC /* WishListViewController.swift */; };
 		0D79E9221F5EE16B00590443 /* DailyLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D79E9211F5EE16B00590443 /* DailyLogViewController.swift */; };
-		0D79E9291F6031D300590443 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D79E9271F6031D300590443 /* Realm.framework */; };
-		0D79E92A1F6031D300590443 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0D79E9271F6031D300590443 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		0D79E92B1F6031D300590443 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D79E9281F6031D300590443 /* RealmSwift.framework */; };
-		0D79E92C1F6031D300590443 /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0D79E9281F6031D300590443 /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0D8A7B501F67806D00C57F0A /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8A7B4F1F67806D00C57F0A /* Application.swift */; };
 		0D8A7B521F6780A400C57F0A /* Routine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8A7B511F6780A400C57F0A /* Routine.swift */; };
 		0D8A7B541F67812200C57F0A /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8A7B531F67812200C57F0A /* Log.swift */; };
@@ -35,6 +31,7 @@
 		0DEF09781F714C9F0046DE0A /* StashSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEF09771F714C9F0046DE0A /* StashSplitViewController.swift */; };
 		0DEF097B1F714D0A0046DE0A /* StashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEF097A1F714D0A0046DE0A /* StashViewController.swift */; };
 		0DEF097D1F714D1C0046DE0A /* ProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEF097C1F714D1C0046DE0A /* ProductViewController.swift */; };
+		267422028AC53C46DE5FEC8C /* Pods_skin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E93611EEE60A3CBBD8587337 /* Pods_skin.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,8 +58,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				0D79E92C1F6031D300590443 /* RealmSwift.framework in Embed Frameworks */,
-				0D79E92A1F6031D300590443 /* Realm.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -90,8 +85,6 @@
 		0D66F5641FB3444F00FE84DC /* WishListSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WishListSplitViewController.swift; sourceTree = "<group>"; };
 		0D66F5661FB3446400FE84DC /* WishListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WishListViewController.swift; sourceTree = "<group>"; };
 		0D79E9211F5EE16B00590443 /* DailyLogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyLogViewController.swift; sourceTree = "<group>"; };
-		0D79E9271F6031D300590443 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
-		0D79E9281F6031D300590443 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = "<group>"; };
 		0D8A7B4F1F67806D00C57F0A /* Application.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		0D8A7B511F6780A400C57F0A /* Routine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Routine.swift; sourceTree = "<group>"; };
 		0D8A7B531F67812200C57F0A /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
@@ -103,6 +96,9 @@
 		0DEF09771F714C9F0046DE0A /* StashSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StashSplitViewController.swift; sourceTree = "<group>"; };
 		0DEF097A1F714D0A0046DE0A /* StashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StashViewController.swift; sourceTree = "<group>"; };
 		0DEF097C1F714D1C0046DE0A /* ProductViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductViewController.swift; sourceTree = "<group>"; };
+		3E9FFA18F8CABFAB10798EEB /* Pods-skin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-skin.release.xcconfig"; path = "Pods/Target Support Files/Pods-skin/Pods-skin.release.xcconfig"; sourceTree = "<group>"; };
+		D4D8D750D79F4CA6DAF4668D /* Pods-skin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-skin.debug.xcconfig"; path = "Pods/Target Support Files/Pods-skin/Pods-skin.debug.xcconfig"; sourceTree = "<group>"; };
+		E93611EEE60A3CBBD8587337 /* Pods_skin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_skin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,8 +106,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0D79E92B1F6031D300590443 /* RealmSwift.framework in Frameworks */,
-				0D79E9291F6031D300590443 /* Realm.framework in Frameworks */,
+				267422028AC53C46DE5FEC8C /* Pods_skin.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,12 +130,12 @@
 		0D0CC3761F54B48C00334487 = {
 			isa = PBXGroup;
 			children = (
-				0D79E9271F6031D300590443 /* Realm.framework */,
-				0D79E9281F6031D300590443 /* RealmSwift.framework */,
 				0D0CC3811F54B48C00334487 /* skin */,
 				0D0CC3961F54B48C00334487 /* skinTests */,
 				0D0CC3A11F54B48C00334487 /* skinUITests */,
 				0D0CC3801F54B48C00334487 /* Products */,
+				A74B762836859B04CE46DA16 /* Pods */,
+				CF3B24DA85132043A2286012 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -251,6 +246,23 @@
 			name = Stash;
 			sourceTree = "<group>";
 		};
+		A74B762836859B04CE46DA16 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D4D8D750D79F4CA6DAF4668D /* Pods-skin.debug.xcconfig */,
+				3E9FFA18F8CABFAB10798EEB /* Pods-skin.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		CF3B24DA85132043A2286012 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E93611EEE60A3CBBD8587337 /* Pods_skin.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -258,10 +270,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0D0CC3A71F54B48C00334487 /* Build configuration list for PBXNativeTarget "skin" */;
 			buildPhases = (
+				ED531DE89F3DD19ABEF5ECEC /* [CP] Check Pods Manifest.lock */,
 				0D0CC37B1F54B48C00334487 /* Sources */,
 				0D0CC37C1F54B48C00334487 /* Frameworks */,
 				0D0CC37D1F54B48C00334487 /* Resources */,
 				0D0CC3B91F55988700334487 /* Embed Frameworks */,
+				8B41205F3FAC319ADB6CD649 /* [CP] Embed Pods Frameworks */,
+				EA02176070A683657D7E68BE /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -315,7 +330,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0910;
 				ORGANIZATIONNAME = "Becky Henderson";
 				TargetAttributes = {
 					0D0CC37E1F54B48C00334487 = {
@@ -389,6 +404,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		8B41205F3FAC319ADB6CD649 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-skin/Pods-skin-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EA02176070A683657D7E68BE /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-skin/Pods-skin-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		ED531DE89F3DD19ABEF5ECEC /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0D0CC37B1F54B48C00334487 /* Sources */ = {
@@ -477,7 +540,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -485,7 +550,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -528,7 +597,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -536,7 +607,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -564,6 +639,7 @@
 		};
 		0D0CC3A81F54B48C00334487 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D4D8D750D79F4CA6DAF4668D /* Pods-skin.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = skin/skin.entitlements;
@@ -582,6 +658,7 @@
 		};
 		0D0CC3A91F54B48C00334487 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3E9FFA18F8CABFAB10798EEB /* Pods-skin.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = skin/skin.entitlements;

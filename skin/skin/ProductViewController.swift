@@ -127,7 +127,7 @@ class ProductViewController: UIViewController {
 	}
 	
 	func setupRealm() {
-		notificationToken = product?.addNotificationBlock({ [weak self] (change) in
+		notificationToken = product?.observe({ [weak self] (change) in
 			switch change {
 			case .change(let propertyChanges):
 				for propertyChange in propertyChanges {
@@ -161,7 +161,7 @@ class ProductViewController: UIViewController {
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
 		
-		notificationToken?.stop()
+		notificationToken?.invalidate()
 	}
 }
 
@@ -254,7 +254,7 @@ extension ProductViewController: UITextFieldDelegate {
 		
 		var replacementString = string
 		
-		if replacementString.characters.count > 1 {
+		if replacementString.count > 1 {
 			replacementString = replacementString.replacingOccurrences(of: currencyFormatter.currencySymbol, with: "")
 			replacementString = replacementString.replacingOccurrences(of: currencyFormatter.groupingSeparator, with: "")
 			guard let stringFromFormatter = currencyFormatter.string(from: NSDecimalNumber(string: replacementString)) else {
@@ -266,7 +266,7 @@ extension ProductViewController: UITextFieldDelegate {
 		
 		let start = priceTextField.beginningOfDocument
 		let cursorOffset = priceTextField.offset(from: start, to: selectedRange.start)
-		let originalTextLength = originalText.characters.count
+		let originalTextLength = originalText.count
 		
 		var newText = originalText
 		newText = newText.replacingCharacters(in: swiftRange, with: replacementString)
@@ -275,7 +275,7 @@ extension ProductViewController: UITextFieldDelegate {
 		newText = newText.replacingOccurrences(of: currencyFormatter.decimalSeparator, with: "")
 		
 		let maxDigits = 11
-		if newText.characters.count <= maxDigits {
+		if newText.count <= maxDigits {
 			let numberFromTextField = NSDecimalNumber(string: newText)
 			let divideBy = NSDecimalNumber(value: 10).raising(toPower: currencyFormatter.maximumFractionDigits)
 			let newNumber = numberFromTextField.dividing(by: divideBy)
@@ -286,8 +286,8 @@ extension ProductViewController: UITextFieldDelegate {
 			priceTextField.text = newText
 			
 			if cursorOffset != originalTextLength {
-				let lengthDelta = newText.characters.count - originalTextLength
-				let newCursorOffset = max(0, min(newText.characters.count, cursorOffset + lengthDelta))
+				let lengthDelta = newText.count - originalTextLength
+				let newCursorOffset = max(0, min(newText.count, cursorOffset + lengthDelta))
 				let newPosition = priceTextField.position(from: priceTextField.beginningOfDocument, offset: newCursorOffset)!
 				let newRange = priceTextField.textRange(from: newPosition, to: newPosition)
 				priceTextField.selectedTextRange = newRange

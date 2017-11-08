@@ -66,7 +66,7 @@ class ApplicationViewController: UIViewController {
 	
 	func setupRealm() {
 		// Notify us when Realm changes
-		productListNotificationToken = products.addNotificationBlock { [weak self] (changes: RealmCollectionChange) in
+		productListNotificationToken = products.observe { [weak self] (changes: RealmCollectionChange) in
 			DispatchQueue.main.async {
 				guard let tableView = self?.tableView else { return }
 				
@@ -89,7 +89,7 @@ class ApplicationViewController: UIViewController {
 			}
 		}
 		
-		timeAndNotesNotificationToken = application?.addNotificationBlock({ [weak self] (change) in
+		timeAndNotesNotificationToken = application?.observe({ [weak self] (change) in
 			switch change {
 			case .change(let propertyChanges):
 				for propertyChange in propertyChanges {
@@ -108,8 +108,8 @@ class ApplicationViewController: UIViewController {
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
 		
-		productListNotificationToken?.stop()
-		timeAndNotesNotificationToken?.stop()
+		productListNotificationToken?.invalidate()
+		timeAndNotesNotificationToken?.invalidate()
 	}
 	
 	//MARK: - Time

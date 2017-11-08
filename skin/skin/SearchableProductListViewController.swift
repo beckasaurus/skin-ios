@@ -119,13 +119,13 @@ class SearchableProductListViewController: UIViewController {
 		updateCategoryProductLists()
 		
 		// Notify us when Realm changes
-		self.notificationToken = self.realm!.addNotificationBlock { [weak self] notification, realm in
+		self.notificationToken = self.realm!.observe { [weak self] notification, realm in
 			self?.updateCategoryProductLists()
 		}
 	}
 	
 	deinit {
-		notificationToken.stop()
+		notificationToken.invalidate()
 		realmConnectedNotification = nil
 	}
 	
