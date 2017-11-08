@@ -9,6 +9,11 @@
 import UIKit
 import RealmSwift
 
+public enum ProductViewType {
+	case stashProduct
+	case wishListProduct
+}
+
 class ProductViewController: UIViewController {
 	
 	@IBOutlet weak var nameTextField: UITextField!
@@ -16,6 +21,11 @@ class ProductViewController: UIViewController {
 	@IBOutlet weak var priceTextField: UITextField!
 	@IBOutlet weak var expirationDateTextField: UITextField!
 	@IBOutlet weak var categoryTextField: UITextField!
+	
+	@IBOutlet weak var linkStackView: UIStackView!
+	@IBOutlet weak var expirationDateStackView: UIStackView!
+	
+	public var viewType: ProductViewType = .stashProduct
 	
 	var dateFormatter: DateFormatter?
 	var currencyFormatter: NumberFormatter?
@@ -38,7 +48,8 @@ class ProductViewController: UIViewController {
 	}
 	
 	func setExpirationDateText(with date: Date?) {
-		guard let date = date
+		guard case .stashProduct = viewType,
+			let date = date
 			else { return }
 		
 		expirationDateTextField.text = dateFormatter!.string(from: date)
@@ -66,6 +77,11 @@ class ProductViewController: UIViewController {
 	
 	func setupExpirationDateField() {
 		
+		guard case .stashProduct = viewType else {
+			expirationDateStackView.isHidden = true
+			return
+		}
+		
 		setupDateFormatter()
 		
 		let datePicker = UIDatePicker()
@@ -75,6 +91,13 @@ class ProductViewController: UIViewController {
 			datePicker.setDate(expirationDate, animated: false)
 		}
 		expirationDateTextField.inputView = datePicker
+	}
+	
+	func setupLinkField() {
+		guard case .wishListProduct = viewType else {
+			linkStackView.isHidden = true
+			return
+		}
 	}
 	
 	func setupCategoryField() {
@@ -99,7 +122,7 @@ class ProductViewController: UIViewController {
 		setupPriceField()
 		setupCategoryField()
 		setupExpirationDateField()
-		
+		setupLinkField()
 		setTextFieldDataFromProduct()
 	}
 	

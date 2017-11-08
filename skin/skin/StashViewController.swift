@@ -30,4 +30,12 @@ class StashViewController: SearchableProductListViewController {
 		
 		return stash!.products
 	}
+	
+	override func containerName() -> String {
+		return "Stash"
+	}
+	
+	override func productViewType() -> ProductViewType {
+		return .stashProduct
+	}
 }

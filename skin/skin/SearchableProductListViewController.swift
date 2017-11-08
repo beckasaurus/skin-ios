@@ -9,8 +9,8 @@
 import UIKit
 import RealmSwift
 
-let productCellIdentifier = "stashProduct"
-let productSegue = "stashProductSegue"
+let productCellIdentifier = "productCell"
+let productSegue = "productSegue"
 
 enum ProductListTableSection: Int {
 	case cleansers
@@ -23,6 +23,22 @@ enum ProductListTableSection: Int {
 }
 
 class SearchableProductListViewController: UIViewController {
+	
+	//MARK: Mandatory overrides
+	
+	func containerName() -> String {
+		assert(false, "containerName must be overridden")
+	}
+	
+	func getProductListFromContainer(realm: Realm) -> List<Product> {
+		assert(false, "getProductContainerFrom must be overridden")
+	}
+	
+	func productViewType() -> ProductViewType {
+		assert(false, "productViewType must be overridden")
+	}
+	
+	//MARK: Reusable code
 	
 	@IBOutlet weak var tableView: UITableView!
 	var searchController: UISearchController?
@@ -97,10 +113,6 @@ class SearchableProductListViewController: UIViewController {
 		updateList()
 	}
 	
-	func getProductListFromContainer(realm: Realm) -> List<Product> {
-		assert(false, "getProductContainerFrom must be overridden")
-	}
-	
 	func setupRealm() {
 		products = getProductListFromContainer(realm: realm!)
 		
@@ -120,7 +132,7 @@ class SearchableProductListViewController: UIViewController {
 	// MARK: - Add function
 	
 	func addProduct() {
-		let alertController = UIAlertController(title: "Add Product To Stash", message: "Enter Product Name", preferredStyle: .alert)
+		let alertController = UIAlertController(title: "Add Product To \(containerName())", message: "Enter Product Name", preferredStyle: .alert)
 		var alertTextField: UITextField!
 		alertController.addTextField { textField in
 			alertTextField = textField
@@ -171,6 +183,7 @@ class SearchableProductListViewController: UIViewController {
 			let navController = segue.destination as! UINavigationController
 			let productViewController = navController.topViewController as! ProductViewController
 			productViewController.product = productToView
+			productViewController.viewType = productViewType()
 			
 			productViewController.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
 			productViewController.navigationItem.leftItemsSupplementBackButton = true
