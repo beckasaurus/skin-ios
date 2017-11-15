@@ -41,11 +41,13 @@ class ProductViewController: UIViewController {
 		setupRealm()
 	}
 	
-	func setPriceText(with price: Double) {
-		let number = NSNumber(value: price)
-		let priceString = currencyFormatter!.string(from: number)
-		
-		priceTextField.text = priceString
+	func setPriceText(with price: RealmOptional<Double>) {
+		if let priceValue = price.value {
+			let number = NSNumber(value: priceValue)
+			let priceString = currencyFormatter!.string(from: number)
+			
+			priceTextField.text = priceString
+		}
 	}
 	
 	func setExpirationDateText(with date: Date?) {
@@ -114,6 +116,7 @@ class ProductViewController: UIViewController {
 	func setTextFieldDataFromProduct() {
 		brandTextField.text = product!.brand
 		nameTextField.text = product!.name
+		linkTextField.text = product!.link
 		setPriceText(with: product!.price)
 		setExpirationDateText(with: product!.expirationDate)
 		categoryTextField.text = product!.category
@@ -135,7 +138,7 @@ class ProductViewController: UIViewController {
 					if propertyChange.name == "name" {
 						self?.nameTextField.text = (propertyChange.newValue as! String)
 					} else if propertyChange.name == "brand" {
-						self?.brandTextField.text = (propertyChange.newValue as! String)
+						self?.brandTextField.text = (propertyChange.newValue as! String?)
 					} else if propertyChange.name == "expirationDate" {
 						let newDate: Date?
 						if let changedDate = propertyChange.newValue as? Date {
@@ -165,14 +168,19 @@ class ProductViewController: UIViewController {
 		notificationToken?.invalidate()
 	}
 	
+	func linkURLFromLinkField() -> URL? {
+		guard let linkString = linkTextField.text else {
+				return nil
+		}
+		return URL(string:linkString)
+	}
+	
 	@IBAction func wishListLinkClicked(sender: UIButton) {
 		//FIXME: share extension
-		guard let linkString = linkTextField.text,
-			let link = URL(string:linkString) else {
+		guard let url = linkURLFromLinkField() else {
 			return
 		}
-		
-		UIApplication.shared.open(link)
+		UIApplication.shared.open(url)
 	}
 }
 
@@ -218,7 +226,11 @@ extension ProductViewController: UITextFieldDelegate {
 			}
 		} else if textField == brandTextField {
 			try! product!.realm?.write {
-				product!.brand = brandTextField.text!
+				product!.brand = brandTextField.text
+			}
+		} else if textField == linkTextField {
+			try! product!.realm?.write {
+				product!.link = linkTextField.text
 			}
 		} else if textField == expirationDateTextField {
 			let date: Date?
@@ -234,15 +246,17 @@ extension ProductViewController: UITextFieldDelegate {
 			}
 			
 		} else if textField == priceTextField {
-			var price: Double = 0.00
+			let price: Double?
 			if let currencyFormatter = currencyFormatter,
 				let priceText = priceTextField.text,
 				let numberFromFormatter = currencyFormatter.number(from: priceText) {
 				price = Double(numberFromFormatter)
+			} else {
+				price = nil
 			}
 			
 			try! product!.realm?.write {
-				product!.price = price
+				product!.price.value = price
 			}
 		}
 	}
