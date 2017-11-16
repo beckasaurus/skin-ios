@@ -38,6 +38,10 @@ class SearchableProductListViewController: UIViewController {
 		assert(false, "productViewType must be overridden")
 	}
 	
+	func tableSelectionSegueIdentifier() -> String {
+		return productSegue
+	}
+	
 	//MARK: Reusable code
 	
 	@IBOutlet weak var tableView: UITableView!
@@ -60,7 +64,7 @@ class SearchableProductListViewController: UIViewController {
 	var treatments: [Product]?
 	
 	var realmConnectedNotification: NSObjectProtocol?
-	var notificationToken: NotificationToken!
+	var notificationToken: NotificationToken?
 	var realm: Realm? {
 		return (UIApplication.shared.delegate! as! AppDelegate).realm
 	}
@@ -125,8 +129,15 @@ class SearchableProductListViewController: UIViewController {
 	}
 	
 	deinit {
-		notificationToken.invalidate()
+		notificationToken?.invalidate()
 		realmConnectedNotification = nil
+	}
+	
+	func didAddProductToList(product: Product) {
+		DispatchQueue.main.async { [weak self] _ in
+			guard let strongSelf = self else { return }
+			strongSelf.performSegue(withIdentifier: strongSelf.tableSelectionSegueIdentifier(), sender: product)
+		}
 	}
 	
 	// MARK: - Add function
@@ -146,22 +157,21 @@ class SearchableProductListViewController: UIViewController {
 			
 			guard let text = alertTextField.text , !text.isEmpty else { return }
 			
+			var dateComponents = DateComponents()
+			dateComponents.month = 6
+			let defaultExpirationDate = Calendar.current.date(byAdding: dateComponents, to: Date())
+			
+			let newProduct = Product(value: ["name": text,
+											 "category" : ProductCategory.active.rawValue,
+											 "expirationDate" : defaultExpirationDate!,
+											 "price" : Double(0.00)] as Any)
+			
 			try! strongSelf.realm?.write {
-				var dateComponents = DateComponents()
-				dateComponents.month = 6
-				let defaultExpirationDate = Calendar.current.date(byAdding: dateComponents, to: Date())
-				
-				let newProduct = Product(value: ["name": text,
-				                                 "category" : ProductCategory.active.rawValue,
-				                                 "expirationDate" : defaultExpirationDate!,
-				                                 "price" : Double(0.00)] as Any)
 				strongSelf.products?.insert(newProduct,
 				                      at: strongSelf.products!.count)
-				
-				DispatchQueue.main.async {
-					strongSelf.performSegue(withIdentifier: productSegue, sender: newProduct)
-				}
 			}
+			
+			strongSelf.didAddProductToList(product: newProduct)
 		})
 		present(alertController, animated: true, completion: nil)
 	}
@@ -188,6 +198,12 @@ class SearchableProductListViewController: UIViewController {
 			productViewController.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
 			productViewController.navigationItem.leftItemsSupplementBackButton = true
 		}
+	}
+}
+
+extension SearchableProductListViewController: UITableViewDelegate {
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		performSegue(withIdentifier: tableSelectionSegueIdentifier(), sender: tableView.cellForRow(at: indexPath))
 	}
 }
 

@@ -28,6 +28,12 @@
 		0DAAF1C21F715287001F0CD3 /* ProductCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAAF1C11F715287001F0CD3 /* ProductCategory.swift */; };
 		0DAAF1C41F71588C001F0CD3 /* Stash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAAF1C31F71588C001F0CD3 /* Stash.swift */; };
 		0DD890EF1FB3BEEC00F83192 /* String+RangeFromNSRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD890EE1FB3BEEC00F83192 /* String+RangeFromNSRange.swift */; };
+		0DE6B8581FBC9F320073836C /* ProductView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0DE6B8571FBC9F160073836C /* ProductView.storyboard */; };
+		0DE6B85A1FBC9F7B0073836C /* NoProductSelected.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0DE6B8591FBC9F7B0073836C /* NoProductSelected.storyboard */; };
+		0DE6B85E1FBCA1580073836C /* Log.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0DE6B85B1FBCA0C00073836C /* Log.storyboard */; };
+		0DE6B8601FBCA2DE0073836C /* WishList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0DE6B85F1FBCA2DE0073836C /* WishList.storyboard */; };
+		0DE6B8621FBCA3930073836C /* Stash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0DE6B8611FBCA3930073836C /* Stash.storyboard */; };
+		0DE6B8671FBCA6C50073836C /* ApplicationProductSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE6B8661FBCA6C50073836C /* ApplicationProductSelectionViewController.swift */; };
 		0DEF09741F700B9D0046DE0A /* ApplicationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEF09731F700B9D0046DE0A /* ApplicationViewController.swift */; };
 		0DEF09781F714C9F0046DE0A /* StashSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEF09771F714C9F0046DE0A /* StashSplitViewController.swift */; };
 		0DEF097B1F714D0A0046DE0A /* StashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEF097A1F714D0A0046DE0A /* StashViewController.swift */; };
@@ -94,6 +100,12 @@
 		0DAAF1C11F715287001F0CD3 /* ProductCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductCategory.swift; sourceTree = "<group>"; };
 		0DAAF1C31F71588C001F0CD3 /* Stash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stash.swift; sourceTree = "<group>"; };
 		0DD890EE1FB3BEEC00F83192 /* String+RangeFromNSRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+RangeFromNSRange.swift"; sourceTree = "<group>"; };
+		0DE6B8571FBC9F160073836C /* ProductView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = ProductView.storyboard; path = "/Users/becky/Projects/skin-ios/skin/skin/ProductView.storyboard"; sourceTree = "<absolute>"; };
+		0DE6B8591FBC9F7B0073836C /* NoProductSelected.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NoProductSelected.storyboard; sourceTree = "<group>"; };
+		0DE6B85B1FBCA0C00073836C /* Log.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Log.storyboard; sourceTree = "<group>"; };
+		0DE6B85F1FBCA2DE0073836C /* WishList.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WishList.storyboard; sourceTree = "<group>"; };
+		0DE6B8611FBCA3930073836C /* Stash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Stash.storyboard; sourceTree = "<group>"; };
+		0DE6B8661FBCA6C50073836C /* ApplicationProductSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationProductSelectionViewController.swift; sourceTree = "<group>"; };
 		0DEF09731F700B9D0046DE0A /* ApplicationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationViewController.swift; sourceTree = "<group>"; };
 		0DEF09771F714C9F0046DE0A /* StashSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StashSplitViewController.swift; sourceTree = "<group>"; };
 		0DEF097A1F714D0A0046DE0A /* StashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StashViewController.swift; sourceTree = "<group>"; };
@@ -158,6 +170,7 @@
 				0DD890EE1FB3BEEC00F83192 /* String+RangeFromNSRange.swift */,
 				0D8A7B4E1F67804E00C57F0A /* Views */,
 				0D66F55A1FB2418900FE84DC /* Reusable Controllers */,
+				0DE6B8631FBCA4050073836C /* Reusable Views */,
 				0D8A7B4D1F67803100C57F0A /* Models */,
 				0D0CC3861F54B48C00334487 /* Main.storyboard */,
 				0D0CC3891F54B48C00334487 /* Assets.xcassets */,
@@ -200,6 +213,7 @@
 		0D66F5631FB3442C00FE84DC /* Wish List */ = {
 			isa = PBXGroup;
 			children = (
+				0DE6B85F1FBCA2DE0073836C /* WishList.storyboard */,
 				0D66F5641FB3444F00FE84DC /* WishListSplitViewController.swift */,
 				0D66F5661FB3446400FE84DC /* WishListViewController.swift */,
 			);
@@ -233,16 +247,28 @@
 		0D9E05EA1F70077A00E83BF3 /* Log */ = {
 			isa = PBXGroup;
 			children = (
+				0DE6B85B1FBCA0C00073836C /* Log.storyboard */,
 				0D9E05EB1F7007B300E83BF3 /* LogSplitViewController.swift */,
 				0D79E9211F5EE16B00590443 /* DailyLogViewController.swift */,
 				0DEF09731F700B9D0046DE0A /* ApplicationViewController.swift */,
+				0DE6B8661FBCA6C50073836C /* ApplicationProductSelectionViewController.swift */,
 			);
 			name = Log;
+			sourceTree = "<group>";
+		};
+		0DE6B8631FBCA4050073836C /* Reusable Views */ = {
+			isa = PBXGroup;
+			children = (
+				0DE6B8571FBC9F160073836C /* ProductView.storyboard */,
+				0DE6B8591FBC9F7B0073836C /* NoProductSelected.storyboard */,
+			);
+			name = "Reusable Views";
 			sourceTree = "<group>";
 		};
 		0DEF09791F714CE90046DE0A /* Stash */ = {
 			isa = PBXGroup;
 			children = (
+				0DE6B8611FBCA3930073836C /* Stash.storyboard */,
 				0DEF09771F714C9F0046DE0A /* StashSplitViewController.swift */,
 				0DEF097A1F714D0A0046DE0A /* StashViewController.swift */,
 			);
@@ -385,9 +411,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0DE6B8581FBC9F320073836C /* ProductView.storyboard in Resources */,
+				0DE6B8601FBCA2DE0073836C /* WishList.storyboard in Resources */,
 				0D0CC38D1F54B48C00334487 /* LaunchScreen.storyboard in Resources */,
 				0D0CC38A1F54B48C00334487 /* Assets.xcassets in Resources */,
 				0D0CC3BB1F55D13000334487 /* credentials.json in Resources */,
+				0DE6B85A1FBC9F7B0073836C /* NoProductSelected.storyboard in Resources */,
+				0DE6B85E1FBCA1580073836C /* Log.storyboard in Resources */,
+				0DE6B8621FBCA3930073836C /* Stash.storyboard in Resources */,
 				0D0CC3881F54B48C00334487 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -465,6 +496,7 @@
 				0DEF09781F714C9F0046DE0A /* StashSplitViewController.swift in Sources */,
 				0D66F55C1FB241CD00FE84DC /* ProductListSplitViewController.swift in Sources */,
 				0D8A7B521F6780A400C57F0A /* Routine.swift in Sources */,
+				0DE6B8671FBCA6C50073836C /* ApplicationProductSelectionViewController.swift in Sources */,
 				0D79E9221F5EE16B00590443 /* DailyLogViewController.swift in Sources */,
 				0DEF097D1F714D1C0046DE0A /* ProductViewController.swift in Sources */,
 				0D0CC3831F54B48C00334487 /* AppDelegate.swift in Sources */,

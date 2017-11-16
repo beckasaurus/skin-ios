@@ -11,6 +11,7 @@ import RealmSwift
 
 let applicationProductCellIdentifier = "applicationProduct"
 let noApplicationSelectedSegue = "noApplicationSelectedSegue"
+let addProductToApplicationSegue = "addProductToApplicationSegue"
 
 //TODO: change name?
 
@@ -176,26 +177,33 @@ extension ApplicationViewController: UITableViewDataSource {
 	
 	// MARK: - Add function
 	
-	@IBAction func add(_ sender: Any) {
-		let alertController = UIAlertController(title: "Add Product To Application Log", message: "Enter Product Name", preferredStyle: .alert)
-		var alertTextField: UITextField!
-		alertController.addTextField { textField in
-			alertTextField = textField
-			textField.placeholder = "Product Name"
+//	@IBAction func add(_ sender: Any) {
+//		let alertController = UIAlertController(title: "Add Product To Application Log", message: "Enter Product Name", preferredStyle: .alert)
+//		var alertTextField: UITextField!
+//		alertController.addTextField { textField in
+//			alertTextField = textField
+//			textField.placeholder = "Product Name"
+//		}
+//
+//		alertController.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+//
+//		alertController.addAction(UIAlertAction(title: "Add", style: .default) { _ in
+//			guard let text = alertTextField.text , !text.isEmpty else { return }
+//
+//			let items = self.products
+//			try! self.realm.write {
+//				items.insert(Product(value: ["name": text]), at: items.count)
+//			}
+//		})
+//
+//		present(alertController, animated: true, completion: nil)
+//	}
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if segue.identifier == addProductToApplicationSegue {
+			let applicationProductSelectionViewController = segue.destination as! ApplicationProductSelectionViewController
+			applicationProductSelectionViewController.applicationProductsList = products
 		}
-		
-		alertController.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
-		
-		alertController.addAction(UIAlertAction(title: "Add", style: .default) { _ in
-			guard let text = alertTextField.text , !text.isEmpty else { return }
-			
-			let items = self.products
-			try! self.realm.write {
-				items.insert(Product(value: ["name": text]), at: items.count)
-			}
-		})
-		
-		present(alertController, animated: true, completion: nil)
 	}
 }
 
