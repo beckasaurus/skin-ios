@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="0mN-Ij-jE8">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="0mN-Ij-jE8">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -252,7 +252,13 @@
                             <constraint firstItem="oPa-WD-h74" firstAttribute="leading" secondItem="cBG-YK-Riw" secondAttribute="trailing" constant="8" id="yp0-rz-wgP"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Daily Log" id="IIm-mL-AoF"/>
+                    <navigationItem key="navigationItem" title="Daily Log" id="IIm-mL-AoF">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="HeP-E4-hTt">
+                            <connections>
+                                <segue destination="2jD-uQ-6A5" kind="presentation" id="fUf-TV-HNQ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="dateLabel" destination="cBG-YK-Riw" id="rkz-SJ-dE8"/>
                         <outlet property="tableView" destination="9jZ-sj-AHz" id="HyO-Fh-cAt"/>
@@ -402,4 +408,7 @@
             <point key="canvasLocation" x="5210" y="-1867"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="fUf-TV-HNQ"/>
+    </inferredMetricsTieBreakers>
 </document>

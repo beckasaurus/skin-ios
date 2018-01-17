@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Pa1-3D-Tbw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Pa1-3D-Tbw">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Navigation Controller-->
+        <!--Stash-->
         <scene sceneID="J5w-vP-fYb">
             <objects>
-                <navigationController id="0ds-H7-62g" sceneMemberID="viewController">
+                <navigationController title="Stash" id="0ds-H7-62g" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="bby-bc-B3Y">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -26,10 +26,10 @@
             </objects>
             <point key="canvasLocation" x="1754" y="-741"/>
         </scene>
-        <!--Stash View Controller-->
+        <!--Stash-->
         <scene sceneID="Viq-hP-ivp">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="KCh-aC-Tuy" customClass="StashViewController" customModule="skin" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Stash" automaticallyAdjustsScrollViewInsets="NO" id="KCh-aC-Tuy" customClass="StashViewController" customModule="skin" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="KC2-La-ksS"/>
                         <viewControllerLayoutGuide type="bottom" id="cT7-81-JUa"/>
@@ -66,7 +66,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="ghY-rh-JyQ" kind="showDetail" identifier="productSegue" id="PoK-yI-5d5"/>
+                                            <segue destination="ghY-rh-JyQ" kind="showDetail" identifier="selectProductSegue" id="PoK-yI-5d5"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

@@ -36,24 +36,15 @@ class DailyLogViewController: UIViewController {
 		return log?.applications
 	}
 	
-	var notificationToken: NotificationToken!
-	var realm: Realm? {
-		return (UIApplication.shared.delegate! as! AppDelegate).realm
-	}
 	var realmConnectedNotification: NSObjectProtocol?
 	
     override func viewDidLoad() {
         super.viewDidLoad()
-		setupUI()
 		
 		realmConnectedNotification = NotificationCenter.default.addObserver(forName: realmConnected, object: nil, queue: OperationQueue.main) { [weak self] (notification) in
 			self?.setupRealm()
 		}
     }
-	
-	func setupUI() {
-		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPerformedRoutine))
-	}
 	
 	func updatePerformedRoutineList() {
 		self.tableView.reloadData()
@@ -78,56 +69,10 @@ class DailyLogViewController: UIViewController {
 		}
 		
 		updatePerformedRoutineList()
-		
-		// Notify us when Realm changes
-		self.notificationToken = self.log?.realm!.observe { [weak self] notification, realm in
-			self?.updatePerformedRoutineList()
-		}
 	}
 	
 	deinit {
-		notificationToken.invalidate()
 		realmConnectedNotification = nil
-	}
-
-	// MARK: - Add function
-	
-	func addPerformedRoutine() {
-		let alertController = UIAlertController(title: "Add Application To Daily Log", message: "Enter Routine Application Name", preferredStyle: .alert)
-		var alertTextField: UITextField!
-		alertController.addTextField { textField in
-			alertTextField = textField
-			textField.placeholder = "Routine Application Name"
-		}
-		
-		alertController.addAction(UIAlertAction(title: "Cancel", style: .default))
-		
-		alertController.addAction(UIAlertAction(title: "Add", style: .default) { [weak self] _ in
-			guard let strongSelf = self else { return }
-			
-			guard let text = alertTextField.text , !text.isEmpty else { return }
-			
-			let log = strongSelf.log!
-			try! log.realm?.write {
-				let newRoutine = Routine(value: ["name": text, "id" : NSUUID().uuidString])
-				
-				let now = Date()
-				let timeComponents = Calendar.current.dateComponents([.hour, .minute], from: now)
-				let nowTimeWithDate = Calendar.current.date(byAdding: timeComponents, to: strongSelf.log!.date)!
-				
-				let newApplication = Application(value: ["notes": "",
-				                                         "routine": newRoutine,
-				                                         "time" : nowTimeWithDate])
-				log.applications.insert(newApplication,
-				             at: strongSelf.applications!.count)
-				
-				DispatchQueue.main.async {
-					let newTableCell = strongSelf.tableView.cellForRow(at: IndexPath(row: log.applications.count - 1, section: 0))
-					strongSelf.performSegue(withIdentifier: applicationSegue, sender: newTableCell)
-				}
-			}
-		})
-		present(alertController, animated: true, completion: nil)
 	}
 	
 	// MARK: - Navigation

@@ -10,7 +10,8 @@ import UIKit
 import RealmSwift
 
 let productCellIdentifier = "productCell"
-let productSegue = "productSegue"
+let selectProductSegue = "selectProductSegue"
+let addProductSegue = "addProductSegue"
 
 enum ProductListTableSection: Int {
 	case cleansers
@@ -39,7 +40,11 @@ class SearchableProductListViewController: UIViewController {
 	}
 	
 	func tableSelectionSegueIdentifier() -> String {
-		return productSegue
+		return selectProductSegue
+	}
+
+	func addProductSegueIdentifier() -> String {
+		return addProductSegue
 	}
 	
 	//MARK: Reusable code
@@ -64,10 +69,6 @@ class SearchableProductListViewController: UIViewController {
 	var treatments: [Product]?
 	
 	var realmConnectedNotification: NSObjectProtocol?
-	var notificationToken: NotificationToken?
-	var realm: Realm? {
-		return (UIApplication.shared.delegate! as! AppDelegate).realm
-	}
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -93,6 +94,8 @@ class SearchableProductListViewController: UIViewController {
 		definesPresentationContext = true
 		
 		tableView.tableHeaderView = self.searchController?.searchBar
+
+		navigationItem.title = containerName()
 	}
 	
 	func updateList() {
@@ -121,15 +124,9 @@ class SearchableProductListViewController: UIViewController {
 		products = getProductListFromContainer(realm: realm!)
 		
 		updateCategoryProductLists()
-		
-		// Notify us when Realm changes
-		self.notificationToken = self.realm!.observe { [weak self] notification, realm in
-			self?.updateCategoryProductLists()
-		}
 	}
 	
 	deinit {
-		notificationToken?.invalidate()
 		realmConnectedNotification = nil
 	}
 	
@@ -143,37 +140,7 @@ class SearchableProductListViewController: UIViewController {
 	// MARK: - Add function
 	
 	func addProduct() {
-		let alertController = UIAlertController(title: "Add Product To \(containerName())", message: "Enter Product Name", preferredStyle: .alert)
-		var alertTextField: UITextField!
-		alertController.addTextField { textField in
-			alertTextField = textField
-			textField.placeholder = "Product Name"
-		}
-		
-		alertController.addAction(UIAlertAction(title: "Cancel", style: .default))
-		
-		alertController.addAction(UIAlertAction(title: "Add", style: .default) { [weak self] _ in
-			guard let strongSelf = self else { return }
-			
-			guard let text = alertTextField.text , !text.isEmpty else { return }
-			
-			var dateComponents = DateComponents()
-			dateComponents.month = 6
-			let defaultExpirationDate = Calendar.current.date(byAdding: dateComponents, to: Date())
-			
-			let newProduct = Product(value: ["name": text,
-											 "category" : ProductCategory.active.rawValue,
-											 "expirationDate" : defaultExpirationDate!,
-											 "price" : Double(0.00)] as Any)
-			
-			try! strongSelf.realm?.write {
-				strongSelf.products?.insert(newProduct,
-				                      at: strongSelf.products!.count)
-			}
-			
-			strongSelf.didAddProductToList(product: newProduct)
-		})
-		present(alertController, animated: true, completion: nil)
+		performSegue(withIdentifier: addProductSegueIdentifier(), sender: nil)
 	}
 	
 	// MARK: - Navigation
@@ -181,7 +148,7 @@ class SearchableProductListViewController: UIViewController {
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
-		if segue.identifier == productSegue {
+		if segue.identifier == selectProductSegue {
 			let productToView: Product
 			if let cell = sender as? UITableViewCell {
 				let indexPath = tableView.indexPath(for: cell)!

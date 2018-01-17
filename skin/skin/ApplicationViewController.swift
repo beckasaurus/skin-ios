@@ -25,18 +25,17 @@ class ApplicationViewController: UIViewController {
 	var dateFormatter: DateFormatter?
 	
 	var application: Application?
+
 	var routine: Routine? {
 		return application?.routine
 	}
+	
 	var products: List<Product> {
 		return routine!.products
 	}
 	
 	var productListNotificationToken: NotificationToken?
 	var timeAndNotesNotificationToken: NotificationToken?
-	var realm: Realm! {
-		return routine!.realm!
-	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
@@ -48,24 +47,38 @@ class ApplicationViewController: UIViewController {
 		title = routine?.name
 		
 		tableView.register(UITableViewCell.self, forCellReuseIdentifier: applicationProductCellIdentifier)
-		
+
+		let applicationTime = application?.time ?? Date()
+
 		let datePicker = UIDatePicker()
 		datePicker.datePickerMode = .time
 		datePicker.minuteInterval = 5
 		datePicker.addTarget(self, action: #selector(timeChanged(_:)), for: .valueChanged)
-		datePicker.setDate(application!.time, animated: false)
+		datePicker.setDate(applicationTime, animated: false)
 		timeTextField.inputView = datePicker
 		
 		dateFormatter = DateFormatter()
 		dateFormatter!.dateStyle = .none
 		dateFormatter!.timeStyle = .short
 		
-		timeTextField.text = dateFormatter!.string(from: application!.time)
+		timeTextField.text = dateFormatter!.string(from: applicationTime)
 		
-		notesTextView.text = application!.notes
+		notesTextView.text = application?.notes ?? ""
 	}
 	
 	func setupRealm() {
+		if application == nil {
+			try! realm?.write {
+				//FIXME: add name field
+				let newRoutine = Routine(value: ["name": "", "id" : NSUUID().uuidString])
+				let newApplication = Application(value: ["notes": "",
+														 "routine": newRoutine,
+														 "time" : dateFormatter!.date(from: timeTextField.text ?? "") ?? Date()])
+				realm?.add(newApplication)
+				application = newApplication
+			}
+		}
+
 		// Notify us when Realm changes
 		productListNotificationToken = products.observe { [weak self] (changes: RealmCollectionChange) in
 			DispatchQueue.main.async {
@@ -143,9 +156,9 @@ extension ApplicationViewController: UITableViewDataSource {
 	}
 	
 	func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-		realm.beginWrite()
+		realm?.beginWrite()
 		products.move(from: sourceIndexPath.row, to: destinationIndexPath.row)
-		try! realm.commitWrite(withoutNotifying: [productListNotificationToken!])
+		try! realm?.commitWrite(withoutNotifying: [productListNotificationToken!])
 	}
 	
 	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
@@ -169,9 +182,9 @@ extension ApplicationViewController: UITableViewDataSource {
 	// MARK: - Delete function
 	
 	func delete(at indexPath: IndexPath) {
-		try! realm.write {
+		try! realm?.write {
 			let item = products[indexPath.row]
-			realm.delete(item)
+			realm?.delete(item)
 		}
 	}
 	
@@ -204,7 +217,7 @@ extension ApplicationViewController: UITextFieldDelegate {
 
 extension ApplicationViewController: UITextViewDelegate {
 	func textViewDidEndEditing(_ textView: UITextView) {
-		try! realm.write {
+		try! realm?.write {
 			application!.notes = textView.text
 		}
 	}

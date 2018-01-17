@@ -33,14 +33,70 @@ class ProductViewController: UIViewController {
 	
 	var product: Product?
 	
-	var notificationToken: NotificationToken?
-	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		createProductIfNeeded()
 		setupUI()
-		setupRealm()
 	}
-	
+
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		updateProductFromUI()
+	}
+}
+
+// MARK: - Load Product from UI
+extension ProductViewController {
+	func updateProductFromUI() {
+		if let product = product {
+			do {
+				try realm?.write {
+					product.brand = brandTextField.text ?? ""
+					product.name = nameTextField.text ?? ""
+					product.link = linkTextField.text ?? ""
+
+					let price: Double?
+					if let currencyFormatter = currencyFormatter,
+						let priceText = priceTextField.text,
+						let numberFromFormatter = currencyFormatter.number(from: priceText) {
+						price = Double(numberFromFormatter)
+					} else {
+						price = nil
+					}
+
+					product.price.value = price
+
+					let date: Date?
+					if let expirationDateString = expirationDateTextField.text,
+						expirationDateString != "" {
+						date = dateFormatter!.date(from: expirationDateString)
+					} else {
+						date = nil
+					}
+
+					product.expirationDate = date
+
+					realm?.add(product, update: true)
+				}
+			} catch {
+				print("error updating product")
+			}
+		}
+	}
+}
+
+// MARK: - Load UI from Product
+extension ProductViewController {
+
+	func setFieldDataFromProduct() {
+		brandTextField.text = product?.brand ?? ""
+		nameTextField.text = product?.name ?? ""
+		linkTextField.text = product?.link ?? ""
+		setPriceText(with: product?.price ?? RealmOptional(0.00))
+		setExpirationDateText(with: product?.expirationDate ?? Date())
+		categoryTextField.text = product?.category ?? "Active"
+	}
+
 	func setPriceText(with price: RealmOptional<Double>) {
 		if let priceValue = price.value {
 			let number = NSNumber(value: priceValue)
@@ -56,6 +112,18 @@ class ProductViewController: UIViewController {
 			else { return }
 		
 		expirationDateTextField.text = dateFormatter!.string(from: date)
+	}
+}
+
+// MARK: - Setup UI fields and formatters
+extension ProductViewController {
+
+	func setupUI() {
+		setupPriceField()
+		setupCategoryField()
+		setupExpirationDateField()
+		setupLinkField()
+		setFieldDataFromProduct()
 	}
 	
 	func setupCurrencyFormatter() {
@@ -79,7 +147,6 @@ class ProductViewController: UIViewController {
 	}
 	
 	func setupExpirationDateField() {
-		
 		guard case .stashProduct = viewType else {
 			expirationDateStackView.isHidden = true
 			return
@@ -113,68 +180,23 @@ class ProductViewController: UIViewController {
 		categoryTextField.inputView = categoryPicker
 	}
 
-	func setTextFieldDataFromProduct() {
-		brandTextField.text = product!.brand
-		nameTextField.text = product!.name
-		linkTextField.text = product!.link
-		setPriceText(with: product!.price)
-		setExpirationDateText(with: product!.expirationDate)
-		categoryTextField.text = product!.category
-	}
-	
-	func setupUI() {
-		setupPriceField()
-		setupCategoryField()
-		setupExpirationDateField()
-		setupLinkField()
-		setTextFieldDataFromProduct()
-	}
-	
-	func setupRealm() {
-		notificationToken = product?.observe({ [weak self] (change) in
-			switch change {
-			case .change(let propertyChanges):
-				for propertyChange in propertyChanges {
-					if propertyChange.name == "name" {
-						self?.nameTextField.text = (propertyChange.newValue as! String)
-					} else if propertyChange.name == "brand" {
-						self?.brandTextField.text = (propertyChange.newValue as! String?)
-					} else if propertyChange.name == "expirationDate" {
-						let newDate: Date?
-						if let changedDate = propertyChange.newValue as? Date {
-							newDate = changedDate
-						} else {
-							newDate = nil
-						}
-						self?.setExpirationDateText(with: newDate)
-					} else if propertyChange.name == "price" {
-						
-					} else if propertyChange.name == "category" {
-						guard let newCategory = ProductCategory(rawValue: propertyChange.newValue as! String)
-							else { return }
-						
-						self?.categoryTextField.text = newCategory.rawValue
-					}
-				}
-			default:
-				return
-			}
-		})
-	}
-	
-	override func viewWillDisappear(_ animated: Bool) {
-		super.viewWillDisappear(animated)
-		
-		notificationToken?.invalidate()
-	}
-	
-	func linkURLFromLinkField() -> URL? {
-		guard let linkString = linkTextField.text else {
-				return nil
+	func createProductIfNeeded() {
+		if product == nil {
+			var dateComponents = DateComponents()
+			dateComponents.month = 6
+			let defaultExpirationDate = Calendar.current.date(byAdding: dateComponents, to: Date())
+
+			product = Product(value: ["name": "",
+									  "category" : ProductCategory.active.rawValue,
+									  "expirationDate" : defaultExpirationDate!,
+									  "price" : Double(0.00)] as Any)
 		}
-		return URL(string:linkString)
 	}
-	
+}
+
+// MARK: UI Actions
+extension ProductViewController {
+
 	@IBAction func wishListLinkClicked(sender: UIButton) {
 		//FIXME: share extension
 		guard let url = linkURLFromLinkField() else {
@@ -182,16 +204,16 @@ class ProductViewController: UIViewController {
 		}
 		UIApplication.shared.open(url)
 	}
-}
 
-extension ProductViewController {
-	func expirationDateChanged(_ sender: UIDatePicker) {
-		let datePicker = expirationDateTextField.inputView! as! UIDatePicker
-		let expirationDate = datePicker.date
-		setExpirationDateText(with: expirationDate)
+	func linkURLFromLinkField() -> URL? {
+		guard let linkString = linkTextField.text else {
+			return nil
+		}
+		return URL(string:linkString)
 	}
 }
 
+// MARK: Date picker data source
 extension ProductViewController: UIPickerViewDataSource {
 	func numberOfComponents(in pickerView: UIPickerView) -> Int {
 		return 1
@@ -202,12 +224,13 @@ extension ProductViewController: UIPickerViewDataSource {
 	}
 }
 
+// MARK: Date picker delegate
 extension ProductViewController: UIPickerViewDelegate {
 	func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
 		let productCategory = ProductCategory.allCases[row]
 		
-		try! product!.realm?.write {
-			product!.category = productCategory.rawValue
+		try! realm?.write {
+			product?.category = productCategory.rawValue
 		}
 	}
 	
@@ -216,51 +239,16 @@ extension ProductViewController: UIPickerViewDelegate {
 		
 		return productCategory.rawValue
 	}
+
+	func expirationDateChanged(_ sender: UIDatePicker) {
+		let datePicker = expirationDateTextField.inputView! as! UIDatePicker
+		let expirationDate = datePicker.date
+		setExpirationDateText(with: expirationDate)
+	}
 }
 
+// MARK: Text field delegate
 extension ProductViewController: UITextFieldDelegate {
-	func textFieldDidEndEditing(_ textField: UITextField) {
-		if textField == nameTextField {
-			try! product!.realm?.write {
-				product!.name = nameTextField.text!
-			}
-		} else if textField == brandTextField {
-			try! product!.realm?.write {
-				product!.brand = brandTextField.text
-			}
-		} else if textField == linkTextField {
-			try! product!.realm?.write {
-				product!.link = linkTextField.text
-			}
-		} else if textField == expirationDateTextField {
-			let date: Date?
-			if let expDateString = expirationDateTextField.text,
-				expDateString != "" {
-				date = dateFormatter!.date(from: expDateString)
-			} else {
-				date = nil
-			}
-			
-			try! product!.realm?.write {
-				product!.expirationDate = date
-			}
-			
-		} else if textField == priceTextField {
-			let price: Double?
-			if let currencyFormatter = currencyFormatter,
-				let priceText = priceTextField.text,
-				let numberFromFormatter = currencyFormatter.number(from: priceText) {
-				price = Double(numberFromFormatter)
-			} else {
-				price = nil
-			}
-			
-			try! product!.realm?.write {
-				product!.price.value = price
-			}
-		}
-	}
-	
 	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
 		if textField == categoryTextField {
 			return false
@@ -268,7 +256,9 @@ extension ProductViewController: UITextFieldDelegate {
 		
 		guard textField == priceTextField else {
 			return true
-		}		
+		}
+
+		//FIXME: break into a separate formatter object
 		
 		guard let currencyFormatter = currencyFormatter,
 		let selectedRange = priceTextField.selectedTextRange,
