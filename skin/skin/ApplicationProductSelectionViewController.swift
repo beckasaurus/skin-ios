@@ -28,14 +28,14 @@ class ApplicationProductSelectionViewController: StashViewController {
 		}
 	}
 	
-	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		let productToAdd = productForIndexPath(indexPath: indexPath)
 		addProductToApplicationProductList(product: productToAdd)
 		self.navigationController?.popViewController(animated: true)
 	}
 	
-	override func didAddProductToList(product: Product) {
-		addProductToApplicationProductList(product: product)
-		self.navigationController?.popViewController(animated: true)
-	}
+//	override func didAddProductToList(product: Product) {
+//		addProductToApplicationProductList(product: product)
+//		self.navigationController?.popViewController(animated: true)
+//	}
 }

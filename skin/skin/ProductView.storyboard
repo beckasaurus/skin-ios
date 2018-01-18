@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="aoR-KG-soN">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="aoR-KG-soN">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -180,15 +181,18 @@
                         <outlet property="linkTextField" destination="dz6-7D-KvH" id="a7u-ZN-ghI"/>
                         <outlet property="nameTextField" destination="mee-78-4YZ" id="LR8-hF-ct5"/>
                         <outlet property="priceTextField" destination="YTV-4K-euV" id="ecK-Uy-cC0"/>
+                        <segue destination="Lod-8T-Y7q" kind="unwind" identifier="didAddProductSegue" unwindAction="didAddProductToListWithSegue:" id="nci-p2-8bF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="We9-DZ-twm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="Lod-8T-Y7q" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="4424.8000000000002" y="-475.41229385307349"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="IE5-rd-UIs">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hEE-Qj-XrO" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="aoR-KG-soN" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="CJa-N6-nz8">
@@ -200,7 +204,6 @@
                         <segue destination="nW3-pd-1uT" kind="relationship" relationship="rootViewController" id="SeV-KI-aGi"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hEE-Qj-XrO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3485.5999999999999" y="-475.41229385307349"/>
         </scene>

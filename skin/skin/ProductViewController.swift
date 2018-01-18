@@ -9,9 +9,16 @@
 import UIKit
 import RealmSwift
 
+static let didAddProductSegue = "didAddProductSegue"
+static let cancelSegue = "cancelSegue"
+
 public enum ProductViewType {
 	case stashProduct
 	case wishListProduct
+}
+
+protocol ProductViewDidAddDelegate {
+	func handleProductViewDidAdd(product: Product)
 }
 
 class ProductViewController: UIViewController {
@@ -35,8 +42,9 @@ class ProductViewController: UIViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		setupNavigationButtons()
+		setupFields()
 		createProductIfNeeded()
-		setupUI()
 	}
 
 	override func viewWillDisappear(_ animated: Bool) {
@@ -45,7 +53,83 @@ class ProductViewController: UIViewController {
 	}
 }
 
-// MARK: - Load Product from UI
+// MARK: - Configure UI
+extension ProductViewController {
+	/// This adds Add/Cancel buttons to the navigation bar if the user is adding a new product, or a Back button if the product already exists.
+	/// This must be called before setting up a new product model.
+	func setupNavigationButtons() {
+		//new item
+		if (product == nil) {
+			navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
+			navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
+		}
+	}
+
+	func setupFields() {
+		setupPriceField()
+		setupCategoryField()
+		setupExpirationDateField()
+		setupLinkField()
+		setFieldDataFromProduct()
+	}
+
+	func setupCurrencyFormatter() {
+		currencyFormatter = NumberFormatter()
+		currencyFormatter?.numberStyle = .currency
+		currencyFormatter?.locale = Locale.current
+		currencyFormatter?.maximumFractionDigits = 2
+		currencyFormatter?.minimumFractionDigits = 2
+	}
+
+	func setupPriceField() {
+		setupCurrencyFormatter()
+
+		priceTextField.keyboardType = .numberPad
+	}
+
+	func setupDateFormatter() {
+		dateFormatter = DateFormatter()
+		dateFormatter!.dateStyle = .short
+		dateFormatter!.timeStyle = .none
+	}
+
+	func setupExpirationDateField() {
+		guard case .stashProduct = viewType else {
+			expirationDateStackView.isHidden = true
+			return
+		}
+
+		setupDateFormatter()
+
+		let datePicker = UIDatePicker()
+		datePicker.datePickerMode = .date
+		datePicker.addTarget(self, action: #selector(expirationDateChanged(_:)), for: .valueChanged)
+		if let expirationDate = product?.expirationDate {
+			datePicker.setDate(expirationDate, animated: false)
+		}
+		expirationDateTextField.inputView = datePicker
+	}
+
+	func setupLinkField() {
+		guard case .wishListProduct = viewType else {
+			linkStackView.isHidden = true
+			return
+		}
+	}
+
+	func setupCategoryField() {
+		let categoryPicker = UIPickerView()
+		categoryPicker.delegate = self
+		categoryPicker.dataSource = self
+		let productCategory = ProductCategory(rawValue: product?.category ?? ProductCategory.active.rawValue) ?? ProductCategory.active
+		if let rowNumForCategory = ProductCategory.allCases.index(of: productCategory) {
+			categoryPicker.selectRow(rowNumForCategory, inComponent: 0, animated: true)
+		}
+		categoryTextField.inputView = categoryPicker
+	}
+}
+
+// MARK: - Load Product from fields
 extension ProductViewController {
 	func updateProductFromUI() {
 		if let product = product {
@@ -76,6 +160,8 @@ extension ProductViewController {
 
 					product.expirationDate = date
 
+					product.category = categoryTextField.text ?? ProductCategory.active.rawValue
+
 					realm?.add(product, update: true)
 				}
 			} catch {
@@ -85,7 +171,7 @@ extension ProductViewController {
 	}
 }
 
-// MARK: - Load UI from Product
+// MARK: - Load fields from Product
 extension ProductViewController {
 
 	func setFieldDataFromProduct() {
@@ -94,7 +180,7 @@ extension ProductViewController {
 		linkTextField.text = product?.link ?? ""
 		setPriceText(with: product?.price ?? RealmOptional(0.00))
 		setExpirationDateText(with: product?.expirationDate ?? Date())
-		categoryTextField.text = product?.category ?? "Active"
+		categoryTextField.text = product?.category ?? ProductCategory.active.rawValue
 	}
 
 	func setPriceText(with price: RealmOptional<Double>) {
@@ -115,71 +201,8 @@ extension ProductViewController {
 	}
 }
 
-// MARK: - Setup UI fields and formatters
+// MARK: - Product creation
 extension ProductViewController {
-
-	func setupUI() {
-		setupPriceField()
-		setupCategoryField()
-		setupExpirationDateField()
-		setupLinkField()
-		setFieldDataFromProduct()
-	}
-	
-	func setupCurrencyFormatter() {
-		currencyFormatter = NumberFormatter()
-		currencyFormatter?.numberStyle = .currency
-		currencyFormatter?.locale = Locale.current
-		currencyFormatter?.maximumFractionDigits = 2
-		currencyFormatter?.minimumFractionDigits = 2
-	}
-	
-	func setupPriceField() {
-		setupCurrencyFormatter()
-		
-		priceTextField.keyboardType = .numberPad
-	}
-	
-	func setupDateFormatter() {
-		dateFormatter = DateFormatter()
-		dateFormatter!.dateStyle = .short
-		dateFormatter!.timeStyle = .none
-	}
-	
-	func setupExpirationDateField() {
-		guard case .stashProduct = viewType else {
-			expirationDateStackView.isHidden = true
-			return
-		}
-		
-		setupDateFormatter()
-		
-		let datePicker = UIDatePicker()
-		datePicker.datePickerMode = .date
-		datePicker.addTarget(self, action: #selector(expirationDateChanged(_:)), for: .valueChanged)
-		if let expirationDate = product?.expirationDate {
-			datePicker.setDate(expirationDate, animated: false)
-		}
-		expirationDateTextField.inputView = datePicker
-	}
-	
-	func setupLinkField() {
-		guard case .wishListProduct = viewType else {
-			linkStackView.isHidden = true
-			return
-		}
-	}
-	
-	func setupCategoryField() {
-		let categoryPicker = UIPickerView()
-		categoryPicker.delegate = self
-		categoryPicker.dataSource = self
-		if let rowNumForCategory = ProductCategory.allCases.index(of: ProductCategory(rawValue: (product?.category)!)!) {
-			categoryPicker.selectRow(rowNumForCategory, inComponent: 0, animated: true)
-		}
-		categoryTextField.inputView = categoryPicker
-	}
-
 	func createProductIfNeeded() {
 		if product == nil {
 			var dateComponents = DateComponents()
@@ -211,6 +234,27 @@ extension ProductViewController {
 		}
 		return URL(string:linkString)
 	}
+
+	@IBAction func done(sender: UIBarButtonItem) {
+		performSegue(withIdentifier: didAddProductSegue, sender: product)
+	}
+
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if segue.identifier == didAddProductSegue {
+			updateProductFromUI()
+			let destination = segue.destination as! ProductViewDidAddDelegate
+			destination.handleProductViewDidAdd(product: product!)
+		}
+	}
+
+	@IBAction func cancel(sender: UIBarButtonItem) {
+		product = nil
+		leaveView()
+	}
+
+	func leaveView() {
+		navigationController?.popViewController(animated: true)
+	}
 }
 
 // MARK: Date picker data source
@@ -228,10 +272,7 @@ extension ProductViewController: UIPickerViewDataSource {
 extension ProductViewController: UIPickerViewDelegate {
 	func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
 		let productCategory = ProductCategory.allCases[row]
-		
-		try! realm?.write {
-			product?.category = productCategory.rawValue
-		}
+		categoryTextField.text = productCategory.rawValue
 	}
 	
 	func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {

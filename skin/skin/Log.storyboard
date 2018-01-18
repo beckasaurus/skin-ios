@@ -373,6 +373,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="Uep-xa-ssg" kind="showDetail" identifier="selectProductSegue" id="HjQ-Y1-P0S"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -389,7 +392,13 @@
                             <constraint firstAttribute="trailingMargin" secondItem="G2j-in-uBd" secondAttribute="trailing" constant="-16" id="vMk-Ee-fSN"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="n2P-Ms-Rf9"/>
+                    <navigationItem key="navigationItem" id="n2P-Ms-Rf9">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="jQJ-QQ-kCJ">
+                            <connections>
+                                <segue destination="Uep-xa-ssg" kind="presentation" identifier="addProductSegue" id="ebh-3Z-I0n"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="searchDisplayController" destination="6M7-bu-MK8" id="s9v-kd-UIN"/>
                         <outlet property="tableView" destination="G2j-in-uBd" id="yRh-gS-JYe"/>
@@ -407,8 +416,17 @@
             </objects>
             <point key="canvasLocation" x="5210" y="-1867"/>
         </scene>
+        <!--ProductView-->
+        <scene sceneID="OIM-S0-6Nk">
+            <objects>
+                <viewControllerPlaceholder storyboardName="ProductView" id="Uep-xa-ssg" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tRj-3g-LIZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5951" y="-1867"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="ebh-3Z-I0n"/>
         <segue reference="fUf-TV-HNQ"/>
     </inferredMetricsTieBreakers>
 </document>

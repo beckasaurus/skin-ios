@@ -84,8 +84,6 @@ class SearchableProductListViewController: UIViewController {
 	}
 	
 	func setupUI() {
-		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addProduct))
-		
 		searchController = UISearchController(searchResultsController: nil)
 		searchController?.searchResultsUpdater = self
 		searchController?.searchBar.delegate = self
@@ -93,7 +91,7 @@ class SearchableProductListViewController: UIViewController {
 		searchController?.searchBar.sizeToFit()
 		definesPresentationContext = true
 		
-		tableView.tableHeaderView = self.searchController?.searchBar
+		tableView.tableHeaderView = searchController?.searchBar
 
 		navigationItem.title = containerName()
 	}
@@ -129,20 +127,11 @@ class SearchableProductListViewController: UIViewController {
 	deinit {
 		realmConnectedNotification = nil
 	}
-	
-	func didAddProductToList(product: Product) {
-		DispatchQueue.main.async { [weak self] _ in
-			guard let strongSelf = self else { return }
-			strongSelf.performSegue(withIdentifier: strongSelf.tableSelectionSegueIdentifier(), sender: product)
-		}
+
+	@IBAction func didAddProductToList(segue: UIStoryboardSegue) {
+		updateCategoryProductLists()
 	}
-	
-	// MARK: - Add function
-	
-	func addProduct() {
-		performSegue(withIdentifier: addProductSegueIdentifier(), sender: nil)
-	}
-	
+
 	// MARK: - Navigation
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -168,12 +157,29 @@ class SearchableProductListViewController: UIViewController {
 	}
 }
 
-extension SearchableProductListViewController: UITableViewDelegate {
-	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		performSegue(withIdentifier: tableSelectionSegueIdentifier(), sender: tableView.cellForRow(at: indexPath))
+extension SearchableProductListViewController: ProductViewDidAddDelegate {
+	func handleProductViewDidAdd(product: Product) {
+		try! realm?.write {
+			products?.insert(product,
+							 at: products!.count)
+		}
 	}
 }
 
+extension SearchableProductListViewController: UITableViewDelegate {
+//	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//		let productViewController = ProductViewController()
+//		let productToView = productForIndexPath(indexPath: indexPath)
+//		productViewController.product = productToView
+//		productViewController.viewType = productViewType()
+//
+//		navigationController?.pushViewController(productViewController, animated: true)
+//
+////		performSegue(withIdentifier: tableSelectionSegueIdentifier(), sender: tableView.cellForRow(at: indexPath))
+//	}
+}
+
+// MARK: Table view data source
 extension SearchableProductListViewController: UITableViewDataSource {
 	
 	func productForIndexPath(indexPath: IndexPath) -> Product {
@@ -259,6 +265,7 @@ extension SearchableProductListViewController: UITableViewDataSource {
 	}
 }
 
+// MARK: Search results updating protocol
 extension SearchableProductListViewController: UISearchResultsUpdating {
 	
 	func filterContentForSearchText(_ searchText: String) {
@@ -280,6 +287,7 @@ extension SearchableProductListViewController: UISearchResultsUpdating {
 	}
 }
 
+// MARK: Search bar delegate
 extension SearchableProductListViewController: UISearchBarDelegate {
 	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
 		filteredProducts = nil

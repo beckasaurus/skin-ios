@@ -84,7 +84,13 @@
                             <constraint firstItem="oUF-PJ-PiH" firstAttribute="leading" secondItem="p3W-U5-Hbe" secondAttribute="leadingMargin" constant="-16" id="qWz-vl-2Hc"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="jZc-N6-bQV"/>
+                    <navigationItem key="navigationItem" id="jZc-N6-bQV">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="VCu-hQ-A7O">
+                            <connections>
+                                <segue destination="ghY-rh-JyQ" kind="presentation" identifier="addProductSegue" id="kmS-HG-ZfT"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="oUF-PJ-PiH" id="kBJ-zf-STO"/>
                     </connections>
@@ -124,4 +130,7 @@
             <point key="canvasLocation" x="1694" y="275"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="kmS-HG-ZfT"/>
+    </inferredMetricsTieBreakers>
 </document>
