@@ -51,7 +51,7 @@ extension LogSplitViewController: UISplitViewControllerDelegate {
 			else {return true}
 		
 		if let applicationController = secondaryController as? ApplicationViewController,
-			applicationController.routine == nil {
+			applicationController.application == nil {
 			return true
 		} else if secondaryController.restorationIdentifier == emptyApplicationSelectionViewControllerIdentifier {
 			return true

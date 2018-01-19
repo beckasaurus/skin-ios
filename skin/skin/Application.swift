@@ -10,7 +10,13 @@ import RealmSwift
 import Foundation
 
 final class Application: Object {
+	dynamic var id = ""
+	dynamic var name = ""
 	dynamic var notes = ""
 	dynamic var time = Date()
-	dynamic var routine: Routine?
+	var products = List<Product>()
+
+	override static func primaryKey() -> String? {
+		return "id"
+	}
 }

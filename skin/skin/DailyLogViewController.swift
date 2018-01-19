@@ -35,7 +35,8 @@ class DailyLogViewController: UIViewController {
 	var applications: List<Application>? {
 		return log?.applications
 	}
-	
+
+	var notificationToken: NotificationToken!
 	var realmConnectedNotification: NSObjectProtocol?
 	
     override func viewDidLoad() {
@@ -45,19 +46,14 @@ class DailyLogViewController: UIViewController {
 			self?.setupRealm()
 		}
     }
+
+	deinit {
+		notificationToken.invalidate()
+		realmConnectedNotification = nil
+	}
 	
 	func updatePerformedRoutineList() {
 		self.tableView.reloadData()
-	}
-	
-	func createNewLog(date: Date) {
-		try! self.realm!.write {
-			let dailyLog = Log()
-			dailyLog.date = date
-			dailyLog.id = String(date.timeIntervalSince1970)
-			self.realm!.add(dailyLog)
-			self.log = dailyLog
-		}
 	}
 	
 	func setupRealm() {
@@ -69,14 +65,16 @@ class DailyLogViewController: UIViewController {
 		}
 		
 		updatePerformedRoutineList()
+
+		// Notify us when Realm changes
+		self.notificationToken = self.log?.realm!.observe { [weak self] notification, realm in
+			self?.updatePerformedRoutineList()
+		}
 	}
-	
-	deinit {
-		realmConnectedNotification = nil
-	}
-	
-	// MARK: - Navigation
-	
+}
+
+// MARK: Segues
+extension DailyLogViewController {
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if segue.identifier == applicationSegue {
 			let cell = sender as! UITableViewCell
@@ -85,28 +83,49 @@ class DailyLogViewController: UIViewController {
 			let navController = segue.destination as! UINavigationController
 			let applicationViewController = navController.topViewController as! ApplicationViewController
 			applicationViewController.application = application
-			
+			applicationViewController.delegate = self
+
 			applicationViewController.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
 			applicationViewController.navigationItem.leftItemsSupplementBackButton = true
 		}
 	}
-	
-	// MARK: - Changing dates
-	
+
+	@IBAction func applicationViewUnwind(segue: UIStoryboardSegue) {
+		//unwind segue for done/cancel in application view
+		//we register as the application view's delegate so we'll receive a notification when a new application is added and handle adding to our list there
+		//nothing really needs to be done here, we just need the segue to be present so we can manually unwind
+	}
+}
+
+// MARK: Create new log
+extension DailyLogViewController {
+	func createNewLog(date: Date) {
+		try! self.realm!.write {
+			let dailyLog = Log()
+			dailyLog.date = date
+			dailyLog.id = String(date.timeIntervalSince1970)
+			self.realm!.add(dailyLog)
+			self.log = dailyLog
+		}
+	}
+}
+
+// MARK: Date navigation
+extension DailyLogViewController {
 	func predicate(for date: Date) throws -> NSPredicate {
 		guard let nextDayBegin = Calendar.current.date(bySettingHour: 00, minute: 00, second: 00, of: date),
 			let nextDayEnd = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: date)
 			else { throw LogError.invalidDate }
-		
+
 		return NSPredicate(format: "date >= %@ AND date <= %@", nextDayBegin as CVarArg, nextDayEnd as CVarArg)
 	}
-	
+
 	func changeDay(by days: Int) {
 		var dayComponent = DateComponents()
 		dayComponent.day = days
 		guard let nextDay = Calendar.current.date(byAdding: dayComponent, to: log!.date)
 			else { return }
-		
+
 		do {
 			let datePredicate = try predicate(for: nextDay)
 			if let nextLog = realm!.objects(Log.self).filter(datePredicate).first {
@@ -114,25 +133,35 @@ class DailyLogViewController: UIViewController {
 			} else {
 				createNewLog(date: nextDay)
 			}
-			
+
 			updatePerformedRoutineList()
-			
+
 			NotificationCenter.default.post(name: changedLogDateNotificationName, object: self)
 		} catch {
 			return
 		}
 	}
-	
+
 	@IBAction func swipeRight(_ sender: UIButton) {
 		changeDay(by: 1)
 	}
-	
+
 	@IBAction func swipeLeft(_ sender: UIButton) {
 		changeDay(by: -1)
 	}
-
 }
 
+// MARK: ApplicationDelegate
+extension DailyLogViewController: ApplicationDelegate {
+	func didAdd(application: Application) {
+		try! realm?.write {
+			log?.applications.insert(application,
+									at: applications!.count)
+		}
+	}
+}
+
+// MARK: UITableViewDataSource
 extension DailyLogViewController: UITableViewDataSource {
 	func numberOfSections(in tableView: UITableView) -> Int {
 		return 1
@@ -146,7 +175,7 @@ extension DailyLogViewController: UITableViewDataSource {
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: applicationCellIdentifier, for: indexPath)
 		let application = applications![indexPath.row]
-		cell.textLabel?.text = application.routine!.name
+		cell.textLabel?.text = application.name
 		
 		let timeFormatter = DateFormatter()
 		timeFormatter.timeStyle = .short
@@ -154,8 +183,7 @@ extension DailyLogViewController: UITableViewDataSource {
 		cell.detailTextLabel?.text = timeFormatter.string(from:  application.time)
 		return cell
 	}
-	
-	// MARK: - Delete function
+
 	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
 		if editingStyle == .delete {
 			try! self.realm?.write {

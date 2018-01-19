@@ -211,10 +211,11 @@ extension ProductViewController {
 			dateComponents.month = 6
 			let defaultExpirationDate = Calendar.current.date(byAdding: dateComponents, to: Date())
 
+			//FIXME: need to test that the default values provided here actually show up when adding a new product. do we need to call create new before we load from the product
 			product = Product(value: ["name": "",
 									  "category" : ProductCategory.active.rawValue,
 									  "expirationDate" : defaultExpirationDate!,
-									  "price" : Double(0.00)] as Any)
+									  "price" : Double(10.00)] as Any)
 		}
 	}
 }

@@ -28,8 +28,25 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="bId-it-7wM">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="308"/>
                                         <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="3S9-0j-XY1">
+                                                <rect key="frame" x="0.0" y="0.0" width="343" height="0.0"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Application Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eju-ms-ar4">
+                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="0.0"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Tf2-Z1-OON">
+                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="0.0"/>
+                                                        <nil key="textColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits"/>
+                                                    </textField>
+                                                </subviews>
+                                            </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="xWm-KG-VGH">
-                                                <rect key="frame" x="0.0" y="0.0" width="343" height="28.5"/>
+                                                <rect key="frame" x="0.0" y="8" width="343" height="20.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="khT-Kt-V1C">
                                                         <rect key="frame" x="0.0" y="0.0" width="343" height="0.0"/>
@@ -38,7 +55,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="750" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OgD-4U-f9a">
-                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="28.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="20.5"/>
                                                         <nil key="textColor"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits"/>
@@ -127,12 +144,15 @@
                     <navigationItem key="navigationItem" id="uFQ-GK-5uT"/>
                     <connections>
                         <outlet property="editDoneButton" destination="Wtc-hL-Dsp" id="70l-Fe-49J"/>
+                        <outlet property="nameTextField" destination="Tf2-Z1-OON" id="qG3-bk-3xQ"/>
                         <outlet property="notesTextView" destination="eQq-sF-YvT" id="mCR-ds-REy"/>
                         <outlet property="tableView" destination="gYj-rr-P8c" id="UHj-4d-Acz"/>
                         <outlet property="timeTextField" destination="OgD-4U-f9a" id="8hw-uk-zNS"/>
+                        <segue destination="67t-eB-r4s" kind="unwind" identifier="applicationUnwindSegue" unwindAction="applicationViewUnwindWithSegue:" id="scA-R6-g8B"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oe5-fd-lkG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="67t-eB-r4s" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="4352.8000000000002" y="-1867.0164917541231"/>
         </scene>

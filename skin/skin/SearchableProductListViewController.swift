@@ -136,7 +136,7 @@ class SearchableProductListViewController: UIViewController {
 	}
 
 	@IBAction func productViewUnwind(segue: UIStoryboardSegue) {
-		//unwind segue for done/cancel
+		//unwind segue for done/cancel in product view
 		//we register as the product view's delegate so we'll receive a notification when a new product is added and handle adding to our list there
 		//nothing really needs to be done here, we just need the segue to be present so we can manually unwind
 	}
