@@ -9,20 +9,21 @@
 import UIKit
 import RealmSwift
 
-static let didAddProductSegue = "didAddProductSegue"
-static let cancelSegue = "cancelSegue"
+let productUnwindSegue: String = "productUnwindSegue"
 
 public enum ProductViewType {
 	case stashProduct
 	case wishListProduct
 }
 
-protocol ProductViewDidAddDelegate {
-	func handleProductViewDidAdd(product: Product)
+protocol ProductDelegate: class {
+	func didAdd(product: Product)
 }
 
 class ProductViewController: UIViewController {
-	
+
+	weak var delegate: ProductDelegate?
+
 	@IBOutlet weak var nameTextField: UITextField!
 	@IBOutlet weak var brandTextField: UITextField!
 	@IBOutlet weak var priceTextField: UITextField!
@@ -162,6 +163,7 @@ extension ProductViewController {
 
 					product.category = categoryTextField.text ?? ProductCategory.active.rawValue
 
+					//TODO: find out if this writes to realm twice, once here and once when we add it to the list
 					realm?.add(product, update: true)
 				}
 			} catch {
@@ -236,24 +238,23 @@ extension ProductViewController {
 	}
 
 	@IBAction func done(sender: UIBarButtonItem) {
-		performSegue(withIdentifier: didAddProductSegue, sender: product)
-	}
-
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if segue.identifier == didAddProductSegue {
-			updateProductFromUI()
-			let destination = segue.destination as! ProductViewDidAddDelegate
-			destination.handleProductViewDidAdd(product: product!)
-		}
+		performSegue(withIdentifier: productUnwindSegue, sender: product)
 	}
 
 	@IBAction func cancel(sender: UIBarButtonItem) {
+		//We do not want to save this newly created product, so nil it out
 		product = nil
-		leaveView()
+		performSegue(withIdentifier: productUnwindSegue, sender: product)
 	}
 
-	func leaveView() {
-		navigationController?.popViewController(animated: true)
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		//this segue should ONLY be called by the done and cancel buttons.
+		//if called and the product is still present, this signals to the delegate that we've added a new product and we need to refresh
+		if segue.identifier == productUnwindSegue,
+			let product = product {
+			updateProductFromUI()
+			delegate?.didAdd(product: product)
+		}
 	}
 }
 

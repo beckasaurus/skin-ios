@@ -181,7 +181,7 @@
                         <outlet property="linkTextField" destination="dz6-7D-KvH" id="a7u-ZN-ghI"/>
                         <outlet property="nameTextField" destination="mee-78-4YZ" id="LR8-hF-ct5"/>
                         <outlet property="priceTextField" destination="YTV-4K-euV" id="ecK-Uy-cC0"/>
-                        <segue destination="Lod-8T-Y7q" kind="unwind" identifier="didAddProductSegue" unwindAction="didAddProductToListWithSegue:" id="nci-p2-8bF"/>
+                        <segue destination="Lod-8T-Y7q" kind="unwind" identifier="productUnwindSegue" unwindAction="productViewUnwind:" id="nci-p2-8bF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="We9-DZ-twm" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -69,6 +69,7 @@ class SearchableProductListViewController: UIViewController {
 	var treatments: [Product]?
 	
 	var realmConnectedNotification: NSObjectProtocol?
+	var notificationToken: NotificationToken?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -122,14 +123,22 @@ class SearchableProductListViewController: UIViewController {
 		products = getProductListFromContainer(realm: realm!)
 		
 		updateCategoryProductLists()
+
+		// Notify us when Realm changes
+		self.notificationToken = self.realm!.observe { [weak self] notification, realm in
+			self?.updateCategoryProductLists()
+		}
 	}
 	
 	deinit {
+		notificationToken?.invalidate()
 		realmConnectedNotification = nil
 	}
 
-	@IBAction func didAddProductToList(segue: UIStoryboardSegue) {
-		updateCategoryProductLists()
+	@IBAction func productViewUnwind(segue: UIStoryboardSegue) {
+		//unwind segue for done/cancel
+		//we register as the product view's delegate so we'll receive a notification when a new product is added and handle adding to our list there
+		//nothing really needs to be done here, we just need the segue to be present so we can manually unwind
 	}
 
 	// MARK: - Navigation
@@ -150,15 +159,16 @@ class SearchableProductListViewController: UIViewController {
 			let productViewController = navController.topViewController as! ProductViewController
 			productViewController.product = productToView
 			productViewController.viewType = productViewType()
-			
+			productViewController.delegate = self
+
 			productViewController.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
 			productViewController.navigationItem.leftItemsSupplementBackButton = true
 		}
 	}
 }
 
-extension SearchableProductListViewController: ProductViewDidAddDelegate {
-	func handleProductViewDidAdd(product: Product) {
+extension SearchableProductListViewController: ProductDelegate {
+	func didAdd(product: Product) {
 		try! realm?.write {
 			products?.insert(product,
 							 at: products!.count)
