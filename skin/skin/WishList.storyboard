@@ -65,9 +65,6 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="ghY-rh-JyQ" kind="showDetail" identifier="selectProductSegue" id="175-ww-fsl"/>
-                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -85,11 +82,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="jZc-N6-bQV">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="VCu-hQ-A7O">
-                            <connections>
-                                <segue destination="ghY-rh-JyQ" kind="presentation" identifier="addProductSegue" id="kmS-HG-ZfT"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="VCu-hQ-A7O"/>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="oUF-PJ-PiH" id="kBJ-zf-STO"/>
@@ -113,14 +106,6 @@
             </objects>
             <point key="canvasLocation" x="857" y="638"/>
         </scene>
-        <!--ProductView-->
-        <scene sceneID="mhj-CS-cjL">
-            <objects>
-                <viewControllerPlaceholder storyboardName="ProductView" id="ghY-rh-JyQ" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="IY0-3A-7ci" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3426" y="946"/>
-        </scene>
         <!--NoProductSelected-->
         <scene sceneID="WJ2-on-VHO">
             <objects>
@@ -130,7 +115,4 @@
             <point key="canvasLocation" x="1694" y="275"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="kmS-HG-ZfT"/>
-    </inferredMetricsTieBreakers>
 </document>

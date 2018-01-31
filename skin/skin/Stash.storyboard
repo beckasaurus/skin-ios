@@ -65,9 +65,6 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="ghY-rh-JyQ" kind="showDetail" identifier="selectProductSegue" id="PoK-yI-5d5"/>
-                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -85,11 +82,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="W98-BX-mTF">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="u9W-eZ-vR8">
-                            <connections>
-                                <segue destination="ghY-rh-JyQ" kind="presentation" identifier="addProductSegue" id="ZA4-f7-pfg"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="u9W-eZ-vR8"/>
                     </navigationItem>
                     <connections>
                         <outlet property="searchDisplayController" destination="0bO-fx-JRz" id="NVH-dE-pE9"/>
@@ -122,14 +115,6 @@
             </objects>
             <point key="canvasLocation" x="914" y="-600"/>
         </scene>
-        <!--ProductView-->
-        <scene sceneID="mhj-CS-cjL">
-            <objects>
-                <viewControllerPlaceholder storyboardName="ProductView" id="ghY-rh-JyQ" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="IY0-3A-7ci" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3418" y="-742"/>
-        </scene>
         <!--NoProductSelected-->
         <scene sceneID="WJ2-on-VHO">
             <objects>
@@ -139,7 +124,4 @@
             <point key="canvasLocation" x="1753" y="-91"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="ZA4-f7-pfg"/>
-    </inferredMetricsTieBreakers>
 </document>

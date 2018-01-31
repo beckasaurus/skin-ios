@@ -1,62 +1,178 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Dg1-Fz-VTW">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="xtb-gM-Vel">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Tab Bar Controller-->
-        <scene sceneID="aTS-40-o3H">
+        <!--Home-->
+        <scene sceneID="r0H-1t-7gR">
             <objects>
-                <tabBarController id="Dg1-Fz-VTW" sceneMemberID="viewController">
-                    <tabBar key="tabBar" contentMode="scaleToFill" id="t5y-fg-kMk">
+                <viewController id="qkX-SF-2BA" customClass="DailyViewController" customModule="skin" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="I3T-0V-y8V"/>
+                        <viewControllerLayoutGuide type="bottom" id="qvz-aF-hD9"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="qr0-qb-TbZ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ukT-ce-27y">
+                                <rect key="frame" x="16" y="20" width="59" height="30"/>
+                                <state key="normal" title="Previous"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SOW-zy-TZc">
+                                <rect key="frame" x="327" y="20" width="32" height="30"/>
+                                <state key="normal" title="Next"/>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="UV Index: 6" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ynJ-27-S6v">
+                                <rect key="frame" x="143" y="60" width="89" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qu9-yZ-TuN">
+                                <rect key="frame" x="16" y="89" width="343" height="192"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <connections>
+                                    <segue destination="sco-hm-66t" kind="embed" identifier="dailyStatusSegue" id="v26-Dz-6jz"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z70-W0-zWp">
+                                <rect key="frame" x="16" y="289" width="343" height="321"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <connections>
+                                    <segue destination="0HD-VK-lOz" kind="embed" identifier="dailyRoutineLogSegue" id="0R7-A0-Sby"/>
+                                </connections>
+                            </containerView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6yn-jV-Y79">
+                                <rect key="frame" x="166" y="20" width="42" height="24"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="6yn-jV-Y79" firstAttribute="top" secondItem="I3T-0V-y8V" secondAttribute="bottom" id="0UH-fz-hWh"/>
+                            <constraint firstItem="ukT-ce-27y" firstAttribute="leading" secondItem="qr0-qb-TbZ" secondAttribute="leading" constant="16" id="4nc-Te-evv"/>
+                            <constraint firstItem="ukT-ce-27y" firstAttribute="top" secondItem="I3T-0V-y8V" secondAttribute="bottom" id="8G0-hu-UOB"/>
+                            <constraint firstAttribute="trailing" secondItem="SOW-zy-TZc" secondAttribute="trailing" constant="16" id="NxG-CO-ZFI"/>
+                            <constraint firstItem="6yn-jV-Y79" firstAttribute="centerX" secondItem="qr0-qb-TbZ" secondAttribute="centerX" id="P7I-X6-jfI"/>
+                            <constraint firstItem="SOW-zy-TZc" firstAttribute="top" secondItem="I3T-0V-y8V" secondAttribute="bottom" id="pAp-1c-1w4"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Home" id="dAe-eb-IiM"/>
+                    <connections>
+                        <outlet property="logDate" destination="6yn-jV-Y79" id="suA-SX-tiZ"/>
+                        <outlet property="nextDay" destination="SOW-zy-TZc" id="uj2-8U-u0h"/>
+                        <outlet property="previousDay" destination="ukT-ce-27y" id="j2m-jR-Fg2"/>
+                        <outlet property="uvIndex" destination="ynJ-27-S6v" id="y6c-qa-4jz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hBz-QE-R1I" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-509.60000000000002" y="-949.47526236881572"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="sC8-Mk-y5l">
+            <objects>
+                <tabBarController id="xtb-gM-Vel" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="SpV-5b-wao">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="kcE-yj-oHF" kind="relationship" relationship="viewControllers" id="gi2-Mi-6Xj"/>
-                        <segue destination="qp7-vo-OgH" kind="relationship" relationship="viewControllers" id="CtR-cz-FO4"/>
-                        <segue destination="AiS-9m-Fla" kind="relationship" relationship="viewControllers" id="LKc-nN-PM9"/>
+                        <segue destination="qkX-SF-2BA" kind="relationship" relationship="viewControllers" id="g7J-Bl-tk5"/>
                     </connections>
                 </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="gRn-oe-3bH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lcN-YM-MUQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-97" y="-740"/>
+            <point key="canvasLocation" x="-1460" y="-617"/>
         </scene>
-        <!--Log-->
-        <scene sceneID="wz1-nz-TJH">
+        <!--Daily Status View Controller-->
+        <scene sceneID="0UH-vS-fUf">
             <objects>
-                <viewControllerPlaceholder storyboardName="Log" id="kcE-yj-oHF" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Log" id="Afw-bj-yut"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="gxk-zU-Mg5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="sco-hm-66t" customClass="DailyStatusViewController" customModule="skin" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="CwS-XE-Bj7">
+                        <rect key="frame" x="0.0" y="0.0" width="343" height="192"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Jq-kr-QOS">
+                                <rect key="frame" x="0.0" y="0.0" width="335" height="201"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZUP-Yc-ZOo">
+                                        <rect key="frame" x="0.0" y="0.0" width="142" height="201"/>
+                                    </imageView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="5TU-9v-xNe">
+                                        <rect key="frame" x="142" y="0.0" width="193" height="201"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="8v3-8G-xKv">
+                                                <rect key="frame" x="0.0" y="0.0" width="193" height="30"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rating" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HdT-pV-Ql0">
+                                                        <rect key="frame" x="0.0" y="5" width="49" height="20.5"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7T9-xZ-B2n">
+                                                        <rect key="frame" x="163" y="0.0" width="30" height="30"/>
+                                                        <state key="normal" title="Edit"/>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="dX1-On-rep">
+                                                <rect key="frame" x="0.0" y="38" width="193" height="163"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            </textView>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="2Jq-kr-QOS" firstAttribute="leading" secondItem="CwS-XE-Bj7" secondAttribute="leading" id="7Az-Ef-7Fu"/>
+                            <constraint firstItem="2Jq-kr-QOS" firstAttribute="top" secondItem="CwS-XE-Bj7" secondAttribute="top" id="HRK-5L-h6H"/>
+                            <constraint firstAttribute="bottom" secondItem="2Jq-kr-QOS" secondAttribute="bottom" constant="-9" id="MzO-32-nmq"/>
+                            <constraint firstAttribute="trailing" secondItem="2Jq-kr-QOS" secondAttribute="trailing" constant="8" id="uWq-iw-4I5"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jKA-AO-rJl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-444" y="-179"/>
+            <point key="canvasLocation" x="-522" y="-1921"/>
         </scene>
-        <!--WishList-->
-        <scene sceneID="Okg-e2-jgw">
+        <!--Daily Routine Log View Controller-->
+        <scene sceneID="7jO-SE-vAc">
             <objects>
-                <viewControllerPlaceholder storyboardName="WishList" id="AiS-9m-Fla" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Wish List" id="xCU-Ta-yLc"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ZyF-tr-882" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="0HD-VK-lOz" customClass="DailyRoutineLogViewController" customModule="skin" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="2GW-O2-py6">
+                        <rect key="frame" x="0.0" y="0.0" width="343" height="321"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QpV-bf-c9c">
+                                <rect key="frame" x="0.0" y="0.0" width="97" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="+ Add Routine"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eL9-ll-aBh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="262" y="-179"/>
-        </scene>
-        <!--Stash-->
-        <scene sceneID="VkB-f3-9oI">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Stash" id="qp7-vo-OgH" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Stash" id="E8c-7p-A2Q"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="FzR-zK-xuF" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-98" y="-179"/>
+            <point key="canvasLocation" x="-522.39999999999998" y="-1542.2788605697153"/>
         </scene>
     </scenes>
 </document>
