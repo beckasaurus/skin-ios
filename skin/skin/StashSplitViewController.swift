@@ -1,17 +1,18 @@
+////
+////  StashSplitViewController.swift
+////  skin
+////
+////  Created by Becky Henderson on 9/19/17.
+////  Copyright © 2017 Becky Henderson. All rights reserved.
+////
 //
-//  StashSplitViewController.swift
-//  skin
+//import UIKit
 //
-//  Created by Becky Henderson on 9/19/17.
-//  Copyright © 2017 Becky Henderson. All rights reserved.
+//let emptyStashProductSelectionViewControllerIdentifier = "emptyProductSelectionVC"
 //
+//class StashSplitViewController: ProductListSplitViewController {
+//	
+//	override func emptySelectionViewControllerIdentifier() -> String { return emptyStashProductSelectionViewControllerIdentifier }
+//	
+//}
 
-import UIKit
-
-let emptyStashProductSelectionViewControllerIdentifier = "emptyProductSelectionVC"
-
-class StashSplitViewController: ProductListSplitViewController {
-	
-	override func emptySelectionViewControllerIdentifier() -> String { return emptyStashProductSelectionViewControllerIdentifier }
-	
-}

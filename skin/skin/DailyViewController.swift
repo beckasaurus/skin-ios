@@ -9,10 +9,13 @@
 import UIKit
 
 // TODO:
-// Display today's date
 // If current day, get UV index forecast
 // load next
 // load previous
+
+protocol DateChangeable {
+	func didChangeDate(to date: Date)
+}
 
 class DailyViewController: UIViewController {
 
@@ -21,7 +24,8 @@ class DailyViewController: UIViewController {
 	
 	@IBOutlet weak var logDate: UILabel!
 	@IBOutlet weak var uvIndex: UILabel!
-	
+
+	var date: Date = Date()
 	var dateFormatter: DateFormatter?
 	
 	weak var routineLog: DailyRoutineLogViewController?
@@ -29,7 +33,7 @@ class DailyViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		setupDateFormatter()
-		loadLog(for: Date())
+		loadLog(for: date)
 	}
 	
 	func setupDateFormatter() {
@@ -48,6 +52,9 @@ class DailyViewController: UIViewController {
 		if isDateToday {
 			loadUVIndex()
 		}
+
+		status?.didChangeDate(to: date)
+		routineLog?.didChangeDate(to: date)
 	}
 	
 	func loadUVIndex() {
@@ -63,5 +70,12 @@ class DailyViewController: UIViewController {
 			routineLog = segue.destination as! DailyRoutineLogViewController
 		}
 	}
-	
+
+	@IBAction func previousDate(sender: UIButton) {
+
+	}
+
+	@IBAction func nextDate(sender: UIButton) {
+
+	}
 }

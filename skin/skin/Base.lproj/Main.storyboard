@@ -101,6 +101,10 @@
         <scene sceneID="0UH-vS-fUf">
             <objects>
                 <viewController id="sco-hm-66t" customClass="DailyStatusViewController" customModule="skin" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="yIQ-aA-DFX"/>
+                        <viewControllerLayoutGuide type="bottom" id="5hC-cL-SE8"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="CwS-XE-Bj7">
                         <rect key="frame" x="0.0" y="0.0" width="343" height="192"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -157,18 +161,41 @@
         <scene sceneID="7jO-SE-vAc">
             <objects>
                 <viewController id="0HD-VK-lOz" customClass="DailyRoutineLogViewController" customModule="skin" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="hlN-EY-dso"/>
+                        <viewControllerLayoutGuide type="bottom" id="ohH-0M-a2v"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="2GW-O2-py6">
                         <rect key="frame" x="0.0" y="0.0" width="343" height="321"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QpV-bf-c9c">
-                                <rect key="frame" x="0.0" y="0.0" width="97" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="+ Add Routine"/>
-                            </button>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tQN-rV-Q12">
+                                <rect key="frame" x="0.0" y="0.0" width="343" height="321"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="beV-Hq-KA9">
+                                        <rect key="frame" x="0.0" y="0.0" width="97" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QpV-bf-c9c">
+                                                <rect key="frame" x="0.0" y="0.0" width="97" height="30"/>
+                                                <state key="normal" title="+ Add Routine"/>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="tQN-rV-Q12" firstAttribute="top" secondItem="hlN-EY-dso" secondAttribute="bottom" id="7am-7c-OMB"/>
+                            <constraint firstItem="tQN-rV-Q12" firstAttribute="leading" secondItem="2GW-O2-py6" secondAttribute="leading" id="8dl-Qb-OES"/>
+                            <constraint firstItem="ohH-0M-a2v" firstAttribute="top" secondItem="tQN-rV-Q12" secondAttribute="bottom" id="iJU-BI-3P3"/>
+                            <constraint firstAttribute="trailing" secondItem="tQN-rV-Q12" secondAttribute="trailing" id="upf-Qk-Sfh"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="routineStackView" destination="beV-Hq-KA9" id="xJy-jZ-SjY"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eL9-ll-aBh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -1,5 +1,5 @@
 //
-//  Application.swift
+//  RoutineLog.swift
 //  skin
 //
 //  Created by Becky on 9/11/17.
@@ -9,7 +9,7 @@
 import RealmSwift
 import Foundation
 
-final class Application: Object {
+final class RoutineLog: Object {
 	dynamic var id = ""
 	dynamic var name = ""
 	dynamic var notes = ""

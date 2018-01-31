@@ -11,6 +11,8 @@ import UIKit
 // Display photo OR button to take photo
 // Display daily details with edit link OR button to add details
 
-class DailyStatusViewController: UIViewController {
-
+class DailyStatusViewController: UIViewController, DateChangeable {
+	func didChangeDate(to date: Date) {
+		<#code#>
+	}
 }
