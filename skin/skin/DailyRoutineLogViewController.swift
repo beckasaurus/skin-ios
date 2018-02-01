@@ -17,6 +17,8 @@ enum DailyRoutineLogViewControllerError: Error {
 	case invalidDate
 }
 
+let tableHeaderHeight: CGFloat = 50.0
+
 class DailyRoutineLogViewController: UIViewController {
 	
 	@IBOutlet weak var routineLogTableView: UITableView!
@@ -64,8 +66,10 @@ extension DailyRoutineLogViewController {
 	}
 }
 
-extension DailyRoutineLogViewController: UITableViewDelegate {
-	
+extension DailyRoutineLogViewController {
+	@IBAction func addProduct(sender: UIButton) {
+		print("pressed")
+	}
 }
 
 extension DailyRoutineLogViewController: UITableViewDataSource {
@@ -102,9 +106,50 @@ extension DailyRoutineLogViewController: UITableViewDataSource {
 		return cell
 	}
 	
-	func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-		let routineLog = routineLogs?[section]
-		return routineLog?.name
+	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+		return section == 0 ? 0 : tableHeaderHeight
+	}
+	
+	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+		guard section != 0,
+			let routineLog = routineLogs?[section] else {
+			return nil
+		}
+		
+		let frame = CGRect(x: tableView.bounds.origin.x,
+						   y: tableView.bounds.origin.y,
+						   width: tableView.bounds.size.width,
+						   height: tableHeaderHeight)
+		let tableHeaderView = UIView(frame: frame)
+		tableHeaderView.accessibilityIdentifier = "\(routineLog.name) Routine"
+		
+		let addProductButton = UIButton(type: UIButtonType.system)
+		addProductButton.accessibilityIdentifier = "Add Product"
+		addProductButton.setTitle("+ Add Product", for: .normal)
+		addProductButton.translatesAutoresizingMaskIntoConstraints = false
+		addProductButton.addTarget(self, action: #selector(addProduct(sender:)), for: .touchUpInside)
+		
+		let routineLogNameLabel = UILabel()
+		routineLogNameLabel.accessibilityIdentifier = "Routine Name"
+		routineLogNameLabel.text = routineLog.name
+		routineLogNameLabel.translatesAutoresizingMaskIntoConstraints = false
+		
+		let stackView = UIStackView(arrangedSubviews: [routineLogNameLabel, addProductButton])
+		stackView.axis = .horizontal
+		stackView.distribution = .fill
+		stackView.alignment = .firstBaseline
+		stackView.translatesAutoresizingMaskIntoConstraints = false
+		
+		tableHeaderView.addSubview(stackView)
+		
+		let margins = tableHeaderView.layoutMarginsGuide
+		
+		stackView.widthAnchor.constraint(equalTo: margins.widthAnchor).isActive = true
+		stackView.heightAnchor.constraint(equalTo: margins.heightAnchor).isActive = true
+		stackView.centerXAnchor.constraint(equalTo: margins.centerXAnchor).isActive = true
+		stackView.centerYAnchor.constraint(equalTo: margins.centerYAnchor).isActive = true
+		
+		return tableHeaderView
 	}
 
 //	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
