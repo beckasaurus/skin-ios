@@ -8,11 +8,16 @@
 
 import UIKit
 
-class RoutineLogTableView: UITableView {
-	let routineLog: RoutineLog
+//class RoutineLogTableView: UITableView {
+//	public let routineLog: RoutineLog
+//
+//	init(routineLog: RoutineLog) {
+//		super
+//		self.routineLog = routineLog
+//	}
+//	
+//	required init?(coder aDecoder: NSCoder) {
+//		super.init(coder: aDecoder)
+//	}
+//}
 
-	init(routineLog: RoutineLog) {
-		super.init()
-		self.routineLog = routineLog
-	}
-}

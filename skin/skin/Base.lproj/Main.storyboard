@@ -44,9 +44,8 @@
                                     <segue destination="sco-hm-66t" kind="embed" identifier="dailyStatusSegue" id="v26-Dz-6jz"/>
                                 </connections>
                             </containerView>
-                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z70-W0-zWp">
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z70-W0-zWp">
                                 <rect key="frame" x="16" y="289" width="343" height="321"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <connections>
                                     <segue destination="0HD-VK-lOz" kind="embed" identifier="dailyRoutineLogSegue" id="0R7-A0-Sby"/>
                                 </connections>
@@ -60,12 +59,16 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="Z70-W0-zWp" firstAttribute="top" secondItem="I3T-0V-y8V" secondAttribute="bottom" constant="269" id="07n-qK-oBi"/>
                             <constraint firstItem="6yn-jV-Y79" firstAttribute="top" secondItem="I3T-0V-y8V" secondAttribute="bottom" id="0UH-fz-hWh"/>
                             <constraint firstItem="ukT-ce-27y" firstAttribute="leading" secondItem="qr0-qb-TbZ" secondAttribute="leading" constant="16" id="4nc-Te-evv"/>
                             <constraint firstItem="ukT-ce-27y" firstAttribute="top" secondItem="I3T-0V-y8V" secondAttribute="bottom" id="8G0-hu-UOB"/>
                             <constraint firstAttribute="trailing" secondItem="SOW-zy-TZc" secondAttribute="trailing" constant="16" id="NxG-CO-ZFI"/>
                             <constraint firstItem="6yn-jV-Y79" firstAttribute="centerX" secondItem="qr0-qb-TbZ" secondAttribute="centerX" id="P7I-X6-jfI"/>
+                            <constraint firstItem="qvz-aF-hD9" firstAttribute="top" secondItem="Z70-W0-zWp" secondAttribute="bottom" constant="8" id="U5W-xp-mDU"/>
+                            <constraint firstAttribute="trailing" secondItem="Z70-W0-zWp" secondAttribute="trailing" constant="16" id="avu-eY-tzW"/>
                             <constraint firstItem="SOW-zy-TZc" firstAttribute="top" secondItem="I3T-0V-y8V" secondAttribute="bottom" id="pAp-1c-1w4"/>
+                            <constraint firstItem="Z70-W0-zWp" firstAttribute="leading" secondItem="qr0-qb-TbZ" secondAttribute="leading" constant="16" id="ya1-me-ESI"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Home" id="dAe-eb-IiM"/>
@@ -169,32 +172,28 @@
                         <rect key="frame" x="0.0" y="0.0" width="343" height="321"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tQN-rV-Q12">
-                                <rect key="frame" x="0.0" y="0.0" width="343" height="321"/>
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="beV-Hq-KA9">
-                                        <rect key="frame" x="0.0" y="0.0" width="97" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QpV-bf-c9c">
-                                                <rect key="frame" x="0.0" y="0.0" width="97" height="30"/>
-                                                <state key="normal" title="+ Add Routine"/>
-                                            </button>
-                                        </subviews>
-                                    </stackView>
-                                </subviews>
-                            </scrollView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4wS-KF-Xsl">
+                                <rect key="frame" x="0.0" y="0.0" width="97" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="+ Add Routine"/>
+                                <connections>
+                                    <action selector="addRoutineLogWithSender:" destination="0HD-VK-lOz" eventType="touchUpInside" id="0fH-Ek-V55"/>
+                                </connections>
+                            </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="LSI-xe-UwM">
+                                <rect key="frame" x="0.0" y="38" width="343" height="283"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="0HD-VK-lOz" id="rOj-c8-bDr"/>
+                                    <outlet property="delegate" destination="0HD-VK-lOz" id="a1r-YW-98I"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="tQN-rV-Q12" firstAttribute="top" secondItem="hlN-EY-dso" secondAttribute="bottom" id="7am-7c-OMB"/>
-                            <constraint firstItem="tQN-rV-Q12" firstAttribute="leading" secondItem="2GW-O2-py6" secondAttribute="leading" id="8dl-Qb-OES"/>
-                            <constraint firstItem="ohH-0M-a2v" firstAttribute="top" secondItem="tQN-rV-Q12" secondAttribute="bottom" id="iJU-BI-3P3"/>
-                            <constraint firstAttribute="trailing" secondItem="tQN-rV-Q12" secondAttribute="trailing" id="upf-Qk-Sfh"/>
-                        </constraints>
                     </view>
                     <connections>
-                        <outlet property="routineStackView" destination="beV-Hq-KA9" id="xJy-jZ-SjY"/>
+                        <outlet property="routineLogTableView" destination="LSI-xe-UwM" id="HoL-bn-LSH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eL9-ll-aBh" userLabel="First Responder" sceneMemberID="firstResponder"/>

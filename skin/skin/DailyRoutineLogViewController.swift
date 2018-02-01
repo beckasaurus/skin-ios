@@ -7,59 +7,61 @@
 //
 
 import UIKit
+import RealmSwift
 
 // Button to add routine
 // Suggest routine if one is scheduled for day
 // Display routine with products and button to add products
 
-class DailyRoutineLogViewController: UIViewController, DateChangeable {
+enum DailyRoutineLogViewControllerError: Error {
+	case invalidDate
+}
 
-	@IBOutlet weak var routineStackView: UIStackView!
+class DailyRoutineLogViewController: UIViewController {
+	
+	@IBOutlet weak var routineLogTableView: UITableView!
 
-	var routineLogs: List<RoutineLog>?
+	var routineLogs: Results<RoutineLog>?
 
+	func getRoutines(for date: Date) {
+		if let currentDatePredicate = try? predicate(for: date),
+			let logs = realm?.objects(RoutineLog.self).filter(currentDatePredicate).sorted(byKeyPath: "time") {
+			routineLogs = logs
+			
+			routineLogTableView.reloadData()
+			
+		}
+	}
+	
 	func predicate(for date: Date) throws -> NSPredicate {
 		guard let nextDayBegin = Calendar.current.date(bySettingHour: 00, minute: 00, second: 00, of: date),
 			let nextDayEnd = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: date)
-			else { throw LogError.invalidDate }
-
+			else { throw DailyRoutineLogViewControllerError.invalidDate }
+		
 		return NSPredicate(format: "time >= %@ AND time <= %@", nextDayBegin as CVarArg, nextDayEnd as CVarArg)
 	}
+}
 
-	func loadRoutines(for date: Date) {
-		let currentDatePredicate = try? predicate(for: date)
-		if let logs = realm.objects(RoutineLog.self).filter(currentDatePredicate).sorted(byKeyPath: "time") {
-			routineLogs = logs
-		}
+extension DailyRoutineLogViewController: DateChangeable {
+	func didChangeDate(to date: Date) {
+		getRoutines(for: date)
 	}
+}
 
-	func setupRoutineLogUI() {
-		for routineLog in routineLogs {
-			addTable(routineLog: routineLog)
-		}
-	}
-
-	func addTable(routineLog: RoutineLog) {
-		let table = RoutineLogTableView(routineLog: routineLog)
-		table.delegate = self
-		table.dataSource = self
-		routineStackView.insertArrangedSubview(table, at: routineStackView.subviews.count - 1)
-	}
-
+// MARK: Add Routine
+extension DailyRoutineLogViewController {
 	@IBAction func addRoutineLog(sender: UIButton) {
 		let routineLog = RoutineLog()
+		routineLog.id = UUID().uuidString
 		routineLog.time = Date()
 		routineLog.name = "AM"
-
-		realm.add(routineLog)
-
-		routineLogs.a
+		
+		try! realm?.write {
+			realm?.add(routineLog)
+		}
+		
+		routineLogTableView.reloadData()
 	}
-
-	func didChangeDate(to date: Date) {
-		loadRoutines(for: date)
-	}
-
 }
 
 extension DailyRoutineLogViewController: UITableViewDelegate {
@@ -67,20 +69,42 @@ extension DailyRoutineLogViewController: UITableViewDelegate {
 }
 
 extension DailyRoutineLogViewController: UITableViewDataSource {
+	
 	func numberOfSections(in tableView: UITableView) -> Int {
-		return 1
+		return routineLogs?.count ?? 0
 	}
 
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return tableView.routineLog.products.count ?? 0
+		guard let routineLog = routineLogs?[section] else {
+			return 0
+		}
+		
+		return routineLog.products.count
+		
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: applicationCellIdentifier, for: indexPath)
-		let product = tableView.routineLog.products[indexPath.row]
-		cell.textLabel?.text = product.name
-		cell.detailTextLabel?.text = product.brand ?? ""
+		let reuseIdentifier = "routineLogProductCell"
+		
+		let cell: UITableViewCell
+		if let tableCell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier) {
+			cell = tableCell
+		} else {
+			cell = UITableViewCell(style: .subtitle,
+								   reuseIdentifier: reuseIdentifier)
+		}
+		
+		let sectionIndex = indexPath.section
+		let routineLog = routineLogs?[sectionIndex]
+		let product = routineLog?.products[indexPath.row]
+		cell.textLabel?.text = product?.name ?? ""
+		cell.detailTextLabel?.text = product?.brand ?? ""
 		return cell
+	}
+	
+	func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+		let routineLog = routineLogs?[section]
+		return routineLog?.name
 	}
 
 //	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {

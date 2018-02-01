@@ -13,6 +13,6 @@ import UIKit
 
 class DailyStatusViewController: UIViewController, DateChangeable {
 	func didChangeDate(to date: Date) {
-		<#code#>
+		
 	}
 }

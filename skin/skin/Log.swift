@@ -9,12 +9,13 @@
 import RealmSwift
 import Foundation
 
-final class Log: Object {
-	dynamic var date = Date()
-	dynamic var id: String?
-	var applications = List<Application>()
-	
-	override static func primaryKey() -> String? {
-		return "id"
-	}
-}
+//final class Log: Object {
+//	dynamic var date = Date()
+//	dynamic var id: String?
+//	var applications = List<Application>()
+//	
+//	override static func primaryKey() -> String? {
+//		return "id"
+//	}
+//}
+
