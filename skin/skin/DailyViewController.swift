@@ -12,6 +12,7 @@ import UIKit
 // If current day, get UV index forecast
 // load next
 // load previous
+// load daily rating/pic
 
 protocol DateChangeable {
 	func didChangeDate(to date: Date)
@@ -65,9 +66,9 @@ class DailyViewController: UIViewController {
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if segue.identifier == "dailyStatusSegue" {
-			status = segue.destination as! DailyStatusViewController
+			status = (segue.destination as! DailyStatusViewController)
 		} else if segue.identifier == "dailyRoutineLogSegue" {
-			routineLog = segue.destination as! DailyRoutineLogViewController
+			routineLog = (segue.destination as! DailyRoutineLogViewController)
 		}
 	}
 

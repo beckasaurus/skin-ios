@@ -1,18 +1,18 @@
-////
-////  WishListSplitViewController.swift
-////  skin
-////
-////  Created by Becky Henderson on 11/8/17.
-////  Copyright © 2017 Becky Henderson. All rights reserved.
-////
 //
-//import UIKit
+//  WishListSplitViewController.swift
+//  skin
 //
-//let emptyWishListProductSelectionViewControllerIdentifier = "emptyProductSelectionVC"
+//  Created by Becky Henderson on 11/8/17.
+//  Copyright © 2017 Becky Henderson. All rights reserved.
 //
-//class WishListSplitViewController: ProductListSplitViewController {
-//	
-//	override func emptySelectionViewControllerIdentifier() -> String { return emptyWishListProductSelectionViewControllerIdentifier }
-//	
-//}
+
+import UIKit
+
+let emptyWishListProductSelectionViewControllerIdentifier = "emptyProductSelectionVC"
+
+class WishListSplitViewController: ProductListSplitViewController {
+	
+
+	
+}
 

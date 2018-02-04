@@ -50,7 +50,7 @@ extension DailyRoutineLogViewController: DateChangeable {
 	}
 }
 
-// MARK: Add Routine
+// MARK: Add routine
 extension DailyRoutineLogViewController {
 	@IBAction func addRoutineLog(sender: UIButton) {
 		let routineLog = RoutineLog()
@@ -66,9 +66,15 @@ extension DailyRoutineLogViewController {
 	}
 }
 
+// MARK: Add product to routine log
 extension DailyRoutineLogViewController {
 	@IBAction func addProduct(sender: UIButton) {
-		print("pressed")
+		let routineIndex = sender.tag
+		guard let routine = routineLogs?[routineIndex] else {
+			return
+		}
+		
+		//show product selection panel
 	}
 }
 

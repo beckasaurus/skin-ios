@@ -1,16 +1,16 @@
-////
-////  WishListViewController.swift
-////  skin
-////
-////  Created by Becky Henderson on 11/8/17.
-////  Copyright © 2017 Becky Henderson. All rights reserved.
-////
 //
-//import UIKit
-//import RealmSwift
+//  WishListViewController.swift
+//  skin
 //
-//class WishListViewController: SearchableProductListViewController {
+//  Created by Becky Henderson on 11/8/17.
+//  Copyright © 2017 Becky Henderson. All rights reserved.
 //
+
+import UIKit
+import RealmSwift
+
+class WishListViewController: SearchableProductListViewController {
+
 //	var wishList: WishList?
 //	
 //	func createWishList() {
@@ -36,8 +36,9 @@
 //	}
 //	
 //	override func productViewType() -> ProductViewType {
-//		return .wishListProduct
+//		return .wishList
 //	}
-//
-//}
-//
+
+}
+
+

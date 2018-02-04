@@ -1,16 +1,16 @@
-////
-////  StashViewController.swift
-////  skin
-////
-////  Created by Becky Henderson on 9/19/17.
-////  Copyright © 2017 Becky Henderson. All rights reserved.
-////
 //
-//import UIKit
-//import RealmSwift
+//  StashViewController.swift
+//  skin
 //
-//class StashViewController: SearchableProductListViewController {
-//	
+//  Created by Becky Henderson on 9/19/17.
+//  Copyright © 2017 Becky Henderson. All rights reserved.
+//
+
+import UIKit
+import RealmSwift
+
+class StashViewController: SearchableProductListViewController {
+	
 //	var stash: Stash?
 //	
 //	func createStash() {
@@ -36,7 +36,7 @@
 //	}
 //	
 //	override func productViewType() -> ProductViewType {
-//		return .stashProduct
+//		return .stash
 //	}
-//}
+}
 

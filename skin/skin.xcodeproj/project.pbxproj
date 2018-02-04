@@ -149,6 +149,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0D09DE8A20279AF9002875F5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0D66F55B1FB241CD00FE84DC /* ProductListSplitViewController.swift */,
+				0D66F55F1FB2452700FE84DC /* SearchableProductListViewController.swift */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		0D0CC3761F54B48C00334487 = {
 			isa = PBXGroup;
 			children = (
@@ -212,8 +221,6 @@
 		0D66F55A1FB2418900FE84DC /* Reusable Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				0D66F55B1FB241CD00FE84DC /* ProductListSplitViewController.swift */,
-				0D66F55F1FB2452700FE84DC /* SearchableProductListViewController.swift */,
 				0DEF097C1F714D1C0046DE0A /* ProductViewController.swift */,
 			);
 			name = "Reusable Controllers";
@@ -246,6 +253,7 @@
 		0D8A7B4E1F67804E00C57F0A /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				0D09DE8A20279AF9002875F5 /* Products */,
 				0DC690B1202163A30058336E /* Daily */,
 				0D9E05EA1F70077A00E83BF3 /* Log */,
 				0DEF09791F714CE90046DE0A /* Stash */,
