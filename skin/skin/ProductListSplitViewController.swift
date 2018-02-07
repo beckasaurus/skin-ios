@@ -10,6 +10,7 @@
 import UIKit
 
 let emptyProductSelectionViewControllerIdentifier = "emptyProductSelectionVC"
+let productListSplitViewControllerIdentifier = "ProductListSplitVC"
 
 class ProductListSplitViewController: UISplitViewController {
 	

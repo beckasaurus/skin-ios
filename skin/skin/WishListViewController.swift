@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class WishListViewController: SearchableProductListViewController {
+class WishListViewController: ProductListViewController {
 
 //	var wishList: WishList?
 //	

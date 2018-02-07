@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class StashViewController: SearchableProductListViewController {
+class StashViewController: ProductListViewController {
 	
 //	var stash: Stash?
 //	

@@ -9,16 +9,25 @@
 import UIKit
 import RealmSwift
 
+// TODO: Product properties for ingredients, rating.
+// TODO: Editing vs viewing?
+
+let productViewIdentifier = "ProductVC"
 let productUnwindSegue: String = "productUnwindSegue"
 
 protocol ProductDelegate: class {
 	func didAdd(product: Product)
 }
 
-class ProductViewController: UIViewController {
+protocol ProductViewable {
+	weak var delegate: ProductDelegate? {get set}
+	
+	func show(product: Product?, as viewType: ProductType)
+}
 
+class ProductViewController: UIViewController, ProductViewable {
 	weak var delegate: ProductDelegate?
-
+	
 	@IBOutlet weak var nameTextField: UITextField!
 	@IBOutlet weak var brandTextField: UITextField!
 	@IBOutlet weak var priceTextField: UITextField!
@@ -29,7 +38,7 @@ class ProductViewController: UIViewController {
 	@IBOutlet weak var linkStackView: UIStackView!
 	@IBOutlet weak var expirationDateStackView: UIStackView!
 	
-	public var viewType: ProductType = .stash
+	var viewType: ProductType = .stash
 	
 	var dateFormatter: DateFormatter?
 	var currencyFormatter: NumberFormatter?
@@ -47,6 +56,11 @@ class ProductViewController: UIViewController {
 		super.viewWillDisappear(animated)
 		updateProductFromUI()
 	}
+	
+	func show(product: Product?, as viewType: ProductType) {
+		self.product = product
+		self.viewType = viewType
+	}
 }
 
 // MARK: - Configure UI
@@ -58,6 +72,9 @@ extension ProductViewController {
 		if (product == nil) {
 			navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
 			navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
+		} else {
+			navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
+			navigationItem.leftItemsSupplementBackButton = true
 		}
 	}
 
@@ -108,7 +125,7 @@ extension ProductViewController {
 
 	func setupLinkField() {
 		guard case .wishList = viewType else {
-			linkStackView.isHidden = true
+//			linkStackView.isHidden = true
 			return
 		}
 	}
@@ -200,16 +217,20 @@ extension ProductViewController {
 
 // MARK: - Product creation
 extension ProductViewController {
+	func defaultExpirationDate() -> Date {
+		var dateComponents = DateComponents()
+		dateComponents.month = 6
+		return Calendar.current.date(byAdding: dateComponents, to: Date())!
+	}
+	
 	func createProductIfNeeded() {
 		if product == nil {
-			var dateComponents = DateComponents()
-			dateComponents.month = 6
-			let defaultExpirationDate = Calendar.current.date(byAdding: dateComponents, to: Date())
+			let defaultExpirationDate = self.defaultExpirationDate()
 
 			//FIXME: need to test that the default values provided here actually show up when adding a new product. do we need to call create new before we load from the product
-			product = Product(value: ["name": "",
+			product = Product(value: ["name": "Testing",
 									  "category" : ProductCategory.active.rawValue,
-									  "expirationDate" : defaultExpirationDate!,
+									  "expirationDate" : defaultExpirationDate,
 									  "price" : Double(10.00)] as Any)
 		}
 	}
@@ -234,13 +255,12 @@ extension ProductViewController {
 	}
 
 	@IBAction func done(sender: UIBarButtonItem) {
+		updateProductFromUI()
 		performSegue(withIdentifier: productUnwindSegue, sender: product)
 	}
 
 	@IBAction func cancel(sender: UIBarButtonItem) {
-		//We do not want to save this newly created product, so nil it out
-		product = nil
-		performSegue(withIdentifier: productUnwindSegue, sender: product)
+		dismiss(animated: true, completion: nil)
 	}
 
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -248,7 +268,6 @@ extension ProductViewController {
 		//if called and the product is still present, this signals to the delegate that we've added a new product and we need to refresh
 		if segue.identifier == productUnwindSegue,
 			let product = product {
-			updateProductFromUI()
 			delegate?.didAdd(product: product)
 		}
 	}

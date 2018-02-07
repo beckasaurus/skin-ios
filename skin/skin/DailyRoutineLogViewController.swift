@@ -74,6 +74,12 @@ extension DailyRoutineLogViewController {
 			return
 		}
 		
+		let productListSplitViewController = storyboard!.instantiateViewController(withIdentifier: productListSplitViewControllerIdentifier) as! ProductListSplitViewController
+		let productListViewController = (productListSplitViewController.viewControllers.first! as! UINavigationController).topViewController as! ProductListViewController
+		productListViewController.context = .selection
+		
+		show(productListSplitViewController, sender: self)
+		
 		//show product selection panel
 	}
 }

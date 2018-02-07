@@ -14,7 +14,7 @@
 		0D0CC3981F54B48C00334487 /* skinTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0CC3971F54B48C00334487 /* skinTests.swift */; };
 		0D0CC3A31F54B48C00334487 /* skinUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0CC3A21F54B48C00334487 /* skinUITests.swift */; };
 		0D66F55C1FB241CD00FE84DC /* ProductListSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D66F55B1FB241CD00FE84DC /* ProductListSplitViewController.swift */; };
-		0D66F5601FB2452700FE84DC /* SearchableProductListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D66F55F1FB2452700FE84DC /* SearchableProductListViewController.swift */; };
+		0D66F5601FB2452700FE84DC /* ProductListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D66F55F1FB2452700FE84DC /* ProductListViewController.swift */; };
 		0D66F5621FB245DD00FE84DC /* WishList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D66F5611FB245DD00FE84DC /* WishList.swift */; };
 		0D66F5651FB3444F00FE84DC /* WishListSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D66F5641FB3444F00FE84DC /* WishListSplitViewController.swift */; };
 		0D66F5671FB3446400FE84DC /* WishListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D66F5661FB3446400FE84DC /* WishListViewController.swift */; };
@@ -90,7 +90,7 @@
 		0D0CC3A41F54B48C00334487 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0D0CC3B21F55932900334487 /* skin.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = skin.entitlements; sourceTree = "<group>"; };
 		0D66F55B1FB241CD00FE84DC /* ProductListSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductListSplitViewController.swift; sourceTree = "<group>"; };
-		0D66F55F1FB2452700FE84DC /* SearchableProductListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchableProductListViewController.swift; sourceTree = "<group>"; };
+		0D66F55F1FB2452700FE84DC /* ProductListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductListViewController.swift; sourceTree = "<group>"; };
 		0D66F5611FB245DD00FE84DC /* WishList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WishList.swift; sourceTree = "<group>"; };
 		0D66F5641FB3444F00FE84DC /* WishListSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WishListSplitViewController.swift; sourceTree = "<group>"; };
 		0D66F5661FB3446400FE84DC /* WishListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WishListViewController.swift; sourceTree = "<group>"; };
@@ -153,7 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				0D66F55B1FB241CD00FE84DC /* ProductListSplitViewController.swift */,
-				0D66F55F1FB2452700FE84DC /* SearchableProductListViewController.swift */,
+				0D66F55F1FB2452700FE84DC /* ProductListViewController.swift */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -253,8 +253,8 @@
 		0D8A7B4E1F67804E00C57F0A /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				0D09DE8A20279AF9002875F5 /* Products */,
 				0DC690B1202163A30058336E /* Daily */,
+				0D09DE8A20279AF9002875F5 /* Products */,
 				0D9E05EA1F70077A00E83BF3 /* Log */,
 				0DEF09791F714CE90046DE0A /* Stash */,
 				0D66F5631FB3442C00FE84DC /* Wish List */,
@@ -542,7 +542,7 @@
 				0DAAF1C41F71588C001F0CD3 /* Stash.swift in Sources */,
 				0DC690B5202171370058336E /* DailyRoutineLogViewController.swift in Sources */,
 				0DD890EF1FB3BEEC00F83192 /* String+RangeFromNSRange.swift in Sources */,
-				0D66F5601FB2452700FE84DC /* SearchableProductListViewController.swift in Sources */,
+				0D66F5601FB2452700FE84DC /* ProductListViewController.swift in Sources */,
 				0D8A7B561F67815200C57F0A /* Product.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

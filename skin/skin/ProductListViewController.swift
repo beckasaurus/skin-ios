@@ -1,5 +1,5 @@
 //
-//  SearchableProductListViewController.swift
+//  ProductListViewController.swift
 //  skin
 //
 //  Created by Becky Henderson on 11/7/17.
@@ -9,6 +9,10 @@
 import UIKit
 import RealmSwift
 
+// TODO: Change table selection behavior based on context
+// TODO: Wish list vs stash -- toggle between two
+
+let productListViewIdentifier = "productListVC"
 let productCellIdentifier = "productCell"
 let selectProductSegue = "selectProductSegue"
 let addProductSegue = "addProductSegue"
@@ -28,34 +32,64 @@ enum ProductType: Int {
 	case wishList
 }
 
-class SearchableProductListViewController: UITableViewController {
-	
-	func tableSelectionSegueIdentifier() -> String {
-		return selectProductSegue
-	}
+enum ProductListContext {
+	case management
+	case selection
+}
 
-	func addProductSegueIdentifier() -> String {
-		return addProductSegue
-	}
+class ProductListViewController: UITableViewController {
 	
 	@IBOutlet weak var productTypeSegmentedControl: UISegmentedControl!
-	var searchController: UISearchController?
-	
-	let productCategories = ProductCategory.allCases
 	
 	var products: List<Product>?
-	
 	var filteredProducts: [Product]? {
 		didSet {
 			updateCategoryProductLists()
 		}
 	}
 	
+	var context: ProductListContext = .management {
+		didSet {
+			switch context {
+			case .management:
+				shouldShowCancel = false
+				shouldShowProductTypeSegmentedControl = true
+			case .selection:
+				shouldShowCancel = true
+				shouldShowProductTypeSegmentedControl = false
+			}
+		}
+	}
+	
+	var searchController: UISearchController?
+	
+	let productCategories = ProductCategory.allCases
 	var cleansers: [Product]?
 	var actives: [Product]?
 	var hydrators: [Product]?
 	var occlusives: [Product]?
 	var treatments: [Product]?
+	
+	var shouldShowCancel: Bool = false {
+		didSet {
+			if shouldShowCancel {
+				navigationItem.leftBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
+			} else {
+				navigationItem.leftBarButtonItem = nil
+			}
+		}
+	}
+	
+	var shouldShowProductTypeSegmentedControl = true {
+		didSet {
+			if shouldShowProductTypeSegmentedControl {
+				productTypeSegmentedControl.isHidden = false
+			} else {
+				productTypeSegmentedControl.selectedSegmentIndex = ProductType.stash.rawValue
+				productTypeSegmentedControl.isHidden = true
+			}
+		}
+	}
 	
 	var realmConnectedNotification: NSObjectProtocol?
 	var notificationToken: NotificationToken?
@@ -96,18 +130,22 @@ class SearchableProductListViewController: UITableViewController {
 	func updateList() {
 		self.tableView.reloadData()
 	}
+}
 
+// MARK: Navigation
+extension ProductListViewController {
 	@IBAction func productViewUnwind(segue: UIStoryboardSegue) {
 		//unwind segue for done/cancel in product view
 		//we register as the product view's delegate so we'll receive a notification when a new product is added and handle adding to our list there
 		//nothing really needs to be done here, we just need the segue to be present so we can manually unwind
 	}
-
-	// MARK: - Navigation
+	
+	func productView(from destination: UIViewController) -> ProductViewable {
+		let navController = destination as! UINavigationController
+		return navController.topViewController as! ProductViewable
+	}
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		// Get the new view controller using segue.destinationViewController.
-		// Pass the selected object to the new view controller.
 		if segue.identifier == selectProductSegue {
 			let productToView: Product
 			if let cell = sender as? UITableViewCell {
@@ -117,20 +155,23 @@ class SearchableProductListViewController: UITableViewController {
 				productToView = sender as! Product
 			}
 			
-			let navController = segue.destination as! UINavigationController
-			let productViewController = navController.topViewController as! ProductViewController
-			productViewController.product = productToView
-			productViewController.viewType = productType()
-			productViewController.delegate = self
-
-			productViewController.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
-			productViewController.navigationItem.leftItemsSupplementBackButton = true
+			var productViewable = productView(from: segue.destination)
+			productViewable.show(product: productToView, as: productType())
+			productViewable.delegate = self
+		} else if segue.identifier == addProductSegue {
+			var productViewable = productView(from: segue.destination)
+			productViewable.show(product: nil, as: productType())
+			productViewable.delegate = self
 		}
+	}
+	
+	func cancel(sender: UIBarButtonItem) {
+		dismiss(animated: true, completion: nil)
 	}
 }
 
 // MARK: Realm setup
-extension SearchableProductListViewController {
+extension ProductListViewController {
 	func setupRealm() {
 		setProductListFromContainer()
 		updateCategoryProductLists()
@@ -143,7 +184,7 @@ extension SearchableProductListViewController {
 }
 
 // MARK: Load products
-extension SearchableProductListViewController {
+extension ProductListViewController {
 	func createStashAndSetProductList() {
 		guard let realm = realm else {
 			return
@@ -185,7 +226,7 @@ extension SearchableProductListViewController {
 }
 
 // MARK: Product categories
-extension SearchableProductListViewController {
+extension ProductListViewController {
 	func filterProducts(by category: ProductCategory) -> [Product] {
 		let productsToSearch = filteredProducts ?? Array(products!)
 		return productsToSearch.filter({ (product) -> Bool in
@@ -205,7 +246,7 @@ extension SearchableProductListViewController {
 	}
 }
 
-extension SearchableProductListViewController: ProductDelegate {
+extension ProductListViewController: ProductDelegate {
 	func didAdd(product: Product) {
 		try! realm?.write {
 			products?.insert(product,
@@ -216,7 +257,7 @@ extension SearchableProductListViewController: ProductDelegate {
 
 
 // MARK: Table view data source
-extension SearchableProductListViewController {
+extension ProductListViewController {
 	
 	func productForIndexPath(indexPath: IndexPath) -> Product {
 		let tableSection = ProductListTableSection(rawValue: indexPath.section)!
@@ -302,7 +343,7 @@ extension SearchableProductListViewController {
 }
 
 // MARK: Search results updating protocol
-extension SearchableProductListViewController: UISearchResultsUpdating {
+extension ProductListViewController: UISearchResultsUpdating {
 	
 	func filterContentForSearchText(_ searchText: String) {
 		guard let products = products else {
@@ -324,7 +365,7 @@ extension SearchableProductListViewController: UISearchResultsUpdating {
 }
 
 // MARK: Search bar delegate
-extension SearchableProductListViewController: UISearchBarDelegate {
+extension ProductListViewController: UISearchBarDelegate {
 	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
 		filteredProducts = nil
 	}
