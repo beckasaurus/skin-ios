@@ -66,8 +66,10 @@ class ProductViewController: UIViewController, ProductViewable {
 		super.viewWillAppear(animated)
 		setupNavigationButtons()
 		viewType = pendingViewType
+		setupFormatters()
 		setupFields()
 		createProductIfNeeded()
+		loadFieldDataFromProduct()
 	}
 
 	override func viewWillDisappear(_ animated: Bool) {
@@ -107,12 +109,9 @@ extension ProductViewController {
 		}
 	}
 
-	func setupFields() {
-		setupPriceField()
-		setupCategoryField()
-		setupExpirationDateField()
-		setupLinkField()
-		setFieldDataFromProduct()
+	func setupFormatters() {
+		setupCurrencyFormatter()
+		setupDateFormatter()
 	}
 
 	func setupCurrencyFormatter() {
@@ -123,21 +122,27 @@ extension ProductViewController {
 		currencyFormatter?.minimumFractionDigits = 2
 	}
 
-	func setupPriceField() {
-		setupCurrencyFormatter()
-
-		priceTextField.keyboardType = .numberPad
-	}
-
 	func setupDateFormatter() {
 		dateFormatter = DateFormatter()
 		dateFormatter!.dateStyle = .short
 		dateFormatter!.timeStyle = .none
 	}
 
-	func setupExpirationDateField() {
-		setupDateFormatter()
+	func setupFields() {
+		setupPriceField()
+		setupCategoryField()
+		setupExpirationDateField()
+		setupLinkField()
+		setupRatingField()
+		setupNumberInStashField()
+		setupNumberUsedField()
+	}
 
+	func setupPriceField() {
+		priceTextField.keyboardType = .numberPad
+	}
+
+	func setupExpirationDateField() {
 		let datePicker = UIDatePicker()
 		datePicker.datePickerMode = .date
 		datePicker.addTarget(self, action: #selector(expirationDateChanged(_:)), for: .valueChanged)
@@ -160,6 +165,18 @@ extension ProductViewController {
 		}
 		categoryTextField.inputView = categoryPicker
 	}
+
+	func setupRatingField() {
+		rating.addTarget(self, action: #selector(ratingChanged(sender:)), for: .valueChanged)
+	}
+
+	func setupNumberInStashField() {
+		numberInStashTextField.keyboardType = .numberPad
+	}
+
+	func setupNumberUsedField() {
+		numberUsedTextField.keyboardType = .numberPad
+	}
 }
 
 // MARK: - Load Product from fields
@@ -170,6 +187,9 @@ extension ProductViewController {
 				try realm?.write {
 					product.brand = brandTextField.text ?? ""
 					product.name = nameTextField.text ?? ""
+
+					product.rating.value = Int(rating.value)
+
 					product.link = linkTextField.text ?? ""
 
 					let price: Double?
@@ -180,7 +200,6 @@ extension ProductViewController {
 					} else {
 						price = nil
 					}
-
 					product.price.value = price
 
 					let date: Date?
@@ -190,10 +209,21 @@ extension ProductViewController {
 					} else {
 						date = nil
 					}
-
 					product.expirationDate = date
 
 					product.category = categoryTextField.text ?? ProductCategory.active.rawValue
+
+					if let numberInStash = numberInStashTextField.text {
+						product.numberInStash.value = Int(numberInStash)
+					}
+
+					if let numberUsed = numberUsedTextField.text {
+						product.numberUsed.value = Int(numberUsed)
+					}
+
+					product.willRepurchase.value = willRepurchaseSwitch.isOn
+
+					product.ingredients = ingredientsTextView.text
 
 					//TODO: find out if this writes to realm twice, once here and once when we add it to the list
 					realm?.add(product, update: true)
@@ -208,7 +238,7 @@ extension ProductViewController {
 // MARK: - Load fields from Product
 extension ProductViewController {
 
-	func setFieldDataFromProduct() {
+	func loadFieldDataFromProduct() {
 		brandTextField.text = product?.brand ?? ""
 		nameTextField.text = product?.name ?? ""
 
@@ -223,9 +253,13 @@ extension ProductViewController {
 		setExpirationDateText(with: product?.expirationDate ?? Date())
 		categoryTextField.text = product?.category ?? ProductCategory.active.rawValue
 
-		//FIXME: these show nil instead of 0
-		numberUsedTextField.text = String(describing: product?.numberUsed.value)
-		numberInStashTextField.text = String(describing: product?.numberInStash.value)
+		if let used = product?.numberUsed.value {
+			numberUsedTextField.text = String(describing: used)
+		}
+
+		if let inStash = product?.numberInStash.value {
+			numberInStashTextField.text = String(describing: inStash)
+		}
 
 		willRepurchaseSwitch.isOn = product?.willRepurchase.value ?? false
 
@@ -273,6 +307,11 @@ extension ProductViewController {
 
 // MARK: UI Actions
 extension ProductViewController {
+
+	@IBAction func ratingChanged(sender: UISlider) {
+		//only increment by whole numbers
+		rating.setValue(Float(Int(rating.value)), animated: false)
+	}
 
 	@IBAction func wishListLinkClicked(sender: UIButton) {
 		//FIXME: share extension
@@ -342,10 +381,11 @@ extension ProductViewController: UIPickerViewDelegate {
 // MARK: Text field delegate
 extension ProductViewController: UITextFieldDelegate {
 	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+		//should only be allowed to use picker
 		if textField == categoryTextField {
 			return false
 		}
-		
+
 		guard textField == priceTextField else {
 			return true
 		}
