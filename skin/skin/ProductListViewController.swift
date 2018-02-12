@@ -16,27 +16,28 @@ let productCellIdentifier = "productCell"
 let selectProductSegue = "selectProductSegue"
 let addProductSegue = "addProductSegue"
 
-enum ProductListTableSection: Int {
-	case cleansers
-	case actives
-	case hydrators
-	case occlusives
-	case treatments
-	
-	static let tableSectionTitles = ["Cleansers", "Actives", "Hydrators", "Occlusives", "Treatments"]
-}
-
-enum ProductType: Int {
-	case stash
-	case wishList
-}
-
-enum ProductListContext {
-	case management
-	case selection
+protocol ProductSelectionDelegate: class {
+	func didSelect(product: Product)
 }
 
 class ProductListViewController: UITableViewController {
+
+	weak var delegate: ProductSelectionDelegate?
+
+	enum ProductListContext {
+		case management
+		case selection
+	}
+
+	enum ProductListTableSection: Int {
+		case cleansers
+		case actives
+		case hydrators
+		case occlusives
+		case treatments
+
+		static let tableSectionTitles = ["Cleansers", "Actives", "Hydrators", "Occlusives", "Treatments"]
+	}
 	
 	@IBOutlet weak var productTypeSegmentedControl: UISegmentedControl!
 
@@ -148,6 +149,10 @@ extension ProductListViewController {
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if segue.identifier == selectProductSegue {
+			guard case .management = context else {
+				return
+			}
+
 			let productToView: Product
 			if let cell = sender as? UITableViewCell {
 				let indexPath = tableView.indexPath(for: cell)!
@@ -164,6 +169,19 @@ extension ProductListViewController {
 			productViewable.show(product: nil, as: productType())
 			productViewable.delegate = self
 		}
+	}
+
+	override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+		if identifier == selectProductSegue {
+			switch context {
+			case .management:
+				return true
+			case .selection:
+				return false
+			}
+		}
+
+		return true
 	}
 	
 	func cancel(sender: UIBarButtonItem) {
@@ -280,7 +298,8 @@ extension ProductListViewController {
 	}
 }
 
-extension ProductListViewController: ProductDelegate {
+// MARK: Product List delegate
+extension ProductListViewController: ProductListDelegate {
 	func didAdd(product: Product) {
 		try! realm?.write {
 			products?.insert(product,
@@ -372,6 +391,20 @@ extension ProductListViewController {
 				
 				updateCategoryProductLists()
 			}
+		}
+	}
+}
+
+// MARK: Table view delegate
+extension ProductListViewController {
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		switch context {
+		case .management:
+			return
+		case .selection:
+			let product = productForIndexPath(indexPath: indexPath)
+			delegate?.didSelect(product: product)
+			dismiss(animated: true, completion: nil)
 		}
 	}
 }

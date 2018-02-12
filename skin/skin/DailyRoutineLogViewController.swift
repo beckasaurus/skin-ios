@@ -9,9 +9,8 @@
 import UIKit
 import RealmSwift
 
-// Button to add routine
-// Suggest routine if one is scheduled for day
-// Display routine with products and button to add products
+// TODO: Suggest routine if one is scheduled for day
+// TODO: Delete routine
 
 enum DailyRoutineLogViewControllerError: Error {
 	case invalidDate
@@ -24,6 +23,8 @@ class DailyRoutineLogViewController: UIViewController {
 	@IBOutlet weak var routineLogTableView: UITableView!
 
 	var routineLogs: Results<RoutineLog>?
+
+	var editingRoutine: RoutineLog?
 
 	func getRoutines(for date: Date) {
 		if let currentDatePredicate = try? predicate(for: date),
@@ -58,7 +59,7 @@ extension DailyRoutineLogViewController {
 		routineLog.time = Date()
 		routineLog.name = "AM"
 		
-		try! realm?.write {
+		try? realm?.write {
 			realm?.add(routineLog)
 		}
 		
@@ -67,20 +68,33 @@ extension DailyRoutineLogViewController {
 }
 
 // MARK: Add product to routine log
-extension DailyRoutineLogViewController {
+extension DailyRoutineLogViewController: ProductSelectionDelegate {
 	@IBAction func addProduct(sender: UIButton) {
 		let routineIndex = sender.tag
 		guard let routine = routineLogs?[routineIndex] else {
 			return
 		}
+
+		editingRoutine = routine
 		
 		let productListSplitViewController = storyboard!.instantiateViewController(withIdentifier: productListSplitViewControllerIdentifier) as! ProductListSplitViewController
 		let productListViewController = (productListSplitViewController.viewControllers.first! as! UINavigationController).topViewController as! ProductListViewController
 		productListViewController.context = .selection
+		productListViewController.delegate = self
 		
 		show(productListSplitViewController, sender: self)
-		
-		//show product selection panel
+	}
+
+	func didSelect(product: Product) {
+		guard let routine = editingRoutine else {
+			return
+		}
+
+		try? realm?.write {
+			routine.products.append(product)
+		}
+
+		routineLogTableView.reloadData()
 	}
 }
 
@@ -96,7 +110,6 @@ extension DailyRoutineLogViewController: UITableViewDataSource {
 		}
 		
 		return routineLog.products.count
-		
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -119,12 +132,11 @@ extension DailyRoutineLogViewController: UITableViewDataSource {
 	}
 	
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		return section == 0 ? 0 : tableHeaderHeight
+		return tableHeaderHeight
 	}
 	
 	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-		guard section != 0,
-			let routineLog = routineLogs?[section] else {
+		guard let routineLog = routineLogs?[section] else {
 			return nil
 		}
 		

@@ -17,18 +17,18 @@ import RealmSwift
 let productViewIdentifier = "ProductVC"
 let productUnwindSegue: String = "productUnwindSegue"
 
-protocol ProductDelegate: class {
+protocol ProductListDelegate: class {
 	func didAdd(product: Product)
 }
 
 protocol ProductViewable {
-	weak var delegate: ProductDelegate? {get set}
+	weak var delegate: ProductListDelegate? {get set}
 	
 	func show(product: Product?, as viewType: ProductType)
 }
 
 class ProductViewController: UIViewController, ProductViewable {
-	weak var delegate: ProductDelegate?
+	weak var delegate: ProductListDelegate?
 	
 	@IBOutlet weak var nameTextField: UITextField!
 	@IBOutlet weak var brandTextField: UITextField!
