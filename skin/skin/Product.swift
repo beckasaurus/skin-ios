@@ -17,6 +17,11 @@ final class Product: Object {
 	dynamic var link: String?
 	dynamic var expirationDate: Date?
 	dynamic var category: String = ProductCategory.active.rawValue
+	dynamic var ingredients: String?
+	let rating = RealmOptional<Int>()
+	let numberUsed = RealmOptional<Int>()
+	let numberInStash = RealmOptional<Int>()
+	let willRepurchase = RealmOptional<Bool>()
 
 	override static func primaryKey() -> String? {
 		return "id"

@@ -34,11 +34,25 @@ class ProductViewController: UIViewController, ProductViewable {
 	@IBOutlet weak var expirationDateTextField: UITextField!
 	@IBOutlet weak var linkTextField: UITextField!
 	@IBOutlet weak var categoryTextField: UITextField!
-	
-	@IBOutlet weak var linkStackView: UIStackView!
-	@IBOutlet weak var expirationDateStackView: UIStackView!
-	
-	var viewType: ProductType = .stash
+	@IBOutlet weak var numberInStashTextField: UITextField!
+	@IBOutlet weak var numberUsedTextField: UITextField!
+	// TODO: add rating control
+
+	@IBOutlet weak var numbersStackView: UIStackView!
+	@IBOutlet weak var willRepurchaseStackView: UIStackView!
+
+	var viewType: ProductType = .stash {
+		didSet {
+			switch viewType {
+			case .stash:
+				//hide link
+				//show rating, numbers stack, expiration date, rating, ingredients
+			case .wishList:
+				//hide rating, numbers stack, expiration date, ingredients?
+				//show link
+			}
+		}
+	}
 	
 	var dateFormatter: DateFormatter?
 	var currencyFormatter: NumberFormatter?

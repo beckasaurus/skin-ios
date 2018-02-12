@@ -16,8 +16,6 @@
 		0D66F55C1FB241CD00FE84DC /* ProductListSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D66F55B1FB241CD00FE84DC /* ProductListSplitViewController.swift */; };
 		0D66F5601FB2452700FE84DC /* ProductListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D66F55F1FB2452700FE84DC /* ProductListViewController.swift */; };
 		0D66F5621FB245DD00FE84DC /* WishList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D66F5611FB245DD00FE84DC /* WishList.swift */; };
-		0D66F5651FB3444F00FE84DC /* WishListSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D66F5641FB3444F00FE84DC /* WishListSplitViewController.swift */; };
-		0D66F5671FB3446400FE84DC /* WishListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D66F5661FB3446400FE84DC /* WishListViewController.swift */; };
 		0D6BA793200FD6FC009D92A9 /* UIViewController+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D6BA792200FD6FC009D92A9 /* UIViewController+Realm.swift */; };
 		0D79E9221F5EE16B00590443 /* DailyLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D79E9211F5EE16B00590443 /* DailyLogViewController.swift */; };
 		0D8A7B501F67806D00C57F0A /* RoutineLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8A7B4F1F67806D00C57F0A /* RoutineLog.swift */; };
@@ -33,14 +31,9 @@
 		0DC690B5202171370058336E /* DailyRoutineLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC690B4202171370058336E /* DailyRoutineLogViewController.swift */; };
 		0DC690B7202171820058336E /* DailyStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC690B6202171820058336E /* DailyStatusViewController.swift */; };
 		0DD890EF1FB3BEEC00F83192 /* String+RangeFromNSRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD890EE1FB3BEEC00F83192 /* String+RangeFromNSRange.swift */; };
-		0DE6B85A1FBC9F7B0073836C /* NoProductSelected.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0DE6B8591FBC9F7B0073836C /* NoProductSelected.storyboard */; };
 		0DE6B85E1FBCA1580073836C /* Log.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0DE6B85B1FBCA0C00073836C /* Log.storyboard */; };
-		0DE6B8601FBCA2DE0073836C /* WishList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0DE6B85F1FBCA2DE0073836C /* WishList.storyboard */; };
-		0DE6B8621FBCA3930073836C /* Stash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0DE6B8611FBCA3930073836C /* Stash.storyboard */; };
 		0DE6B8671FBCA6C50073836C /* ApplicationProductSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE6B8661FBCA6C50073836C /* ApplicationProductSelectionViewController.swift */; };
 		0DEF09741F700B9D0046DE0A /* ApplicationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEF09731F700B9D0046DE0A /* ApplicationViewController.swift */; };
-		0DEF09781F714C9F0046DE0A /* StashSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEF09771F714C9F0046DE0A /* StashSplitViewController.swift */; };
-		0DEF097B1F714D0A0046DE0A /* StashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEF097A1F714D0A0046DE0A /* StashViewController.swift */; };
 		0DEF097D1F714D1C0046DE0A /* ProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEF097C1F714D1C0046DE0A /* ProductViewController.swift */; };
 		267422028AC53C46DE5FEC8C /* Pods_skin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E93611EEE60A3CBBD8587337 /* Pods_skin.framework */; };
 /* End PBXBuildFile section */
@@ -92,8 +85,6 @@
 		0D66F55B1FB241CD00FE84DC /* ProductListSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductListSplitViewController.swift; sourceTree = "<group>"; };
 		0D66F55F1FB2452700FE84DC /* ProductListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductListViewController.swift; sourceTree = "<group>"; };
 		0D66F5611FB245DD00FE84DC /* WishList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WishList.swift; sourceTree = "<group>"; };
-		0D66F5641FB3444F00FE84DC /* WishListSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WishListSplitViewController.swift; sourceTree = "<group>"; };
-		0D66F5661FB3446400FE84DC /* WishListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WishListViewController.swift; sourceTree = "<group>"; };
 		0D6BA792200FD6FC009D92A9 /* UIViewController+Realm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Realm.swift"; sourceTree = "<group>"; };
 		0D79E9211F5EE16B00590443 /* DailyLogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyLogViewController.swift; sourceTree = "<group>"; };
 		0D8A7B4F1F67806D00C57F0A /* RoutineLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoutineLog.swift; sourceTree = "<group>"; };
@@ -109,14 +100,9 @@
 		0DC690B4202171370058336E /* DailyRoutineLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyRoutineLogViewController.swift; sourceTree = "<group>"; };
 		0DC690B6202171820058336E /* DailyStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyStatusViewController.swift; sourceTree = "<group>"; };
 		0DD890EE1FB3BEEC00F83192 /* String+RangeFromNSRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+RangeFromNSRange.swift"; sourceTree = "<group>"; };
-		0DE6B8591FBC9F7B0073836C /* NoProductSelected.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NoProductSelected.storyboard; sourceTree = "<group>"; };
 		0DE6B85B1FBCA0C00073836C /* Log.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Log.storyboard; sourceTree = "<group>"; };
-		0DE6B85F1FBCA2DE0073836C /* WishList.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WishList.storyboard; sourceTree = "<group>"; };
-		0DE6B8611FBCA3930073836C /* Stash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Stash.storyboard; sourceTree = "<group>"; };
 		0DE6B8661FBCA6C50073836C /* ApplicationProductSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationProductSelectionViewController.swift; sourceTree = "<group>"; };
 		0DEF09731F700B9D0046DE0A /* ApplicationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationViewController.swift; sourceTree = "<group>"; };
-		0DEF09771F714C9F0046DE0A /* StashSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StashSplitViewController.swift; sourceTree = "<group>"; };
-		0DEF097A1F714D0A0046DE0A /* StashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StashViewController.swift; sourceTree = "<group>"; };
 		0DEF097C1F714D1C0046DE0A /* ProductViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductViewController.swift; sourceTree = "<group>"; };
 		3E9FFA18F8CABFAB10798EEB /* Pods-skin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-skin.release.xcconfig"; path = "Pods/Target Support Files/Pods-skin/Pods-skin.release.xcconfig"; sourceTree = "<group>"; };
 		D4D8D750D79F4CA6DAF4668D /* Pods-skin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-skin.debug.xcconfig"; path = "Pods/Target Support Files/Pods-skin/Pods-skin.debug.xcconfig"; sourceTree = "<group>"; };
@@ -154,6 +140,7 @@
 			children = (
 				0D66F55B1FB241CD00FE84DC /* ProductListSplitViewController.swift */,
 				0D66F55F1FB2452700FE84DC /* ProductListViewController.swift */,
+				0DEF097C1F714D1C0046DE0A /* ProductViewController.swift */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -187,8 +174,6 @@
 				0DD890EE1FB3BEEC00F83192 /* String+RangeFromNSRange.swift */,
 				0D6BA792200FD6FC009D92A9 /* UIViewController+Realm.swift */,
 				0D8A7B4E1F67804E00C57F0A /* Views */,
-				0D66F55A1FB2418900FE84DC /* Reusable Controllers */,
-				0DE6B8631FBCA4050073836C /* Reusable Views */,
 				0D8A7B4D1F67803100C57F0A /* Models */,
 				0D0CC3861F54B48C00334487 /* Main.storyboard */,
 				0DC690AF202140110058336E /* Prototype.storyboard */,
@@ -218,24 +203,6 @@
 			path = skinUITests;
 			sourceTree = "<group>";
 		};
-		0D66F55A1FB2418900FE84DC /* Reusable Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				0DEF097C1F714D1C0046DE0A /* ProductViewController.swift */,
-			);
-			name = "Reusable Controllers";
-			sourceTree = "<group>";
-		};
-		0D66F5631FB3442C00FE84DC /* Wish List */ = {
-			isa = PBXGroup;
-			children = (
-				0DE6B85F1FBCA2DE0073836C /* WishList.storyboard */,
-				0D66F5641FB3444F00FE84DC /* WishListSplitViewController.swift */,
-				0D66F5661FB3446400FE84DC /* WishListViewController.swift */,
-			);
-			name = "Wish List";
-			sourceTree = "<group>";
-		};
 		0D8A7B4D1F67803100C57F0A /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -256,8 +223,6 @@
 				0DC690B1202163A30058336E /* Daily */,
 				0D09DE8A20279AF9002875F5 /* Products */,
 				0D9E05EA1F70077A00E83BF3 /* Log */,
-				0DEF09791F714CE90046DE0A /* Stash */,
-				0D66F5631FB3442C00FE84DC /* Wish List */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -283,24 +248,6 @@
 				0D9734D920220F98002ACE21 /* RoutineLogTableView.swift */,
 			);
 			name = Daily;
-			sourceTree = "<group>";
-		};
-		0DE6B8631FBCA4050073836C /* Reusable Views */ = {
-			isa = PBXGroup;
-			children = (
-				0DE6B8591FBC9F7B0073836C /* NoProductSelected.storyboard */,
-			);
-			name = "Reusable Views";
-			sourceTree = "<group>";
-		};
-		0DEF09791F714CE90046DE0A /* Stash */ = {
-			isa = PBXGroup;
-			children = (
-				0DE6B8611FBCA3930073836C /* Stash.storyboard */,
-				0DEF09771F714C9F0046DE0A /* StashSplitViewController.swift */,
-				0DEF097A1F714D0A0046DE0A /* StashViewController.swift */,
-			);
-			name = Stash;
 			sourceTree = "<group>";
 		};
 		A74B762836859B04CE46DA16 /* Pods */ = {
@@ -439,12 +386,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0DE6B8601FBCA2DE0073836C /* WishList.storyboard in Resources */,
 				0D0CC38D1F54B48C00334487 /* LaunchScreen.storyboard in Resources */,
 				0D0CC38A1F54B48C00334487 /* Assets.xcassets in Resources */,
-				0DE6B85A1FBC9F7B0073836C /* NoProductSelected.storyboard in Resources */,
 				0DE6B85E1FBCA1580073836C /* Log.storyboard in Resources */,
-				0DE6B8621FBCA3930073836C /* Stash.storyboard in Resources */,
 				0D0CC3881F54B48C00334487 /* Main.storyboard in Resources */,
 				0DC690B0202140110058336E /* Prototype.storyboard in Resources */,
 			);
@@ -522,7 +466,6 @@
 				0D6BA793200FD6FC009D92A9 /* UIViewController+Realm.swift in Sources */,
 				0D66F5621FB245DD00FE84DC /* WishList.swift in Sources */,
 				0DC690B320216AC20058336E /* DailyViewController.swift in Sources */,
-				0DEF09781F714C9F0046DE0A /* StashSplitViewController.swift in Sources */,
 				0D66F55C1FB241CD00FE84DC /* ProductListSplitViewController.swift in Sources */,
 				0D8A7B521F6780A400C57F0A /* Routine.swift in Sources */,
 				0DE6B8671FBCA6C50073836C /* ApplicationProductSelectionViewController.swift in Sources */,
@@ -531,10 +474,7 @@
 				0DC690B7202171820058336E /* DailyStatusViewController.swift in Sources */,
 				0DEF097D1F714D1C0046DE0A /* ProductViewController.swift in Sources */,
 				0D0CC3831F54B48C00334487 /* AppDelegate.swift in Sources */,
-				0D66F5671FB3446400FE84DC /* WishListViewController.swift in Sources */,
-				0DEF097B1F714D0A0046DE0A /* StashViewController.swift in Sources */,
 				0D9E05EC1F7007B300E83BF3 /* LogSplitViewController.swift in Sources */,
-				0D66F5651FB3444F00FE84DC /* WishListSplitViewController.swift in Sources */,
 				0DAAF1C21F715287001F0CD3 /* ProductCategory.swift in Sources */,
 				0D8A7B541F67812200C57F0A /* Log.swift in Sources */,
 				0DEF09741F700B9D0046DE0A /* ApplicationViewController.swift in Sources */,
