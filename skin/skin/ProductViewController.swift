@@ -9,7 +9,6 @@
 import UIKit
 import RealmSwift
 
-// TODO: Product properties for ingredients, rating.
 // TODO: Editing vs viewing?
 
 let productViewIdentifier = "ProductVC"
@@ -140,6 +139,7 @@ extension ProductViewController {
 
 	func setupPriceField() {
 		priceTextField.keyboardType = .numberPad
+		priceTextField.delegate = self
 	}
 
 	func setupExpirationDateField() {
@@ -390,37 +390,44 @@ extension ProductViewController: UITextFieldDelegate {
 			return true
 		}
 
-		//FIXME: break into a separate formatter object
-		
+		return shouldAllowPriceChanges(shouldChangeCharactersIn: range, replacementString: string)
+	}
+
+	func shouldAllowPriceChanges(shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
 		guard let currencyFormatter = currencyFormatter,
-		let selectedRange = priceTextField.selectedTextRange,
-		let originalText = priceTextField.text,
-		let swiftRange = originalText.range(from: range) else {
-			return false
+			let selectedRange = priceTextField.selectedTextRange,
+			let originalText = priceTextField.text,
+			let swiftRange = originalText.range(from: range) else {
+				return false
 		}
-		
+
 		var replacementString = string
-		
+
 		if replacementString.count > 1 {
 			replacementString = replacementString.replacingOccurrences(of: currencyFormatter.currencySymbol, with: "")
 			replacementString = replacementString.replacingOccurrences(of: currencyFormatter.groupingSeparator, with: "")
 			guard let stringFromFormatter = currencyFormatter.string(from: NSDecimalNumber(string: replacementString)) else {
 				return false
 			}
-			
+
 			replacementString = stringFromFormatter
 		}
-		
+
 		let start = priceTextField.beginningOfDocument
 		let cursorOffset = priceTextField.offset(from: start, to: selectedRange.start)
 		let originalTextLength = originalText.count
-		
+
 		var newText = originalText
 		newText = newText.replacingCharacters(in: swiftRange, with: replacementString)
 		newText = newText.replacingOccurrences(of: currencyFormatter.currencySymbol, with: "")
 		newText = newText.replacingOccurrences(of: currencyFormatter.groupingSeparator, with: "")
 		newText = newText.replacingOccurrences(of: currencyFormatter.decimalSeparator, with: "")
-		
+
+		//allow deleting the whole text
+		if newText == "" {
+			return true
+		}
+
 		let maxDigits = 11
 		if newText.count <= maxDigits {
 			let numberFromTextField = NSDecimalNumber(string: newText)
@@ -429,9 +436,9 @@ extension ProductViewController: UITextFieldDelegate {
 			guard let newText = currencyFormatter.string(from: newNumber) else {
 				return false
 			}
-			
+
 			priceTextField.text = newText
-			
+
 			if cursorOffset != originalTextLength {
 				let lengthDelta = newText.count - originalTextLength
 				let newCursorOffset = max(0, min(newText.count, cursorOffset + lengthDelta))
@@ -440,7 +447,7 @@ extension ProductViewController: UITextFieldDelegate {
 				priceTextField.selectedTextRange = newRange
 			}
 		}
-		
+
 		return false
 	}
 }
