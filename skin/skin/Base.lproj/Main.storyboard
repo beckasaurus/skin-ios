@@ -167,6 +167,9 @@
                                 <segment title="Stash"/>
                                 <segment title="Wish List"/>
                             </segments>
+                            <connections>
+                                <action selector="toggleProductListTypeWithSender:" destination="GPd-le-L8C" eventType="valueChanged" id="YcS-dO-n0h"/>
+                            </connections>
                         </segmentedControl>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="bYe-g1-hCc">
                             <connections>

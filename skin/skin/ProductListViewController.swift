@@ -10,7 +10,6 @@ import UIKit
 import RealmSwift
 
 // TODO: Change table selection behavior based on context
-// TODO: Wish list vs stash -- toggle between two
 
 let productListViewIdentifier = "productListVC"
 let productCellIdentifier = "productCell"
@@ -40,7 +39,9 @@ enum ProductListContext {
 class ProductListViewController: UITableViewController {
 	
 	@IBOutlet weak var productTypeSegmentedControl: UISegmentedControl!
-	
+
+	var stash: Stash?
+	var wishList: WishList?
 	var products: List<Product>?
 	var filteredProducts: [Product]? {
 		didSet {
@@ -168,6 +169,11 @@ extension ProductListViewController {
 	func cancel(sender: UIBarButtonItem) {
 		dismiss(animated: true, completion: nil)
 	}
+
+	@IBAction func toggleProductListType(sender: UISegmentedControl) {
+		setProductListFromContainer()
+		updateCategoryProductLists()
+	}
 }
 
 // MARK: Realm setup
@@ -193,6 +199,7 @@ extension ProductListViewController {
 		try! realm.write {
 			let stash = Stash()
 			self.realm!.add(stash)
+			self.stash = stash
 			self.products = stash.products
 		}
 	}
@@ -201,16 +208,43 @@ extension ProductListViewController {
 		guard let realm = realm else {
 			return
 		}
-		
-		if let stash = realm.objects(Stash.self).first {
+
+		if let stash = stash {
 			products = stash.products
+		} else if let stash = realm.objects(Stash.self).first {
+			products = stash.products
+			self.stash = stash
 		} else {
 			createStashAndSetProductList()
 		}
 	}
-	
+
+	func createWishListAndSetProductList() {
+		guard let realm = realm else {
+			return
+		}
+
+		try! realm.write {
+			let wishList = WishList()
+			self.realm!.add(wishList)
+			self.wishList = wishList
+			self.products = wishList.products
+		}
+	}
+
 	func setProductListFromWishList() {
-		
+		guard let realm = realm else {
+			return
+		}
+
+		if let wishList = wishList {
+			products = wishList.products
+		} else if let wishList = realm.objects(WishList.self).first {
+			products = wishList.products
+			self.wishList = wishList
+		} else {
+			createWishListAndSetProductList()
+		}
 	}
 	
 	func setProductListFromContainer() {
@@ -354,7 +388,9 @@ extension ProductListViewController: UISearchResultsUpdating {
 			filteredProducts = nil
 		} else {
 			filteredProducts = products.filter({( product : Product) -> Bool in
-				return product.name.lowercased().contains(searchText.lowercased())
+				let inName = product.name.lowercased().contains(searchText.lowercased())
+				let inBrand = product.brand?.lowercased().contains(searchText.lowercased()) ?? false
+				return inName || inBrand
 			})
 		}
 	}

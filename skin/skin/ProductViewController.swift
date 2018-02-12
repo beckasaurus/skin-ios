@@ -10,6 +10,9 @@ import UIKit
 import RealmSwift
 
 // TODO: Editing vs viewing?
+// TODO: Landscape layout
+// TODO: Moving view when keyboard is visible
+// TODO: Fix wish list view layout
 
 let productViewIdentifier = "ProductVC"
 let productUnwindSegue: String = "productUnwindSegue"
