@@ -360,46 +360,46 @@
                                 <rect key="frame" x="20" y="84" width="335" height="514"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Product Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gLi-DJ-kl7">
-                                        <rect key="frame" x="0.0" y="0.0" width="335" height="0.0"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Brand Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="A9f-6g-IRL">
-                                        <rect key="frame" x="0.0" y="8" width="335" height="22.5"/>
+                                        <rect key="frame" x="0.0" y="38" width="335" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="3" minValue="1" maxValue="5" translatesAutoresizingMaskIntoConstraints="NO" id="ASI-Ej-LcK">
-                                        <rect key="frame" x="-2" y="38.5" width="339" height="31"/>
+                                        <rect key="frame" x="-2" y="76" width="339" height="31"/>
                                     </slider>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Category" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Am5-fs-saP">
-                                        <rect key="frame" x="0.0" y="76.5" width="335" height="30"/>
+                                        <rect key="frame" x="0.0" y="114" width="335" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Expiration Date" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="AHZ-oF-Qlh">
-                                        <rect key="frame" x="0.0" y="114.5" width="335" height="30"/>
+                                        <rect key="frame" x="0.0" y="152" width="335" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Price" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VrO-qA-0Y1">
-                                        <rect key="frame" x="0.0" y="152.5" width="335" height="30"/>
+                                        <rect key="frame" x="0.0" y="190" width="335" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="URL" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Kib-vW-NHI">
-                                        <rect key="frame" x="0.0" y="190.5" width="335" height="30"/>
+                                        <rect key="frame" x="0.0" y="228" width="335" height="13"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="P6t-kZ-QmH">
-                                        <rect key="frame" x="0.0" y="228.5" width="335" height="30"/>
+                                        <rect key="frame" x="0.0" y="249" width="335" height="30"/>
                                         <subviews>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Number in stash" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FaH-0I-WPe">
                                                 <rect key="frame" x="0.0" y="0.0" width="163.5" height="30"/>
@@ -416,7 +416,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacingType="standard" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tiu-dO-eaH">
-                                        <rect key="frame" x="0.0" y="266.5" width="335" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="287" width="335" height="20.5"/>
                                         <subviews>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="tEL-0b-tAu">
                                                 <rect key="frame" x="0.0" y="0.0" width="51" height="20.5"/>
@@ -430,16 +430,16 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="100" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="PzK-P7-CvZ">
-                                        <rect key="frame" x="0.0" y="295" width="335" height="219"/>
+                                        <rect key="frame" x="0.0" y="315.5" width="335" height="198.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ingredients " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AWl-oI-wAg">
-                                                <rect key="frame" x="0.0" y="0.0" width="335" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="335" height="0.0"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="100" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="L2X-3l-1Mz">
-                                                <rect key="frame" x="0.0" y="20.5" width="335" height="198.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="335" height="198.5"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -463,13 +463,17 @@
                         <outlet property="brandTextField" destination="A9f-6g-IRL" id="E7E-3D-9DM"/>
                         <outlet property="categoryTextField" destination="Am5-fs-saP" id="bKG-10-fJv"/>
                         <outlet property="expirationDateTextField" destination="AHZ-oF-Qlh" id="gnv-dk-YZJ"/>
+                        <outlet property="ingredientsStackView" destination="PzK-P7-CvZ" id="IOf-wX-ibZ"/>
+                        <outlet property="ingredientsTextView" destination="L2X-3l-1Mz" id="7w9-xi-bz6"/>
                         <outlet property="linkTextField" destination="Kib-vW-NHI" id="LjI-QM-iKa"/>
                         <outlet property="nameTextField" destination="gLi-DJ-kl7" id="pPe-5h-HFO"/>
                         <outlet property="numberInStashTextField" destination="FaH-0I-WPe" id="7TP-Iq-emH"/>
                         <outlet property="numberUsedTextField" destination="lQd-0c-5IJ" id="Roz-M8-aoI"/>
                         <outlet property="numbersStackView" destination="P6t-kZ-QmH" id="9Tu-NZ-6Lz"/>
                         <outlet property="priceTextField" destination="VrO-qA-0Y1" id="hKR-cB-a9E"/>
+                        <outlet property="rating" destination="ASI-Ej-LcK" id="Pga-rW-u95"/>
                         <outlet property="willRepurchaseStackView" destination="Tiu-dO-eaH" id="BZ8-1v-iiq"/>
+                        <outlet property="willRepurchaseSwitch" destination="tEL-0b-tAu" id="7jg-US-dTk"/>
                         <segue destination="Inh-rq-E2F" kind="unwind" identifier="productUnwindSegue" unwindAction="productViewUnwindWithSegue:" id="K80-Ii-nJa"/>
                     </connections>
                 </viewController>

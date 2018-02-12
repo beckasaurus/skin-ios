@@ -30,26 +30,29 @@ class ProductViewController: UIViewController, ProductViewable {
 	
 	@IBOutlet weak var nameTextField: UITextField!
 	@IBOutlet weak var brandTextField: UITextField!
+	@IBOutlet weak var rating: UISlider!
 	@IBOutlet weak var priceTextField: UITextField!
 	@IBOutlet weak var expirationDateTextField: UITextField!
 	@IBOutlet weak var linkTextField: UITextField!
 	@IBOutlet weak var categoryTextField: UITextField!
 	@IBOutlet weak var numberInStashTextField: UITextField!
 	@IBOutlet weak var numberUsedTextField: UITextField!
-	// TODO: add rating control
+	@IBOutlet weak var willRepurchaseSwitch: UISwitch!
+	@IBOutlet weak var ingredientsTextView: UITextView!
 
 	@IBOutlet weak var numbersStackView: UIStackView!
 	@IBOutlet weak var willRepurchaseStackView: UIStackView!
+	@IBOutlet weak var ingredientsStackView: UIStackView!
 
+	//set during the segue, and used to store/set the viewType property after the view loads (the viewType property affects UI fields)
+	var pendingViewType: ProductType = .stash
 	var viewType: ProductType = .stash {
 		didSet {
 			switch viewType {
 			case .stash:
-				//hide link
-				//show rating, numbers stack, expiration date, rating, ingredients
+				showHideUIElements(isStash: true)
 			case .wishList:
-				//hide rating, numbers stack, expiration date, ingredients?
-				//show link
+				showHideUIElements(isStash: false)
 			}
 		}
 	}
@@ -62,6 +65,7 @@ class ProductViewController: UIViewController, ProductViewable {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		setupNavigationButtons()
+		viewType = pendingViewType
 		setupFields()
 		createProductIfNeeded()
 	}
@@ -73,7 +77,18 @@ class ProductViewController: UIViewController, ProductViewable {
 	
 	func show(product: Product?, as viewType: ProductType) {
 		self.product = product
-		self.viewType = viewType
+		pendingViewType = viewType
+	}
+
+	//hide link
+	//show rating, numbers stack, expiration date, rating, ingredients
+	func showHideUIElements(isStash: Bool) {
+		rating.isHidden = !isStash
+		linkTextField.isHidden = isStash
+		numbersStackView.isHidden = !isStash
+		expirationDateTextField.isHidden = !isStash
+		willRepurchaseStackView.isHidden = !isStash
+		ingredientsStackView.isHidden = !isStash
 	}
 }
 
@@ -121,11 +136,6 @@ extension ProductViewController {
 	}
 
 	func setupExpirationDateField() {
-		guard case .stash = viewType else {
-			expirationDateStackView.isHidden = true
-			return
-		}
-
 		setupDateFormatter()
 
 		let datePicker = UIDatePicker()
@@ -138,10 +148,6 @@ extension ProductViewController {
 	}
 
 	func setupLinkField() {
-		guard case .wishList = viewType else {
-//			linkStackView.isHidden = true
-			return
-		}
 	}
 
 	func setupCategoryField() {
@@ -205,10 +211,25 @@ extension ProductViewController {
 	func setFieldDataFromProduct() {
 		brandTextField.text = product?.brand ?? ""
 		nameTextField.text = product?.name ?? ""
+
+		if let productRating = product?.rating.value {
+			rating.value = Float(productRating)
+		} else {
+			rating.value = rating.maximumValue
+		}
+
 		linkTextField.text = product?.link ?? ""
 		setPriceText(with: product?.price ?? RealmOptional(0.00))
 		setExpirationDateText(with: product?.expirationDate ?? Date())
 		categoryTextField.text = product?.category ?? ProductCategory.active.rawValue
+
+		//FIXME: these show nil instead of 0
+		numberUsedTextField.text = String(describing: product?.numberUsed.value)
+		numberInStashTextField.text = String(describing: product?.numberInStash.value)
+
+		willRepurchaseSwitch.isOn = product?.willRepurchase.value ?? false
+
+		ingredientsTextView.text = product?.ingredients ?? ""
 	}
 
 	func setPriceText(with price: RealmOptional<Double>) {
