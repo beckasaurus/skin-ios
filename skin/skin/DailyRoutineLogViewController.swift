@@ -11,6 +11,9 @@ import RealmSwift
 
 // TODO: Suggest routine if one is scheduled for day
 // TODO: Delete routine
+// TODO: scrolling in long routine lists
+// TODO: collapse product lists?
+// TODO: rearranging products in list
 
 enum DailyRoutineLogViewControllerError: Error {
 	case invalidDate
@@ -25,6 +28,11 @@ class DailyRoutineLogViewController: UIViewController {
 	var routineLogs: Results<RoutineLog>?
 
 	var editingRoutine: RoutineLog?
+	
+	override func viewDidLoad() {
+		routineLogTableView.allowsMultipleSelection = false
+		routineLogTableView.allowsSelection = false
+	}
 
 	func getRoutines(for date: Date) {
 		if let currentDatePredicate = try? predicate(for: date),
@@ -145,11 +153,13 @@ extension DailyRoutineLogViewController: UITableViewDataSource {
 						   width: tableView.bounds.size.width,
 						   height: tableHeaderHeight)
 		let tableHeaderView = UIView(frame: frame)
+		tableHeaderView.backgroundColor = .white
 		tableHeaderView.accessibilityIdentifier = "\(routineLog.name) Routine"
 		
 		let addProductButton = UIButton(type: UIButtonType.system)
 		addProductButton.accessibilityIdentifier = "Add Product"
 		addProductButton.setTitle("+ Add Product", for: .normal)
+		addProductButton.tag = section
 		addProductButton.translatesAutoresizingMaskIntoConstraints = false
 		addProductButton.addTarget(self, action: #selector(addProduct(sender:)), for: .touchUpInside)
 		
@@ -176,12 +186,20 @@ extension DailyRoutineLogViewController: UITableViewDataSource {
 		return tableHeaderView
 	}
 
-//	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-//		if editingStyle == .delete {
-//			try! self.realm?.write {
-//				let item = applications![indexPath.row]
-//				self.realm?.delete(item)
-//			}
-//		}
-//	}
+	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+		if editingStyle == .delete {
+			let section = indexPath.section
+			let row = indexPath.row
+			
+			guard let routineLog = routineLogs?[section] else {
+				return
+			}
+			
+			try? realm?.write {
+				routineLog.products.remove(at: row)
+			}
+			
+			routineLogTableView.reloadData()
+		}
+	}
 }

@@ -9,8 +9,6 @@
 import UIKit
 import RealmSwift
 
-// TODO: Change table selection behavior based on context
-
 let productListViewIdentifier = "productListVC"
 let productCellIdentifier = "productCell"
 let selectProductSegue = "selectProductSegue"

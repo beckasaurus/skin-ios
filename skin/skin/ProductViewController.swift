@@ -13,6 +13,8 @@ import RealmSwift
 // TODO: Landscape layout
 // TODO: Moving view when keyboard is visible
 // TODO: Fix wish list view layout
+// TODO: Fix default expiration date
+// TODO: Figure out how to label fields
 
 let productViewIdentifier = "ProductVC"
 let productUnwindSegue: String = "productUnwindSegue"
