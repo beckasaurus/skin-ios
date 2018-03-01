@@ -75,6 +75,12 @@ extension DailyRoutineLogViewController {
 	}
 }
 
+extension DailyRoutineLogViewController {
+	@IBAction func edit(sender: UIButton) {
+		routineLogTableView.setEditing(routineLogTableView.isEditing, animated: true)
+	}
+}
+
 // MARK: Add product to routine log
 extension DailyRoutineLogViewController: ProductSelectionDelegate {
 	@IBAction func addProduct(sender: UIButton) {
@@ -162,13 +168,20 @@ extension DailyRoutineLogViewController: UITableViewDataSource {
 		addProductButton.tag = section
 		addProductButton.translatesAutoresizingMaskIntoConstraints = false
 		addProductButton.addTarget(self, action: #selector(addProduct(sender:)), for: .touchUpInside)
+
+		let editButton = UIButton(type: UIButtonType.system)
+		editButton.accessibilityIdentifier = "Edit"
+		editButton.setTitle("Edit", for: .normal)
+		editButton.tag = section
+		editButton.translatesAutoresizingMaskIntoConstraints = false
+		editButton.addTarget(self, action: #selector(edit(sender:)), for: .touchUpInside)
 		
 		let routineLogNameLabel = UILabel()
 		routineLogNameLabel.accessibilityIdentifier = "Routine Name"
 		routineLogNameLabel.text = routineLog.name
 		routineLogNameLabel.translatesAutoresizingMaskIntoConstraints = false
 		
-		let stackView = UIStackView(arrangedSubviews: [routineLogNameLabel, addProductButton])
+		let stackView = UIStackView(arrangedSubviews: [routineLogNameLabel, editButton, addProductButton])
 		stackView.axis = .horizontal
 		stackView.distribution = .fill
 		stackView.alignment = .firstBaseline
@@ -201,5 +214,22 @@ extension DailyRoutineLogViewController: UITableViewDataSource {
 			
 			routineLogTableView.reloadData()
 		}
+	}
+
+	func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+		return true
+	}
+
+	func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+		guard sourceIndexPath.section == destinationIndexPath.section,
+		let routineLog = routineLogs?[sourceIndexPath.section] else {
+			return
+		}
+
+		try? realm?.write {
+			routineLog.products.move(from: sourceIndexPath.row, to: destinationIndexPath.row)
+		}
+
+		routineLogTableView.reloadData()
 	}
 }
