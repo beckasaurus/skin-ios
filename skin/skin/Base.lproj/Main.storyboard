@@ -322,10 +322,19 @@
                                     <outlet property="delegate" destination="0HD-VK-lOz" id="a1r-YW-98I"/>
                                 </connections>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iDR-21-fmf">
+                                <rect key="frame" x="291" y="0.0" width="52" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Edit"/>
+                                <connections>
+                                    <action selector="editWithSender:" destination="0HD-VK-lOz" eventType="touchUpInside" id="a3N-0R-amF"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="editButton" destination="iDR-21-fmf" id="wL6-Kn-aCo"/>
                         <outlet property="routineLogTableView" destination="LSI-xe-UwM" id="HoL-bn-LSH"/>
                     </connections>
                 </viewController>

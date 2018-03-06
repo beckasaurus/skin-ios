@@ -24,6 +24,7 @@ let tableHeaderHeight: CGFloat = 50.0
 class DailyRoutineLogViewController: UIViewController {
 	
 	@IBOutlet weak var routineLogTableView: UITableView!
+	@IBOutlet weak var editButton: UIButton!
 
 	var routineLogs: Results<RoutineLog>?
 
@@ -32,6 +33,7 @@ class DailyRoutineLogViewController: UIViewController {
 	override func viewDidLoad() {
 		routineLogTableView.allowsMultipleSelection = false
 		routineLogTableView.allowsSelection = false
+		routineLogTableView.register(RoutineLogTableSectionHeaderView.self, forHeaderFooterViewReuseIdentifier: "routineLogHeaderSection")
 	}
 
 	func getRoutines(for date: Date) {
@@ -75,9 +77,23 @@ extension DailyRoutineLogViewController {
 	}
 }
 
+// MARK: Edit routine lists
 extension DailyRoutineLogViewController {
 	@IBAction func edit(sender: UIButton) {
-		routineLogTableView.setEditing(routineLogTableView.isEditing, animated: true)
+		let isCurrentlyEditing = routineLogTableView.isEditing
+		editButton.setTitle(isCurrentlyEditing ? "Edit" : "Done", for: .normal)
+		routineLogTableView.setEditing(!isCurrentlyEditing, animated: true)
+		toggleSectionHeaderEditButtons()
+	}
+
+	func toggleSectionHeaderEditButtons() {
+		let sectionCount = routineLogTableView.numberOfSections
+		for sectionIndex in 0...sectionCount {
+			guard let sectionHeader = routineLogTableView.headerView(forSection: sectionIndex) as? RoutineLogTableSectionHeaderView else {
+				continue
+			}
+			sectionHeader.toggleDeleteButton()
+		}
 	}
 }
 
@@ -112,6 +128,27 @@ extension DailyRoutineLogViewController: ProductSelectionDelegate {
 	}
 }
 
+extension DailyRoutineLogViewController {
+	@IBAction func deleteRoutine(sender: UIButton) {
+		let routineIndex = sender.tag
+		guard let routine = routineLogs?[routineIndex] else {
+			return
+		}
+
+		try? realm?.write {
+			self.realm?.delete(routine)
+		}
+
+		routineLogTableView.reloadData()
+
+		if routineLogTableView.numberOfSections == 0 {
+			//exit editing mode
+			edit(sender: editButton)
+		}
+	}
+}
+
+// MARK: Table View Data Source
 extension DailyRoutineLogViewController: UITableViewDataSource {
 	
 	func numberOfSections(in tableView: UITableView) -> Int {
@@ -153,49 +190,20 @@ extension DailyRoutineLogViewController: UITableViewDataSource {
 		guard let routineLog = routineLogs?[section] else {
 			return nil
 		}
-		
+
 		let frame = CGRect(x: tableView.bounds.origin.x,
 						   y: tableView.bounds.origin.y,
 						   width: tableView.bounds.size.width,
 						   height: tableHeaderHeight)
-		let tableHeaderView = UIView(frame: frame)
-		tableHeaderView.backgroundColor = .white
-		tableHeaderView.accessibilityIdentifier = "\(routineLog.name) Routine"
-		
-		let addProductButton = UIButton(type: UIButtonType.system)
-		addProductButton.accessibilityIdentifier = "Add Product"
-		addProductButton.setTitle("+ Add Product", for: .normal)
-		addProductButton.tag = section
-		addProductButton.translatesAutoresizingMaskIntoConstraints = false
-		addProductButton.addTarget(self, action: #selector(addProduct(sender:)), for: .touchUpInside)
+		let tableHeaderView = RoutineLogTableSectionHeaderView(frame: frame,
+															   routineName: routineLog.name,
+															   section: section,
+															   editButtonTarget: self,
+															   editButtonSelector: #selector(addProduct(sender:)),
+															   deleteButtonTarget: self,
+															   deleteButtonSelector: #selector(deleteRoutine(sender:)),
+															   inEditingMode: tableView.isEditing)
 
-		let editButton = UIButton(type: UIButtonType.system)
-		editButton.accessibilityIdentifier = "Edit"
-		editButton.setTitle("Edit", for: .normal)
-		editButton.tag = section
-		editButton.translatesAutoresizingMaskIntoConstraints = false
-		editButton.addTarget(self, action: #selector(edit(sender:)), for: .touchUpInside)
-		
-		let routineLogNameLabel = UILabel()
-		routineLogNameLabel.accessibilityIdentifier = "Routine Name"
-		routineLogNameLabel.text = routineLog.name
-		routineLogNameLabel.translatesAutoresizingMaskIntoConstraints = false
-		
-		let stackView = UIStackView(arrangedSubviews: [routineLogNameLabel, editButton, addProductButton])
-		stackView.axis = .horizontal
-		stackView.distribution = .fill
-		stackView.alignment = .firstBaseline
-		stackView.translatesAutoresizingMaskIntoConstraints = false
-		
-		tableHeaderView.addSubview(stackView)
-		
-		let margins = tableHeaderView.layoutMarginsGuide
-		
-		stackView.widthAnchor.constraint(equalTo: margins.widthAnchor).isActive = true
-		stackView.heightAnchor.constraint(equalTo: margins.heightAnchor).isActive = true
-		stackView.centerXAnchor.constraint(equalTo: margins.centerXAnchor).isActive = true
-		stackView.centerYAnchor.constraint(equalTo: margins.centerYAnchor).isActive = true
-		
 		return tableHeaderView
 	}
 

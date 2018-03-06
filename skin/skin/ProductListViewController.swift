@@ -365,7 +365,6 @@ extension ProductListViewController {
 	}
 	
 	// MARK: - Delete function
-	
 	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
 		if editingStyle == .delete {
 			try! self.realm?.write {

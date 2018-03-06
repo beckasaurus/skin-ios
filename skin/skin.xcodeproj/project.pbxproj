@@ -27,6 +27,7 @@
 		0D9E05EC1F7007B300E83BF3 /* LogSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9E05EB1F7007B300E83BF3 /* LogSplitViewController.swift */; };
 		0DAAF1C21F715287001F0CD3 /* ProductCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAAF1C11F715287001F0CD3 /* ProductCategory.swift */; };
 		0DAAF1C41F71588C001F0CD3 /* Stash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAAF1C31F71588C001F0CD3 /* Stash.swift */; };
+		0DADDD9B204F0C7C0035A508 /* RoutineLogTableSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DADDD9A204F0C7C0035A508 /* RoutineLogTableSectionHeaderView.swift */; };
 		0DC690B0202140110058336E /* Prototype.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0DC690AF202140110058336E /* Prototype.storyboard */; };
 		0DC690B320216AC20058336E /* DailyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC690B220216AC20058336E /* DailyViewController.swift */; };
 		0DC690B5202171370058336E /* DailyRoutineLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC690B4202171370058336E /* DailyRoutineLogViewController.swift */; };
@@ -97,6 +98,7 @@
 		0D9E05EB1F7007B300E83BF3 /* LogSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogSplitViewController.swift; sourceTree = "<group>"; };
 		0DAAF1C11F715287001F0CD3 /* ProductCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductCategory.swift; sourceTree = "<group>"; };
 		0DAAF1C31F71588C001F0CD3 /* Stash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stash.swift; sourceTree = "<group>"; };
+		0DADDD9A204F0C7C0035A508 /* RoutineLogTableSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineLogTableSectionHeaderView.swift; sourceTree = "<group>"; };
 		0DC690AF202140110058336E /* Prototype.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Prototype.storyboard; sourceTree = "<group>"; };
 		0DC690B220216AC20058336E /* DailyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyViewController.swift; sourceTree = "<group>"; };
 		0DC690B4202171370058336E /* DailyRoutineLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyRoutineLogViewController.swift; sourceTree = "<group>"; };
@@ -247,6 +249,7 @@
 			children = (
 				0DC690B220216AC20058336E /* DailyViewController.swift */,
 				0DC690B4202171370058336E /* DailyRoutineLogViewController.swift */,
+				0DADDD9A204F0C7C0035A508 /* RoutineLogTableSectionHeaderView.swift */,
 				0DC690B6202171820058336E /* DailyStatusViewController.swift */,
 				0D9734D920220F98002ACE21 /* RoutineLogTableView.swift */,
 			);
@@ -484,6 +487,7 @@
 				0DEF09741F700B9D0046DE0A /* ApplicationViewController.swift in Sources */,
 				0D8A7B501F67806D00C57F0A /* RoutineLog.swift in Sources */,
 				0DAAF1C41F71588C001F0CD3 /* Stash.swift in Sources */,
+				0DADDD9B204F0C7C0035A508 /* RoutineLogTableSectionHeaderView.swift in Sources */,
 				0DC690B5202171370058336E /* DailyRoutineLogViewController.swift in Sources */,
 				0DD890EF1FB3BEEC00F83192 /* String+RangeFromNSRange.swift in Sources */,
 				0D66F5601FB2452700FE84DC /* ProductListViewController.swift in Sources */,
